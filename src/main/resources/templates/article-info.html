@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+</head>
+<body>
+<div th:each="img : ${images}">
+    <img th:src="@{/images/{id}(id=${img.id})}" height="60px"/><br/>
+</div>
+<p><b th:text="${article.title}"></b></p>
+<p th:text="${article.content}"></p>
+<p th:text="${article.user.firstName}"></p>
+</div>
+</body>
+</html>
