@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Create form</title>
+</head>
+<body>
+<section class="form-article w-100 m-auto text-center" layout:fragment="content">
+    <form th:action="@{/admin/article-form}" th:object="${article}" method="post" enctype="multipart/form-data">
+        <h1 class="h3 mb-3 fw-normal">Create an article</h1>
+
+        <div class="form-floating pb-2">
+            <input type="text" th:field="*{title}" class="form-control" id="title"
+                   placeholder="Title">
+            <label for="title">Title</label>
+        </div>
+
+        <div class="form-floating pb-2">
+        <textarea class="form-control" id="content"
+                  placeholder="Prompt" required></textarea>
+            <label for="content">Prompt</label>
+            <button type="button" onclick="generateContent()">Generate Content</button>
+        </div>
+
+        <div class="form-floating pb-2">
+        <textarea th:field="*{content}" class="form-control" id="generated-content"
+                  placeholder="Title"></textarea>
+        </div>
+
+        <div class="form-floating pb-2">
+            <input type="file" th:field="*{images}" class="form-control" id="image"
+                   placeholder="File" multiple>
+        </div>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Submit Form</button>
+    </form>
+</section>
+</body>
+</html>

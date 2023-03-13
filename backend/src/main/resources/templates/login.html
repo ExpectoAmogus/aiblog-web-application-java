@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout_auth}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title layout:fragment="title">Login</title>
+</head>
+<body>
+<main>
+    <section class="form-signin w-100 m-auto" layout:fragment="content">
+        <form th:action="@{/login}" method="post">
+            <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+
+            <div class="form-floating">
+                <input type="email" name="username" class="form-control" id="floatingInput"
+                       placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword"
+                       placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
+        </form>
+        <a th:href="@{/registration}">Sign Up</a>
+    </section>
+</main>
+</body>
+</html>
