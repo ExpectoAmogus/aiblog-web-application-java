@@ -1,5 +1,7 @@
 package com.expectoamogus.aiblog.service.impl;
 
+import com.expectoamogus.aiblog.dto.ArticleDTO;
+import com.expectoamogus.aiblog.dto.mappers.ArticleDTOMapper;
 import com.expectoamogus.aiblog.utils.MultipartToImageConverter;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.models.Image;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,21 +26,30 @@ public class ArticleService {
     private final ArticleFormRepository articleFormRepository;
     private final UserRepository userRepository;
     private final MultipartToImageConverter multipartToImageConverter;
+    private final ArticleDTOMapper articleDTOMapper;
 
 
     @Autowired
-    public ArticleService(ArticleFormRepository articleFormRepository, UserRepository userRepository, MultipartToImageConverter multipartToImageConverter) {
+    public ArticleService(ArticleFormRepository articleFormRepository, UserRepository userRepository, MultipartToImageConverter multipartToImageConverter, ArticleDTOMapper articleDTOMapper) {
         this.articleFormRepository = articleFormRepository;
         this.userRepository = userRepository;
         this.multipartToImageConverter = multipartToImageConverter;
+        this.articleDTOMapper = articleDTOMapper;
     }
 
-    public Article findById(Long id) {
-        return articleFormRepository.findArticleById(id);
+    public ArticleDTO findById(Long id) {
+        return articleFormRepository.findById(id)
+                .map(articleDTOMapper)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "article with id [%s] not found".formatted(id)
+                ));
     }
 
-    public List<Article> findAll() {
-        return articleFormRepository.findAll();
+    public List<ArticleDTO> findAll() {
+        return articleFormRepository.findAll()
+                .stream()
+                .map(articleDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public Article saveArticle(Principal principal, Article article) {

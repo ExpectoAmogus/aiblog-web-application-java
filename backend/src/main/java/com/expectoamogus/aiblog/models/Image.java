@@ -1,5 +1,7 @@
 package com.expectoamogus.aiblog.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +31,7 @@ public class Image {
     private boolean isPreviewImage;
     @Lob
     private byte[] bytes;
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Article article;
 }

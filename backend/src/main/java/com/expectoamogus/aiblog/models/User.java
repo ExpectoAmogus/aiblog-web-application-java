@@ -1,6 +1,8 @@
 package com.expectoamogus.aiblog.models;
 
 import com.expectoamogus.aiblog.models.enums.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,6 +35,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonBackReference
     private List<Article> articles = new ArrayList<>();
     private LocalDateTime dateOfCreated;
     @PrePersist
