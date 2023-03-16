@@ -54,7 +54,6 @@ public class ApiUtils {
                 .model(model_id)
                 .messages(messages)
                 .temperature(temperature)
-                .n(2)
                 .maxTokens(max_tokens)
                 .logitBias(new HashMap<>())
                 .build();

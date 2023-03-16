@@ -45,8 +45,8 @@ public class ArticleService {
                 ));
     }
 
-    public List<ArticleDTO> findAll() {
-        return articleFormRepository.findAll()
+    public List<ArticleDTO> findAllOrderByDateDesc() {
+        return articleFormRepository.findByOrderByDateOfCreatedDesc()
                 .stream()
                 .map(articleDTOMapper)
                 .collect(Collectors.toList());

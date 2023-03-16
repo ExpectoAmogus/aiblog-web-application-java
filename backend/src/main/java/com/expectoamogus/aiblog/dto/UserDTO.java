@@ -13,6 +13,6 @@ public record UserDTO(
         Set<SimpleGrantedAuthority> role,
         String username,
         List<ArticleDTO> articles,
-        LocalDateTime dateOfCreation
+        LocalDateTime dateOfCreated
 ) {
 }

@@ -15,20 +15,20 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/articles")
+@RequestMapping("/api/v1/articles")
 public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/all")
     public ResponseEntity<List<ArticleDTO>> articles(){
-        List<ArticleDTO> articles = articleService.findAll();
+        List<ArticleDTO> articles = articleService.findAllOrderByDateDesc();
         if (articles.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
-    @GetMapping("find/{id}")
+    @GetMapping("/find/{id}")
     public ResponseEntity<ArticleDTO> getArticle(@PathVariable("id") Long id) {
         ArticleDTO article = articleService.findById(id);
         if (article == null) {
@@ -38,9 +38,10 @@ public class ArticleController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Article> createArticle(Principal principal, @RequestBody Article article) {
+    public ResponseEntity<ArticleDTO> createArticle(Principal principal, @RequestBody Article article) {
         Article newArticle = articleService.saveArticle(principal, article);
-        return new ResponseEntity<>(newArticle, HttpStatus.CREATED);
+        ArticleDTO articleDTO = articleService.findById(newArticle.getId());
+        return new ResponseEntity<>(articleDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
