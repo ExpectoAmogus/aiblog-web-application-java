@@ -2,12 +2,14 @@ package com.expectoamogus.aiblog.controllers;
 
 import com.expectoamogus.aiblog.dto.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
+import com.expectoamogus.aiblog.models.Image;
 import com.expectoamogus.aiblog.service.impl.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -38,7 +40,8 @@ public class ArticleController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ArticleDTO> createArticle(Principal principal, @RequestBody Article article) {
+    public ResponseEntity<ArticleDTO> createArticle(Principal principal, @ModelAttribute Article article, @RequestParam("images") List<Image> images) {
+        article.setImages(images);
         Article newArticle = articleService.saveArticle(principal, article);
         ArticleDTO articleDTO = articleService.findById(newArticle.getId());
         return new ResponseEntity<>(articleDTO, HttpStatus.CREATED);
