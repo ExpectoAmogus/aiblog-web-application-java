@@ -5,11 +5,11 @@
       <p>{{article.content}}</p>
       <p>Author: {{article.user.firstName}}</p>
       <p>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</p>
-      <a [routerLink]="['/articles/article', article.id]">More</a>
-      <a (click)="onOpenModal(article, 'edit')" class="btn btn-primary tooltips" data-placement="top"
-         data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-      <a (click)="onOpenModal(article, 'delete')" class="btn btn-secondary tooltips" data-placement="top"
-         data-original-title="Delete"><i class="fa fa-times"></i></a>
+      <button [routerLink]="['/articles/article', article.id]" class="btn btn-info">More</button>
+      <!-- <button (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
+         data-original-title="Edit" style="margin-left: 10px;">Edit</button> -->
+      <button (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
+         data-original-title="Delete" style="margin-left: 10px;">Delete</button>
    </div>
    <!-- Notification for no articles -->
    <div *ngIf="articles?.length == 0" class="col-lg-12 col-md-12 col-xl-12">

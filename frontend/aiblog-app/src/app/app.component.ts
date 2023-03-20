@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { ArticlesComponent } from './components/articles/articles.component';
-import { ArticleDTO } from './models/article';
 
 @Component({
   selector: 'app-root',

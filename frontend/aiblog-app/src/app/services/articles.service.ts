@@ -20,12 +20,11 @@ export class ArticlesService {
     return this.http.get<ArticleDTO>(`${this.apiUrl}/api/v1/articles/find/${articleId}`);
   }
 
-  addArticle(article: ArticleDTO): Observable<ArticleDTO> {
-    return this.http.post<ArticleDTO>(`${this.apiUrl}/api/v1/articles/add`, article);
+  addArticle(article: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/articles/add`, article);
   }
   
   updateArticle(article: ArticleDTO): Observable<ArticleDTO> {
-
     return this.http.put<ArticleDTO>(`${this.apiUrl}/api/v1/articles/update`, article);
   }
   

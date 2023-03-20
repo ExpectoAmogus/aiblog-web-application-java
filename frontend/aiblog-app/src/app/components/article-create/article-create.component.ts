@@ -12,34 +12,49 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class ArticleCreateComponent implements OnInit {
 
-  article: any = {};
+  title: string = '';
+  content: string = '';
+  images!: FileList;
+
   constructor(
-    private articlesService: ArticlesService, 
+    private articlesService: ArticlesService,
     private router: Router,
-    ) { } 
+  ) { }
 
 
   ngOnInit(): void {
-    this.article = new ArticleDTO();
   }
 
-  getArticles(){
+  getArticles() {
     this.router.navigate(['/articles'])
   }
 
 
-  public onAddArticle(addForm: NgForm): void {
-    this.articlesService.addArticle(addForm.value).subscribe({
+  public onSubmit(): void {
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('content', this.content);
+    if (this.images) {
+      for (let i = 0; i < this.images.length; i++) {
+        formData.append('images', this.images[i]);
+      }
+    }
+
+    this.articlesService.addArticle(formData).subscribe({
       next: (response: ArticleDTO) => {
         console.log(response);
         this.getArticles();
-        addForm.reset();
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
-        addForm.reset();
       }
+    });
+  }
+
+  onFileSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+      this.images = target.files;
     }
-    );
   }
 }

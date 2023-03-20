@@ -11,8 +11,6 @@ import { ArticleDTO } from '../../models/article';
 })
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
-  public editArticle?: ArticleDTO;
-  public deleteArticle?: ArticleDTO;
 
   constructor(private articlesService: ArticlesService) { } 
 
@@ -30,7 +28,7 @@ export class ArticlesComponent implements OnInit {
     });
   }
 
-  // public onUpdateArticle(article: ArticleDTO): void {
+  // public updateArticle(article: ArticleDTO): void {
   //   this.articlesService.updateArticle(article).subscribe({
   //     next: (response: ArticleDTO) => {
   //       console.log(response);
@@ -42,17 +40,17 @@ export class ArticlesComponent implements OnInit {
   //   });
   // }
 
-  // public onDeleteArticle(articleId: number): void {
-  //   this.articlesService.deleteArticle(articleId).subscribe({
-  //     next: (response: void) => {
-  //       console.log(response);
-  //       this.getArticles();
-  //     },
-  //     error: (error: HttpErrorResponse) => {
-  //       alert(error.message);
-  //     }
-  //   });
-  // }
+  public deleteArticle(articleId: number): void {
+    this.articlesService.deleteArticle(articleId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.getArticles();
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
 
   public searchArticles(key: string): void {
     console.log(key);
@@ -67,27 +65,6 @@ export class ArticlesComponent implements OnInit {
     if (results.length === 0 || !key) {
       this.getArticles();
     }
-  }
-
-  public onOpenModal(article: ArticleDTO, mode: string): void {
-    const container = document.getElementById('section-container');
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
-    if (mode === 'add') {
-      button.setAttribute('data-target', '#addArticleModal');
-    }
-    if (mode === 'edit') {
-      this.editArticle = article;
-      button.setAttribute('data-target', '#updateArticleModal');
-    }
-    if (mode === 'delete') {
-      this.deleteArticle = article;
-      button.setAttribute('data-target', '#deleteArticleModal');
-    }
-    container?.appendChild(button);
-    button.click();
   }
 
 }
