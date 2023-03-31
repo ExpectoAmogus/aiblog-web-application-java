@@ -1,27 +1,41 @@
 package com.expectoamogus.aiblog.controllers;
 
-import com.expectoamogus.aiblog.models.Image;
-import com.expectoamogus.aiblog.service.ImageRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.InputStreamResource;
+import com.expectoamogus.aiblog.service.impl.S3Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.ByteArrayInputStream;
+import java.net.MalformedURLException;
+import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@Slf4j
+@RequestMapping("/api/v1/images")
 public class ImageController {
-    private final ImageRepository imageRepository;
-    @GetMapping("/images/{id}")
-    private ResponseEntity<?> getImageById(@PathVariable Long id){
-        Image image = imageRepository.findById(id).orElse(null);
-        return ResponseEntity.ok()
-                .header("fileName", image.getOriginalFileName())
-                .contentType(MediaType.valueOf(image.getContentType()))
-                .contentLength(image.getSize())
-                .body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
+    private final S3Service s3Service;
+
+    public ImageController(S3Service s3Service) {
+        this.s3Service = s3Service;
+    }
+
+    @GetMapping("/{articleId}/{imageId}")
+    public ResponseEntity<UrlResource> getImageById(@PathVariable String articleId, @PathVariable Long imageId) throws MalformedURLException {
+        List<String> images = s3Service.getImagesByArticleId(articleId);
+        if (images.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        String imageUrl = images.get(Math.toIntExact(imageId) - 1);
+        var image = new UrlResource(imageUrl);
+        if (image.exists()) {
+            log.info("Image {}", image);
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

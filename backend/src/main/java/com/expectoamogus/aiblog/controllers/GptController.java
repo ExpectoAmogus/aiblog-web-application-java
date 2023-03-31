@@ -6,7 +6,10 @@ import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.List;
 public class GptController {
     private final ApiUtils apiUtils;
     private static final String MODEL_ID = "gpt-3.5-turbo";
-    private static final int MAX_TOKENS = 500;
+    private static final int MAX_TOKENS = 4000;
     private static final double TEMPERATURE = 0.7;
 
     public GptController(ApiUtils apiUtils) {
@@ -37,11 +40,9 @@ public class GptController {
             ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), content);
             messages.add(userMessage);
             response = apiUtils.messageToGPT(messages, MODEL_ID, TEMPERATURE, MAX_TOKENS, service);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return response.getChoices().get(0).getMessage().getContent();
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +35,7 @@ public class SecurityConfig {
         /** don't forget to enable! **/
         http.cors().and().csrf().disable()
                     .authorizeHttpRequests()
-                    .requestMatchers("/api/v1/login", "/api/v1/registration").permitAll()
+                    .requestMatchers("/api/v1/images/**", "/api/v1/login", "/api/v1/registration").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .logout()

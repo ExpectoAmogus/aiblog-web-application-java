@@ -1,6 +1,5 @@
 package com.expectoamogus.aiblog.session;
 
-import com.expectoamogus.aiblog.models.User;
 import com.expectoamogus.aiblog.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -2,9 +2,8 @@ package com.expectoamogus.aiblog.models;
 
 import com.expectoamogus.aiblog.models.enums.Role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,9 +27,6 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "active")
     private boolean isActive;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_id")
-    private Image avatar;
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private Role role;

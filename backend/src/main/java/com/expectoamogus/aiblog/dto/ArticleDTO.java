@@ -1,16 +1,14 @@
 package com.expectoamogus.aiblog.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 public record ArticleDTO(
         Long id,
+        String uuid,
         String title,
         String content,
-        List<ImageDTO> images,
-        Long previewImage,
+        List<String> images,
         UserDTO user,
         LocalDateTime dateOfCreated
 ) {

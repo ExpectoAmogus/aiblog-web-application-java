@@ -12,10 +12,10 @@ public class ArticleDTOMapper implements Function<Article, ArticleDTO> {
     public ArticleDTO apply(Article article) {
         return new ArticleDTO(
                 article.getId(),
+                article.getUuid(),
                 article.getTitle(),
                 article.getContent(),
-                article.getImageDTOs(),
-                article.getPreviewImageId(),
+                article.getImages(),
                 article.getUserDTO(),
                 article.getDateOfCreated()
         );
