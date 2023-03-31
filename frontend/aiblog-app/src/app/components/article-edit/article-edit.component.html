@@ -1,0 +1,22 @@
+<section class="container" id="section-container" *ngIf="article">
+    <div class="col-md-6 offset-md-3">
+        <form (ngSubmit)="saveArticle()" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" [(ngModel)]="article.title" name="title" class="form-control" id="title"
+                    placeholder="Title" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea [(ngModel)]="article.content" rows="5" name="content" class="form-control" id="content"
+                    placeholder="Content" required></textarea>
+            </div>
+            <div class="form-group">
+                <input type="file" (change)="onFileSelected($event)" name="images" class="form-control-file" id="images"
+                    placeholder="File" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-danger" (click)="getArticles()">Cancel</button>
+        </form>
+    </div>
+</section>
