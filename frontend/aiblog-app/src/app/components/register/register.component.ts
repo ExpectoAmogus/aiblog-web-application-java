@@ -1,8 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
+import {Router} from '@angular/router';
+import {AuthService} from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
   imports: [FormsModule],
   standalone: true
 })
-export class RegisterComponent implements OnInit{ 
+export class RegisterComponent implements OnInit{
   model: any = {};
 
   constructor(

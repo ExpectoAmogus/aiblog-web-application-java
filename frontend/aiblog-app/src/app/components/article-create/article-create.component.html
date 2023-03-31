@@ -8,7 +8,8 @@
             </div>
             <div class="form-group">
                 <label for="prompt">Prompt</label>
-                <textarea class="form-control" rows="5" id="prompt" placeholder="Prompt" required></textarea>
+                <textarea class="form-control" rows="5" [(ngModel)]="prompt" name="prompt" id="prompt" placeholder="Prompt"></textarea>
+                <button type="button" class="btn btn-primary" (click)="generateContent()">Generate</button>
             </div>
             <div class="form-group">
                 <label for="content">Content</label>

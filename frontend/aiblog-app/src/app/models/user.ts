@@ -1,4 +1,4 @@
-import { ArticleDTO } from "./article";
+import {ArticleDTO} from "./article";
 
 export interface UserDTO {
     id: number;
@@ -13,13 +13,13 @@ export interface UserDTO {
 export interface SimpleGrantedAuthority {
     authority: string;
   }
-  
+
   export enum Role {
     ROLE_USER = 'ROLE_USER',
     ROLE_ADMIN = 'ROLE_ADMIN',
     ROLE_MODERATOR = 'ROLE_MODERATOR'
   }
-  
+
   export const getAuthorities = (role: Role): SimpleGrantedAuthority[] => {
     switch (role) {
       case Role.ROLE_USER:

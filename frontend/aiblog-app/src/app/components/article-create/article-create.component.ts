@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ArticleDTO } from 'src/app/models/article';
 import { ArticlesService } from 'src/app/services/articles.service';
+import { GptService } from 'src/app/services/gpt.service';
 
 @Component({
   selector: 'app-article-create',
@@ -15,10 +15,12 @@ export class ArticleCreateComponent implements OnInit {
   title: string = '';
   content: string = '';
   images!: FileList;
+  prompt: string = '';
 
   constructor(
     private articlesService: ArticlesService,
     private router: Router,
+    private gptService: GptService
   ) { }
 
 
@@ -56,5 +58,16 @@ export class ArticleCreateComponent implements OnInit {
     if (target.files) {
       this.images = target.files;
     }
+  }
+
+  generateContent() {
+    this.gptService.getContent(this.prompt).subscribe({
+      next: (response: any) => {
+        this.content = response;
+      }, 
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
   }
 }

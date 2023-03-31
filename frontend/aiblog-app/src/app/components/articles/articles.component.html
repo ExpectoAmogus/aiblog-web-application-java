@@ -6,8 +6,8 @@
       <p>Author: {{article.user.firstName}}</p>
       <p>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</p>
       <button [routerLink]="['/articles/article', article.id]" class="btn btn-info">More</button>
-      <!-- <button (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
-         data-original-title="Edit" style="margin-left: 10px;">Edit</button> -->
+      <button (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
+         data-original-title="Edit" style="margin-left: 10px;">Edit</button>
       <button (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
          data-original-title="Delete" style="margin-left: 10px;">Delete</button>
    </div>

@@ -1,11 +1,12 @@
-import { ImageDTO } from "./image";
-import { UserDTO } from "./user";
+import {ImageDTO} from "./image";
+import {UserDTO} from "./user";
 
 export interface ArticleDTO {
     id: number;
+    uuid: string;
     title: string;
     content: string;
-    images: ImageDTO[];
+    images: string[];
     previewImage: number;
     user: UserDTO;
     dateOfCreated: Date;

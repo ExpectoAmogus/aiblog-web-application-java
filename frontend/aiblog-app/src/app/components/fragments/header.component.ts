@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { createPopper } from '@popperjs/core';
+import {Component, Input} from '@angular/core';
 
 
 @Component({

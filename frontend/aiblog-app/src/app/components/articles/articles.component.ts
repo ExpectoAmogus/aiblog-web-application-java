@@ -1,8 +1,9 @@
-import { DatePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ArticlesService } from 'src/app/services/articles.service';
-import { ArticleDTO } from '../../models/article';
+import {DatePipe} from '@angular/common';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
+import {ArticlesService} from 'src/app/services/articles.service';
+import {ArticleDTO} from '../../models/article';
 
 @Component({
   selector: 'app-articles',
@@ -12,7 +13,11 @@ import { ArticleDTO } from '../../models/article';
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
 
-  constructor(private articlesService: ArticlesService) { } 
+
+  constructor(
+    private articlesService: ArticlesService,
+    private router: Router
+    ) { }
 
   ngOnInit() {
     this.getArticles();
@@ -28,17 +33,9 @@ export class ArticlesComponent implements OnInit {
     });
   }
 
-  // public updateArticle(article: ArticleDTO): void {
-  //   this.articlesService.updateArticle(article).subscribe({
-  //     next: (response: ArticleDTO) => {
-  //       console.log(response);
-  //       this.getArticles();
-  //     },
-  //     error: (error: HttpErrorResponse) => {
-  //       alert(error.message);
-  //     }
-  //   });
-  // }
+  public updateArticle(article: ArticleDTO) {
+    this.router.navigate(['/articles/article-edit', article.id]);
+  }
 
   public deleteArticle(articleId: number): void {
     this.articlesService.deleteArticle(articleId).subscribe({

@@ -1,5 +1,7 @@
 <section *ngIf="article">
-    <img *ngFor="let image of images" [src]="image" height="200px">
+    <div *ngFor="let image of images">
+        <img [src]="image" height="200px" />
+      </div>
     <h1>{{article.title}}</h1>
     <p>{{article.content}}</p>
     <p>Author: {{article.user.firstName}}</p>

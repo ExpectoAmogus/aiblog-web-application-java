@@ -1,4 +1,4 @@
-import { ArticleDTO } from "./article";
+import {ArticleDTO} from "./article";
 
 export interface ImageDTO {
         id: number;
@@ -7,6 +7,6 @@ export interface ImageDTO {
         size: number;
         contentType: string;
         isPreviewImage: boolean;
-        bytes: Blob;
+        bytes: Blob[];
         article: ArticleDTO;
 }
