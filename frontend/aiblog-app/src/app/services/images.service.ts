@@ -12,7 +12,7 @@ export class ImagesService {
 
   constructor(private http: HttpClient) {}
 
-  getImage(articleId: string, imageId: number): Observable<ArrayBuffer> {
-    return this.http.get(`${this.apiUrl}/api/v1/images/${articleId}/${imageId}`, { responseType: 'arraybuffer' });
+  getImage(articleId: string, imageId: number): Observable<string> {
+    return this.http.get(`${this.apiUrl}/api/v1/images/${articleId}/${imageId}`, { responseType: 'text' });
   }
 }

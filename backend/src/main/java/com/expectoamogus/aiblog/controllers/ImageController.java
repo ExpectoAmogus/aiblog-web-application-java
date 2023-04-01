@@ -3,7 +3,7 @@ package com.expectoamogus.aiblog.controllers;
 import com.expectoamogus.aiblog.service.impl.S3Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ public class ImageController {
     }
 
     @GetMapping("/{articleId}/{imageId}")
-    public ResponseEntity<UrlResource> getImageById(@PathVariable String articleId, @PathVariable Long imageId) throws MalformedURLException {
+    public ResponseEntity<String> getImageById(@PathVariable String articleId, @PathVariable Long imageId) throws MalformedURLException {
         List<String> images = s3Service.getImagesByArticleId(articleId);
         if (images.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -32,8 +32,8 @@ public class ImageController {
         String imageUrl = images.get(Math.toIntExact(imageId) - 1);
         var image = new UrlResource(imageUrl);
         if (image.exists()) {
-            log.info("Image {}", image);
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+            log.info("Image {}", imageUrl);
+            return new ResponseEntity<>(imageUrl, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }

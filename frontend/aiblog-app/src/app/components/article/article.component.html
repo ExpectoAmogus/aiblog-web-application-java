@@ -1,6 +1,6 @@
 <section *ngIf="article">
     <div *ngFor="let image of images">
-        <img [src]="image" height="200px" />
+        <img src="{{image}}" height="200px" />
       </div>
     <h1>{{article.title}}</h1>
     <p>{{article.content}}</p>

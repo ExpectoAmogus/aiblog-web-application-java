@@ -1,4 +1,3 @@
-import {ImageDTO} from "./image";
 import {UserDTO} from "./user";
 
 export interface ArticleDTO {

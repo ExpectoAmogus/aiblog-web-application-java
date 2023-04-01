@@ -4,9 +4,7 @@ import com.expectoamogus.aiblog.dto.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.service.impl.ArticleService;
 import com.expectoamogus.aiblog.service.impl.S3Service;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,6 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/api/v1/articles")
 public class ArticleController {
     private final ArticleService articleService;
