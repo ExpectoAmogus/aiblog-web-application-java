@@ -1,4 +1,4 @@
-package com.expectoamogus.aiblog.dto;
+package com.expectoamogus.aiblog.dto.auth;
 
 public record UserAuthDTO(String username, String password) {
 }

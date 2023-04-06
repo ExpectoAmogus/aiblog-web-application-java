@@ -3,7 +3,10 @@ package com.expectoamogus.aiblog.models;
 import com.expectoamogus.aiblog.models.enums.Role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +18,9 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,16 +73,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive;
-    }
-
-    public static UserDetails fromUser(User user){
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                user.getRole().getAuthorities()
-        );
     }
 }

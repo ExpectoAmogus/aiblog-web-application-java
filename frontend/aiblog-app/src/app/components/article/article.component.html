@@ -3,6 +3,6 @@
         <img src="{{image}}" height="200px" />
       </div>
     <h1>{{article.title}}</h1>
-    <p>{{article.content}}</p>
+    <p [innerHTML]="article.content"></p>
     <p>Author: {{article.user.firstName}}</p>
 </section>

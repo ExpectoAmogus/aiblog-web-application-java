@@ -15,6 +15,7 @@ import {ArticleCreateComponent} from './components/article-create/article-create
 import {LoginComponent} from './components/login/login.component';
 import {RequestInterceptor} from './request.interceptor';
 import { ArticleEditComponent } from './components/article-edit/article-edit.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ArticleEditComponent } from './components/article-edit/article-edit.com
     ArticleEditComponent
   ],
   imports: [
+    CKEditorModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

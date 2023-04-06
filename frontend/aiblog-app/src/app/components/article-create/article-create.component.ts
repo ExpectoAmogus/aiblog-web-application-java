@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ArticleDTO } from 'src/app/models/article';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { GptService } from 'src/app/services/gpt.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-article-create',
@@ -12,6 +13,9 @@ import { GptService } from 'src/app/services/gpt.service';
 })
 export class ArticleCreateComponent implements OnInit {
 
+  Editor = ClassicEditor as unknown as {
+    create: any;
+  };
   title: string = '';
   content: string = '';
   images!: FileList;

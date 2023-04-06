@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleDTO } from 'src/app/models/article';
 import { ArticlesService } from 'src/app/services/articles.service';
-import { ImagesService } from 'src/app/services/images.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-article-edit',
@@ -11,6 +11,9 @@ import { ImagesService } from 'src/app/services/images.service';
   styleUrls: ['./article-edit.component.css']
 })
 export class ArticleEditComponent implements OnInit {
+  Editor = ClassicEditor as unknown as {
+    create: any;
+  };
   article!: ArticleDTO;
   images!: FileList;
 
@@ -18,7 +21,6 @@ export class ArticleEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private articlesService: ArticlesService,
-    private imagesService: ImagesService
   ) { }
 
   ngOnInit(): void {

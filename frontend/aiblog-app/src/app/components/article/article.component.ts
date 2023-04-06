@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { ArticleDTO } from '../../models/article';
 import { ImagesService } from '../../services/images.service';
+import * as DOMPurify from 'dompurify';
 
 @Component({
   selector: 'app-article',
@@ -27,6 +28,7 @@ export class ArticleComponent implements OnInit {
     this.articlesService.getArticle(articleId).subscribe({
       next: (response: ArticleDTO) => {
         this.article = response;
+        this.article.content = DOMPurify.sanitize(this.article.content);
         this.getImages(this.article.images);
       },
       error: (error: HttpErrorResponse) => {

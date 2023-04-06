@@ -13,10 +13,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(model: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/login`, { username: model.email, password: model.password });
+    return this.http.post<any>(`${this.apiUrl}/api/v1/auth/login`, { username: model.email, password: model.password });
   }
 
   register(model: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/register`, { firstName: model.firstName, username: model.email, password: model.password });
+    return this.http.post<any>(`${this.apiUrl}/api/v1/auth/register`, { firstName: model.firstName, username: model.email, password: model.password });
   }
 }

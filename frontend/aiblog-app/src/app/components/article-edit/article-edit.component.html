@@ -8,8 +8,7 @@
             </div>
             <div class="form-group">
                 <label for="content">Content</label>
-                <textarea [(ngModel)]="article.content" rows="5" name="content" class="form-control" id="content"
-                    placeholder="Content" required></textarea>
+                <ckeditor [(ngModel)]="article.content" [editor]="Editor" name="content" id="content" aria-required="true"></ckeditor>
             </div>
             <div class="form-group">
                 <input type="file" (change)="onFileSelected($event)" name="images" class="form-control-file" id="images"
