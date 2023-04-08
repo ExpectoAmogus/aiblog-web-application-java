@@ -37,9 +37,7 @@ public class UserService {
         log.info("Saving new User with email: {}", user.getEmail());
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        return ResponseDTO.builder()
-                .token(jwtToken)
-                .build();
+        return new ResponseDTO("Bearer " + jwtToken);
     }
     public ResponseDTO login(UserAuthDTO request){
         authenticationManager.authenticate(
@@ -49,8 +47,6 @@ public class UserService {
         var user = userRepository.findByEmail(request.username())
                 .orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
         var jwtToken = jwtService.generateToken(user);
-        return ResponseDTO.builder()
-                .token(jwtToken)
-                .build();
+        return new ResponseDTO("Bearer " + jwtToken);
     }
 }

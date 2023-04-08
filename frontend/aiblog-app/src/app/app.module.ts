@@ -28,7 +28,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ArticleComponent,
     ArticleCreateComponent,
     LoginComponent,
-    ArticleEditComponent
+    ArticleEditComponent,
   ],
   imports: [
     CKEditorModule,

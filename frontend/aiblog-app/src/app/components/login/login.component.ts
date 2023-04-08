@@ -12,7 +12,7 @@ import {AuthService} from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit{
 
   model: any = {};
-  sessionId: any = "";
+  token: any = "";
 
   constructor(
     private router: Router,
@@ -25,10 +25,10 @@ export class LoginComponent implements OnInit{
   public login(loginForm: NgForm): void {
     this.authService.login(loginForm.value).subscribe({
       next: (response) => {
-        this.sessionId = response.sessionId;
+        this.token = response.token;
         sessionStorage.setItem(
           'token',
-          this.sessionId
+          this.token
         );
         this.router.navigate(['']);
         loginForm.reset()

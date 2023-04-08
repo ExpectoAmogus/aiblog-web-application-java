@@ -13,24 +13,19 @@
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/articles">Articles</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLink="/articles/create">Add article</a>
-                    </li>
-                    <li class="nav-item" *ngIf="!token">
+                    <li  *ngIf="!token">
                         <a class="nav-link" routerLink="/login">Log in</a>
                     </li>
-                    <li class="nav-item dropdown" *ngIf="token">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown09" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" #dropdownTrigger>
-                            Profile
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown09" #dropdownMenu>
-                            <li><a class="dropdown-item" routerLink="/account">My Account</a></li>
-                            <li><a class="dropdown-item" routerLink="/articles/create">Create an article</a></li>
-                            <li><form class="dropdown-item" action="/logout" method="post">
-                                <input type="submit" value="Log out"/>
-                            </form></li>
-                        </ul>
+                    <li class="nav-item" *ngIf="token">
+                        <a class="nav-link" routerLink="/account">My Account</a>
                     </li>
+                    <li class="nav-item" *ngIf="token">
+                        <a class="nav-link" routerLink="/articles/create">Create an article</a>
+                    </li>
+                    <li class="nav-item" *ngIf="token">
+                        <button class="nav-link" (click)="logout()">Log out</button>
+                    </li>
+                    
                     
                 </ul>
                 <form>
