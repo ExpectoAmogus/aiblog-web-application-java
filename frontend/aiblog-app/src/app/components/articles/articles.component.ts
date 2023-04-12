@@ -13,7 +13,6 @@ import {ArticleDTO} from '../../models/article';
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
 
-
   constructor(
     private articlesService: ArticlesService,
     private router: Router
@@ -49,19 +48,12 @@ export class ArticlesComponent implements OnInit {
     });
   }
 
-  public searchArticles(key: string): void {
-    console.log(key);
-    const results: ArticleDTO[] = [];
-    for (const article of this.articles) {
-      if (article.title.toLowerCase().indexOf(key.toLowerCase()) !== -1
-        || article.user.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
-        results.push(article);
-      }
+  truncateHTML(html: string, maxLength: number): string {
+    let truncatedText = html.slice(0, maxLength);
+    if (html.length > maxLength) {
+      truncatedText += '...';
     }
-    this.articles = results;
-    if (results.length === 0 || !key) {
-      this.getArticles();
-    }
+    return truncatedText;
   }
 
 }

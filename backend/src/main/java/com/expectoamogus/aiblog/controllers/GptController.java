@@ -19,8 +19,8 @@ import java.util.List;
 public class GptController {
     private final ApiUtils apiUtils;
     private static final String MODEL_ID = "gpt-3.5-turbo";
-    private static final int MAX_TOKENS = 4000;
-    private static final double TEMPERATURE = 0.7;
+    private static final int MAX_TOKENS = 3000;
+    private static final double TEMPERATURE = 0.5;
 
     public GptController(ApiUtils apiUtils) {
         this.apiUtils = apiUtils;
