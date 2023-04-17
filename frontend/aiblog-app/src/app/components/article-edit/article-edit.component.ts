@@ -29,9 +29,6 @@ export class ArticleEditComponent implements OnInit {
       next: (response: ArticleDTO) => {
         console.log(response);
         this.article = response;
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }
@@ -48,14 +45,11 @@ export class ArticleEditComponent implements OnInit {
         formData.append('images', this.images[i]);
       }
     }
-
+    
     this.articlesService.updateArticle(formData, this.article.id).subscribe({
       next: (response: ArticleDTO) => {
         console.log(response);
         this.getArticles();
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }

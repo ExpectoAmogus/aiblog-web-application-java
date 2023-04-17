@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ArticleDTO } from 'src/app/models/article';
 import { ArticlesService } from 'src/app/services/articles.service';
 
@@ -21,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
   @Input() title!: string;
   token = sessionStorage.getItem('token');
+  role = sessionStorage.getItem('role');
 
   ngOnInit() {
     this.router.events.subscribe((event: Event) => {
@@ -29,9 +29,9 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
-
   updateNavbar() {
     this.token = sessionStorage.getItem('token');
+    this.role = sessionStorage.getItem('role');
   }
 
   public logout(): void {
@@ -58,9 +58,6 @@ export class HeaderComponent implements OnInit {
     this.articlesService.getArticles().subscribe({
       next: (response: ArticleDTO[]) => {
         this.articles = response;
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }

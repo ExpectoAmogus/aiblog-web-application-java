@@ -4,6 +4,7 @@ import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-articles',
@@ -12,22 +13,23 @@ import {ArticleDTO} from '../../models/article';
 })
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
+  role = sessionStorage.getItem('role');
 
   constructor(
     private articlesService: ArticlesService,
+    private authService: AuthService,
     private router: Router
     ) { }
 
   ngOnInit() {
     this.getArticles();
+    this.role = sessionStorage.getItem('role');
   }
+
   public getArticles(): void {
     this.articlesService.getArticles().subscribe({
       next: (response: ArticleDTO[]) => {
         this.articles = response;
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }
@@ -41,9 +43,6 @@ export class ArticlesComponent implements OnInit {
       next: (response) => {
         console.log(response);
         this.getArticles();
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }

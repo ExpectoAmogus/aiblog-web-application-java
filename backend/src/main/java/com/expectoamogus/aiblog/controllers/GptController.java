@@ -6,6 +6,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ public class GptController {
         this.apiUtils = apiUtils;
     }
 
+    @PreAuthorize("hasAuthority('devs:write')")
     @GetMapping("/generate-content")
     public String generateResponse(@RequestParam String content, HttpServletRequest request) {
         var service = apiUtils.getOpenAiService();

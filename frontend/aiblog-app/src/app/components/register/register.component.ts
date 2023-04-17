@@ -28,8 +28,7 @@ export class RegisterComponent implements OnInit{
         this.router.navigate(['/login']);
         regForm.reset();
       },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
+      error: () => {
         regForm.reset();
       }
     }

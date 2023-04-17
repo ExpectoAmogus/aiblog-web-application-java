@@ -1,4 +1,6 @@
 package com.expectoamogus.aiblog.dto.auth;
 
-public record ResponseDTO(String token) {
+import com.expectoamogus.aiblog.models.enums.Role;
+
+public record ResponseDTO(String token, Role role) {
 }

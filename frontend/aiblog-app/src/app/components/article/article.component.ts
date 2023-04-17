@@ -30,9 +30,6 @@ export class ArticleComponent implements OnInit {
         this.article = response;
         this.article.content = DOMPurify.sanitize(this.article.content);
         this.getImages(this.article.images);
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }
@@ -41,9 +38,6 @@ export class ArticleComponent implements OnInit {
       this.imagesService.getImage(this.article.uuid, i).subscribe({
         next: (response) => {
           this.images.push(response);
-        },
-        error: (error: HttpErrorResponse) => {
-          alert(error.message);
         }
       });
     }

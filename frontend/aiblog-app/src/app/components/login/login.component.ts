@@ -33,8 +33,7 @@ export class LoginComponent implements OnInit{
         this.router.navigate(['']);
         loginForm.reset()
       },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
+      error: () => {
         loginForm.reset()
       }
     });

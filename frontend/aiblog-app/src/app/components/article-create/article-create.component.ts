@@ -50,9 +50,6 @@ export class ArticleCreateComponent implements OnInit {
       next: (response: ArticleDTO) => {
         console.log(response);
         this.getArticles();
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }
@@ -68,9 +65,6 @@ export class ArticleCreateComponent implements OnInit {
     this.gptService.getContent(this.prompt).subscribe({
       next: (response: any) => {
         this.content = response;
-      }, 
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
       }
     });
   }
