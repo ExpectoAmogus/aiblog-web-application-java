@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
-  role = sessionStorage.getItem('role');
+  public isAdmin: boolean | undefined;
 
   constructor(
     private articlesService: ArticlesService,
@@ -23,7 +23,7 @@ export class ArticlesComponent implements OnInit {
 
   ngOnInit() {
     this.getArticles();
-    this.role = sessionStorage.getItem('role');
+    this.isAdmin = this.authService.isAdmin();
   }
 
   public getArticles(): void {

@@ -11,7 +11,8 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class HeaderComponent implements OnInit {
   public articles: ArticleDTO[] = [];
-  
+  public isAdmin: boolean | undefined;
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -20,7 +21,6 @@ export class HeaderComponent implements OnInit {
 
   @Input() title!: string;
   token = sessionStorage.getItem('token');
-  role = sessionStorage.getItem('role');
 
   ngOnInit() {
     this.router.events.subscribe((event: Event) => {
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
   }
   updateNavbar() {
     this.token = sessionStorage.getItem('token');
-    this.role = sessionStorage.getItem('role');
+    this.isAdmin = this.authService.isAdmin();
   }
 
   public logout(): void {

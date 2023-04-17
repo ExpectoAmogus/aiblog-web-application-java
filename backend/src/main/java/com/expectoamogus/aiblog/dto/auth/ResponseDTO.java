@@ -1,6 +1,8 @@
 package com.expectoamogus.aiblog.dto.auth;
 
-import com.expectoamogus.aiblog.models.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
 
-public record ResponseDTO(String token, Role role) {
+import java.util.Collection;
+
+public record ResponseDTO(String token, Collection<? extends GrantedAuthority> authorities) {
 }
