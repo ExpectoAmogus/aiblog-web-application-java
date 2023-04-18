@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, tap, catchError } from 'rxjs';
-import { environment } from 'src/environments/environments';
-import { ExceptionService } from './exception.service';
-import {getAuthorities} from "../models/user";
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, tap} from 'rxjs';
+import {environment} from 'src/environments/environments';
+import {ExceptionService} from './exception.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,6 @@ export class AuthService {
     }
     return authorities.some((a: { authority: string; }) => a.authority === 'devs:write');
   }
-
   login(model: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/api/v1/auth/login`, { username: model.email, password: model.password })
       .pipe(

@@ -1,8 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ArticleDTO } from 'src/app/models/article';
-import { ArticlesService } from 'src/app/services/articles.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ArticleDTO} from 'src/app/models/article';
+import {ArticlesService} from 'src/app/services/articles.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
@@ -25,7 +24,7 @@ export class ArticleEditComponent implements OnInit {
 
   ngOnInit(): void {
     const articleId = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
-    this.articlesService.getArticle(articleId).subscribe({ 
+    this.articlesService.getArticle(articleId).subscribe({
       next: (response: ArticleDTO) => {
         console.log(response);
         this.article = response;
@@ -45,7 +44,7 @@ export class ArticleEditComponent implements OnInit {
         formData.append('images', this.images[i]);
       }
     }
-    
+
     this.articlesService.updateArticle(formData, this.article.id).subscribe({
       next: (response: ArticleDTO) => {
         console.log(response);

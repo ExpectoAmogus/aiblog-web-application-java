@@ -1,9 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ArticleDTO } from 'src/app/models/article';
-import { ArticlesService } from 'src/app/services/articles.service';
-import { GptService } from 'src/app/services/gpt.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {ArticleDTO} from 'src/app/models/article';
+import {ArticlesService} from 'src/app/services/articles.service';
+import {GptService} from 'src/app/services/gpt.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({

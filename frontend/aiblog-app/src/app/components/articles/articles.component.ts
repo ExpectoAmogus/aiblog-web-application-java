@@ -1,10 +1,10 @@
 import {DatePipe} from '@angular/common';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
-import { AuthService } from 'src/app/services/auth.service';
+import {AuthService} from 'src/app/services/auth.service';
+import {SearchService} from "../../services/search.service";
 
 @Component({
   selector: 'app-articles',
@@ -13,23 +13,34 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
+  private originalArticles: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
 
   constructor(
     private articlesService: ArticlesService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private searchService: SearchService
     ) { }
 
   ngOnInit() {
     this.getArticles();
     this.isAdmin = this.authService.isAdmin();
+
+    this.searchService.getSearchQuery().subscribe((query) => {
+      if (query) {
+        this.searchArticles(query)
+      } else {
+        this.restoreArticles()
+      }
+    })
   }
 
   public getArticles(): void {
     this.articlesService.getArticles().subscribe({
       next: (response: ArticleDTO[]) => {
         this.articles = response;
+        this.originalArticles = response;
       }
     });
   }
@@ -45,6 +56,21 @@ export class ArticlesComponent implements OnInit {
         this.getArticles();
       }
     });
+  }
+
+  public searchArticles(key: string): void {
+    const results: ArticleDTO[] = [];
+    for (const article of this.originalArticles) {
+      if (article.title.toLowerCase().indexOf(key.toLowerCase()) !== -1
+        || article.user.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+        results.push(article);
+      }
+    }
+    this.articles = results;
+  }
+
+  public restoreArticles(): void {
+    this.articles = this.originalArticles;
   }
 
   truncateHTML(html: string, maxLength: number): string {

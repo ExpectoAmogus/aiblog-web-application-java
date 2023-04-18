@@ -24,7 +24,7 @@
                     </li>
                 </ul>
                 <form>
-                    <input class="form-control" (ngModelChange)="searchArticles(key.value)" #key="ngModel" ngModel type="search" name="key" placeholder="Search" aria-label="Search">
+                    <input class="form-control" (ngModelChange)="searchArticles(key.value)" #key="ngModel" ngModel type="search" name="key" placeholder="Search" aria-label="Search" #searchInput>
                 </form>
             </div>
         </div>

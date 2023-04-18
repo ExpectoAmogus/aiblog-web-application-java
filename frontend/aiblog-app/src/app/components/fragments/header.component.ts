@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router, Event, NavigationEnd } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { ArticleDTO } from 'src/app/models/article';
-import { ArticlesService } from 'src/app/services/articles.service';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Event, NavigationEnd, Router} from '@angular/router';
+import {AuthService} from 'src/app/services/auth.service';
+import {SearchService} from "../../services/search.service";
 
 
 @Component({
@@ -10,16 +9,17 @@ import { ArticlesService } from 'src/app/services/articles.service';
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
-  public articles: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private articlesService: ArticlesService
+    private searchService: SearchService
   ) { }
 
   @Input() title!: string;
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
   token = sessionStorage.getItem('token');
 
   ngOnInit() {
@@ -32,6 +32,12 @@ export class HeaderComponent implements OnInit {
   updateNavbar() {
     this.token = sessionStorage.getItem('token');
     this.isAdmin = this.authService.isAdmin();
+    this.clearSearchQuery();
+  }
+
+  clearSearchQuery(): void {
+    this.searchService.clearSearchQuery();
+    this.searchInput.nativeElement.value = '';
   }
 
   public logout(): void {
@@ -39,26 +45,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  public searchArticles(key: string): void {
-    console.log(key);
-    const results: ArticleDTO[] = [];
-    for (const article of this.articles) {
-      if (article.title.toLowerCase().indexOf(key.toLowerCase()) !== -1
-        || article.user.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
-        results.push(article);
-      }
-    }
-    this.articles = results;
-    if (results.length === 0 || !key) {
-      this.getArticles();
-    }
-  }
-
-  public getArticles(): void {
-    this.articlesService.getArticles().subscribe({
-      next: (response: ArticleDTO[]) => {
-        this.articles = response;
-      }
-    });
+  public searchArticles(query: string){
+    this.searchService.setSearchQuery(query);
   }
 }

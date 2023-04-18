@@ -1,9 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ArticlesService } from 'src/app/services/articles.service';
-import { ArticleDTO } from '../../models/article';
-import { ImagesService } from '../../services/images.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ArticlesService} from 'src/app/services/articles.service';
+import {ArticleDTO} from '../../models/article';
+import {ImagesService} from '../../services/images.service';
 import * as DOMPurify from 'dompurify';
 
 @Component({
