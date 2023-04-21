@@ -1,3 +1,59 @@
-<section>
-    <h1>Home</h1>
+<section class="py-5">
+  <div class="container">
+    <h1 class="mb-5">Welcome to AI Blog</h1>
+    <h2 class="mb-5">Recent articles</h2>
+    <div id="article-carousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <ng-container *ngFor="let article of articles; let i=index">
+          <ng-container *ngIf="i % 3 === 0">
+            <div class="carousel-item" [class.active]="i === 0">
+              <div class="row">
+                <div class="col-4">
+                  <a [routerLink]="['/articles/article', articles[i].id]" class="box-link">
+                    <div class="box">
+                      <img [style.background-image]="'url(' + getArticleImage(articles[i].id) + ')'" class="d-block w-100 mb-3 article-image"/>
+                      <h2 [class.newest]="i === 0">{{ articles[i].title }}</h2>
+                      <p [innerHTML]="truncateHTML(articles[i].content, 300)"></p>
+                      <div class="date">{{articles[i].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
+                      <p>Author: {{articles[i].user.firstName}}</p>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4" *ngIf="articles[i + 1]">
+                  <a [routerLink]="['/articles/article', articles[i + 1].id]" class="box-link">
+                    <div class="box">
+                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 1].id) + ')'" class="d-block w-100 mb-3 article-image"/>
+                      <h2>{{ articles[i + 1].title }}</h2>
+                      <p [innerHTML]="truncateHTML(articles[i + 1].content, 300)"></p>
+                      <div class="date">{{articles[i + 1].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
+                      <p>Author: {{articles[i + 1].user.firstName}}</p>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4" *ngIf="articles[i + 2]">
+                  <a [routerLink]="['/articles/article', articles[i + 2].id]" class="box-link">
+                    <div class="box">
+                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 2].id) + ')'" class="d-block w-100 mb-3 article-image"/>
+                      <h2>{{ articles[i + 2].title }}</h2>
+                      <p [innerHTML]="truncateHTML(articles[i + 2].content, 300)"></p>
+                      <div class="date">{{articles[i + 2].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
+                      <p>Author: {{articles[i + 2].user.firstName}}</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#article-carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#article-carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
 </section>
