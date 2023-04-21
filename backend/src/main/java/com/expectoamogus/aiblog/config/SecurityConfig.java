@@ -26,7 +26,7 @@ public class SecurityConfig {
         /** don't forget to enable! **/
         http.cors().and().csrf().disable()
                     .authorizeHttpRequests()
-                    .requestMatchers("/api/v1/images/**", "/api/v1/auth/**").permitAll()
+                    .requestMatchers("/api/v1/images/**", "/api/v1/auth/**", "/api/v1/articles/all").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .logout()
