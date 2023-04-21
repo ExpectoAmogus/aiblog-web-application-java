@@ -5,27 +5,31 @@ import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
 import {AuthService} from 'src/app/services/auth.service';
 import {SearchService} from "../../services/search.service";
+import {ImagesService} from "../../services/images.service";
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
-  providers: [DatePipe]
+  providers: [DatePipe],
+  styleUrls: ['./articles.component.css']
 })
 export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
   private originalArticles: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
+  public articleImages: { [articleId: number]: string } = {};
 
   constructor(
     private articlesService: ArticlesService,
     private authService: AuthService,
     private router: Router,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private imagesService: ImagesService
     ) { }
 
   ngOnInit() {
-    this.getArticles();
     this.isAdmin = this.authService.isAdmin();
+    this.getArticles();
 
     this.searchService.getSearchQuery().subscribe((query) => {
       if (query) {
@@ -41,8 +45,19 @@ export class ArticlesComponent implements OnInit {
       next: (response: ArticleDTO[]) => {
         this.articles = response;
         this.originalArticles = response;
+        for (const article of response) {
+          this.imagesService
+            .getImage(article.uuid, 1)
+            .subscribe(imageUrl => {
+              this.articleImages[article.id] = imageUrl;
+            });
+        }
       }
     });
+  }
+
+  getArticleImage(articleId: number): string {
+    return this.articleImages[articleId];
   }
 
   public updateArticle(article: ArticleDTO) {
