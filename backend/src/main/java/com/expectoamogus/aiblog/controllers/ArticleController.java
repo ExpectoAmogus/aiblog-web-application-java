@@ -1,22 +1,18 @@
 package com.expectoamogus.aiblog.controllers;
 
-import com.expectoamogus.aiblog.dto.ArticleDTO;
+import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.service.impl.ArticleService;
 import com.expectoamogus.aiblog.service.impl.S3Service;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,23 +40,10 @@ public class ArticleController {
     @PostMapping("/add")
     public ResponseEntity<ArticleDTO> createArticle(
             Principal principal,
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "content") String content,
-            @RequestParam(value = "images", required = false) List<MultipartFile> files) throws IOException {
-        Article article = new Article();
-        article.setTitle(title);
-        article.setContent(content);
-        article.setUuid(String.valueOf(UUID.randomUUID()));
-        if (files != null) {
-            List<String> images = new ArrayList<>();
-            for (MultipartFile file : files) {
-                String keyName = article.getUuid() + "/" + UUID.randomUUID() + "." + file.getOriginalFilename();
-                s3Service.uploadFile(keyName, file);
-                images.add(keyName);
-            }
-            article.setImages(images);
-        }
-        Article newArticle = articleService.saveArticle(principal, article);
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("images") List<MultipartFile> images) {
+        Article newArticle = articleService.saveArticle(principal, title, content, images);
         ArticleDTO articleDTO = articleService.findById(newArticle.getId());
         return new ResponseEntity<>(articleDTO, HttpStatus.CREATED);
     }
@@ -70,25 +53,15 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> updateArticle(
             Principal principal,
             @PathVariable("id") Long id,
-            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "title" ,required = false) String title,
             @RequestParam(value = "content", required = false) String content,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images) throws IOException {
-        Article articleToUpdate = articleService.findArticleById(id);
-        articleToUpdate.setTitle(title);
-        articleToUpdate.setContent(content);
-        if (images != null) {
-            List<String> newImages = new ArrayList<>();
-            for (MultipartFile image : images) {
-                String keyName = articleToUpdate.getUuid() + "/" + UUID.randomUUID() + "." + FilenameUtils.getExtension(image.getOriginalFilename());
-                s3Service.uploadFile(keyName, image);
-                newImages.add(keyName);
-            }
-            articleToUpdate.setImages(newImages);
-        }
-        Article newArticle = articleService.saveArticle(principal, articleToUpdate);
+            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
+        Article newArticle = articleService.update(principal, id, title, content, images);
         ArticleDTO articleDTO = articleService.findById(newArticle.getId());
         return new ResponseEntity<>(articleDTO, HttpStatus.OK);
     }
+
+
 
     @PreAuthorize("hasAuthority('devs:write')")
     @DeleteMapping("/delete/{id}")

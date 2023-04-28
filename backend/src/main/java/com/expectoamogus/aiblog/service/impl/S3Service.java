@@ -26,7 +26,7 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    public void uploadFile(String keyName, MultipartFile file) throws IOException {
+    public void uploadFile(String keyName, MultipartFile file) {
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
@@ -38,9 +38,8 @@ public class S3Service {
                     file.getInputStream(),
                     file.getInputStream().available()));
             log.info("File uploaded to S3 bucket: {}", keyName);
-        } catch (S3Exception e) {
+        } catch (S3Exception | IOException e) {
             log.error("Error uploading file to S3 bucket: {}", keyName, e);
-            throw new IOException("Error uploading file to S3 bucket: " + keyName, e);
         }
     }
 

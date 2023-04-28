@@ -1,5 +1,6 @@
 package com.expectoamogus.aiblog.dto;
 
+import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;

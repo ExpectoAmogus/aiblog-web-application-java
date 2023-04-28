@@ -35,7 +35,7 @@ public class ImageController {
             log.info("Image {}", imageUrl);
             return new ResponseEntity<>(imageUrl, HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(null, HttpStatus.OK);
         }
     }
 }

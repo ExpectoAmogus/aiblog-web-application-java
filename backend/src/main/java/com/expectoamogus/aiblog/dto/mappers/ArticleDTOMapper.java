@@ -1,6 +1,6 @@
 package com.expectoamogus.aiblog.dto.mappers;
 
-import com.expectoamogus.aiblog.dto.ArticleDTO;
+import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
 import org.springframework.stereotype.Service;
 
