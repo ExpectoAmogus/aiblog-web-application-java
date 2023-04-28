@@ -12,13 +12,6 @@ export class RequestInterceptor implements HttpInterceptor {
     if (token) {
       request = request.clone({ headers: request.headers.set('Authorization', token) });
     }
-    if (request.method !== 'GET') {
-      const csrf = this.tokenExtractor.getToken() as string;
-      if (csrf) {
-        request = request.clone({ headers: request.headers.set('X-XSRF-TOKEN', csrf) });
-        request = request.clone({ withCredentials: true });
-      }
-    }
     return next.handle(request);
   }
 }

@@ -18,6 +18,7 @@ import {ArticleEditComponent} from './components/article-edit/article-edit.compo
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {ExceptionComponent} from './components/exception/exception.component';
 import {ContactComponent} from './components/contact/contact.component';
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {ContactComponent} from './components/contact/contact.component';
     FormsModule
   ],
   providers: [
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,

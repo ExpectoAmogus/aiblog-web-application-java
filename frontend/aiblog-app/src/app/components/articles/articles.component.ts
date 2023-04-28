@@ -10,7 +10,6 @@ import {ImagesService} from "../../services/images.service";
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
-  providers: [DatePipe],
   styleUrls: ['./articles.component.css']
 })
 export class ArticlesComponent implements OnInit {
@@ -42,16 +41,16 @@ export class ArticlesComponent implements OnInit {
 
   public getArticles(): void {
     this.articlesService.getArticles().subscribe({
-      next: (response: ArticleDTO[]) => {
+      next: (response) => {
         this.articles = response;
         this.originalArticles = response;
-        for (const article of response) {
-          this.imagesService
-            .getImage(article.uuid, 1)
-            .subscribe(imageUrl => {
-              this.articleImages[article.id] = imageUrl;
-            });
-        }
+        // for (const article of response) {
+        //   this.imagesService
+        //     .getImage(article.uuid, 1)
+        //     .subscribe(imageUrl => {
+        //       this.articleImages[article.id] = imageUrl;
+        //     });
+        // }
       }
     });
   }
@@ -66,8 +65,7 @@ export class ArticlesComponent implements OnInit {
 
   public deleteArticle(articleId: number): void {
     this.articlesService.deleteArticle(articleId).subscribe({
-      next: (response) => {
-        console.log(response);
+      next: () => {
         this.getArticles();
       }
     });

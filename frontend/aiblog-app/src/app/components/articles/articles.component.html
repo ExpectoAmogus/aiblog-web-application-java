@@ -5,19 +5,20 @@
       <div *ngFor="let article of articles" class="col-lg-4 col-md-6 col-sm-12">
         <a [routerLink]="['/articles/article', article.id]" class="box-link">
           <div class="box">
-            <img [style.background-image]="'url(' + getArticleImage(article.id) + ')'" class="d-block w-100 mb-3 article-image"/>
+<!--            <img [style.background-image]="'url(' + getArticleImage(article.id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
             <h3>{{article.title}}</h3>
             <p [innerHTML]="truncateHTML(article.content, 300)"></p>
-            <div class="date">{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</div>
+            <p>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</p>
             <p>Author: {{article.user.firstName}}</p>
-            <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
-                    data-original-title="Edit" style="margin-left: 10px;">Edit
-            </button>
-            <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
-                    data-original-title="Delete" style="margin-left: 10px;">Delete
-            </button>
+
           </div>
         </a>
+        <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
+                data-original-title="Edit" style="margin-left: 10px;">Edit
+        </button>
+        <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
+                data-original-title="Delete" style="margin-left: 10px;">Delete
+        </button>
       </div>
     </div>
   </div>

@@ -24,13 +24,13 @@ export class HomeComponent implements OnInit {
   getArticles(): void {
     this.articlesService.getArticles().subscribe(articles => {
       this.articles = articles.slice(0, 9);
-      for (const article of articles) {
-        this.imagesService
-          .getImage(article.uuid, 1)
-          .subscribe(imageUrl => {
-            this.articleImages[article.id] = imageUrl;
-          });
-      }
+      // for (const article of articles) {
+      //   this.imagesService
+      //     .getImage(article.uuid, 1)
+      //     .subscribe(imageUrl => {
+      //       this.articleImages[article.id] = imageUrl;
+      //     });
+      // }
     });
   }
 

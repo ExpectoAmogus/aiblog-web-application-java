@@ -11,7 +11,7 @@
                 <div class="col-4">
                   <a [routerLink]="['/articles/article', articles[i].id]" class="box-link">
                     <div class="box">
-                      <img [style.background-image]="'url(' + getArticleImage(articles[i].id) + ')'" class="d-block w-100 mb-3 article-image"/>
+<!--                      <img [style.background-image]="'url(' + getArticleImage(articles[i].id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
                       <h2 [class.newest]="i === 0">{{ articles[i].title }}</h2>
                       <p [innerHTML]="truncateHTML(articles[i].content, 300)"></p>
                       <div class="date">{{articles[i].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
@@ -22,7 +22,7 @@
                 <div class="col-4" *ngIf="articles[i + 1]">
                   <a [routerLink]="['/articles/article', articles[i + 1].id]" class="box-link">
                     <div class="box">
-                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 1].id) + ')'" class="d-block w-100 mb-3 article-image"/>
+<!--                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 1].id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
                       <h2>{{ articles[i + 1].title }}</h2>
                       <p [innerHTML]="truncateHTML(articles[i + 1].content, 300)"></p>
                       <div class="date">{{articles[i + 1].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
@@ -33,7 +33,7 @@
                 <div class="col-4" *ngIf="articles[i + 2]">
                   <a [routerLink]="['/articles/article', articles[i + 2].id]" class="box-link">
                     <div class="box">
-                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 2].id) + ')'" class="d-block w-100 mb-3 article-image"/>
+<!--                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 2].id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
                       <h2>{{ articles[i + 2].title }}</h2>
                       <p [innerHTML]="truncateHTML(articles[i + 2].content, 300)"></p>
                       <div class="date">{{articles[i + 2].dateOfCreated | date:'d MMMM y HH:mm'}}</div>

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, Observable} from 'rxjs';
+import {catchError, map, Observable} from 'rxjs';
 import {environment} from 'src/environments/environments';
 import {ArticleDTO} from '../models/article';
 import {ExceptionService} from './exception.service';
@@ -19,6 +19,16 @@ export class ArticlesService {
   getArticles(): Observable<ArticleDTO[]> {
     return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/all`)
     .pipe(
+      map(articles => {
+        return articles.map(article => {
+          const dateArray = article.dateOfCreated;
+          // @ts-ignore
+          const date = new Date(dateArray[0], dateArray[1]-1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6]/1000000);
+          article.user.dateOfCreated = date.toISOString();
+          article.dateOfCreated = date.toISOString();
+          return article;
+        });
+      }),
       catchError(error => {
         this.errorHandlingService.handleHttpError(error);
         throw error;
@@ -29,6 +39,14 @@ export class ArticlesService {
   getArticle(articleId: number): Observable<ArticleDTO> {
     return this.http.get<ArticleDTO>(`${this.apiUrl}/api/v1/articles/find/${articleId}`)
     .pipe(
+      map(article => {
+        const dateArray = article.dateOfCreated;
+        // @ts-ignore
+        const date = new Date(dateArray[0], dateArray[1]-1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6]/1000000);
+        article.user.dateOfCreated = date.toISOString();
+        article.dateOfCreated = date.toISOString();
+        return article;
+      }),
       catchError(error => {
         this.errorHandlingService.handleHttpError(error);
         throw error;
