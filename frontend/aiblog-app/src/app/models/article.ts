@@ -5,6 +5,8 @@ export interface ArticleDTO {
   uuid: string;
   title: string;
   content: string;
+  category: string;
+  views: number;
   images: string[];
   previewImage: number;
   user: UserDTO;

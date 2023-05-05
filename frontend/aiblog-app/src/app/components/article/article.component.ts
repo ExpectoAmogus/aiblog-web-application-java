@@ -12,6 +12,9 @@ import * as DOMPurify from 'dompurify';
 export class ArticleComponent implements OnInit {
   public article!: ArticleDTO;
   public images: string[] = [];
+  public articlesLatest: ArticleDTO[] = [];
+  public articlesPopular: ArticleDTO[] = [];
+  public articlesTrending: ArticleDTO[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -21,6 +24,9 @@ export class ArticleComponent implements OnInit {
 
   ngOnInit() {
     this.getArticle();
+    this.getLatestArticles();
+    this.getPopularArticles();
+    this.getTrendingArticles();
   }
   public getArticle(): void {
     const articleId = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
@@ -29,6 +35,29 @@ export class ArticleComponent implements OnInit {
         this.article = response;
         this.article.content = DOMPurify.sanitize(this.article.content);
         this.getImages(this.article.images);
+      }
+    });
+    this.articlesService.incrementArticleViews(articleId).subscribe();
+  }
+
+  public getLatestArticles(): void {
+    this.articlesService.getArticles().subscribe({
+      next: (response) => {
+        this.articlesLatest = response.slice(0, 6);
+      }
+    });
+  }
+  public getPopularArticles(): void {
+    this.articlesService.getPopularArticles().subscribe({
+      next: (response) => {
+        this.articlesPopular = response.slice(0, 6);
+      }
+    });
+  }
+  public getTrendingArticles(): void {
+    this.articlesService.getTrendingArticles().subscribe({
+      next: (response) => {
+        this.articlesTrending = response.slice(0, 6);
       }
     });
   }
@@ -40,5 +69,9 @@ export class ArticleComponent implements OnInit {
         }
       });
     }
+  }
+
+  public getImage(imageId: number): string {
+    return this.images[imageId];
   }
 }

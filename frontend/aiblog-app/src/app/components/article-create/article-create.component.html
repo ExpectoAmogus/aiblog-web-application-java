@@ -16,6 +16,15 @@
                 <ckeditor [(ngModel)]="content" [editor]="Editor" name="content" class="form-control" id="content" aria-required="true"></ckeditor>
             </div>
             <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" name="category" id="category" [formControl]="categoryControl" (change)="onCategorySelected()">
+                  <option *ngFor="let category of categories" [value]="category.value">
+                    {{ category.viewValue }}
+                  </option>
+                </select>
+
+            </div>
+            <div class="form-group">
                 <input type="file" (change)="onFileSelected($event)" name="images" class="form-control-file" id="image"
                     placeholder="File" multiple>
             </div>

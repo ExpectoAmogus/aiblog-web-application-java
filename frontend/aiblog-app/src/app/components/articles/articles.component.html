@@ -1,6 +1,6 @@
 <section class="py-5">
-  <h1>All Articles</h1>
   <div class="container">
+    <h1>All Articles</h1>
     <div class="row">
       <div *ngFor="let article of articles" class="col-lg-4 col-md-6 col-sm-12">
         <a [routerLink]="['/articles/article', article.id]" class="box-link">
@@ -10,7 +10,7 @@
             <p [innerHTML]="truncateHTML(article.content, 300)"></p>
             <p>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</p>
             <p>Author: {{article.user.firstName}}</p>
-
+            <p>Views: {{article.views}}</p>
           </div>
         </a>
         <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"

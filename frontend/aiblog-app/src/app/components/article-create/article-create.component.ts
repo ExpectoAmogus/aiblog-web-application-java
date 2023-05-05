@@ -4,6 +4,7 @@ import {ArticleDTO} from 'src/app/models/article';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {GptService} from 'src/app/services/gpt.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-article-create',
@@ -19,6 +20,15 @@ export class ArticleCreateComponent implements OnInit {
   content: string = '';
   images!: FileList;
   prompt: string = '';
+  categories = [
+    { value: 'sport', viewValue: 'Sport' },
+    { value: 'business', viewValue: 'Business' },
+    { value: 'culture', viewValue: 'Culture' },
+    { value: 'entertainment', viewValue: 'Entertainment' }
+  ];
+  categoryControl = new FormControl('', []);
+  selectedCategory: string = '';
+
 
   constructor(
     private articlesService: ArticlesService,
@@ -30,6 +40,11 @@ export class ArticleCreateComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onCategorySelected(): void {
+    //@ts-ignore
+    this.selectedCategory = this.categoryControl.value;
+  }
+
   getArticles() {
     this.router.navigate(['/articles'])
   }
@@ -39,6 +54,7 @@ export class ArticleCreateComponent implements OnInit {
     const formData = new FormData();
     formData.append('title', this.title);
     formData.append('content', this.content);
+    formData.append('category', this.selectedCategory);
     if (this.images) {
       for (let i = 0; i < this.images.length; i++) {
         formData.append('images', this.images[i]);

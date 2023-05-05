@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './components/home/home.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AboutComponent} from './components/about/about.component';
 import {ArticleComponent} from './components/article/article.component';
 import {ArticlesComponent} from './components/articles/articles.component';
@@ -19,6 +19,7 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {ExceptionComponent} from './components/exception/exception.component';
 import {ContactComponent} from './components/contact/contact.component';
 import {DatePipe} from "@angular/common";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,9 @@ import {DatePipe} from "@angular/common";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   providers: [
     DatePipe,
