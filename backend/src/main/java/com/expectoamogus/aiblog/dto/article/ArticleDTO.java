@@ -10,8 +10,25 @@ public record ArticleDTO(
         String uuid,
         String title,
         String content,
+        String category,
+        Long views,
         List<String> images,
         UserDTO user,
-        LocalDateTime dateOfCreated
+        LocalDateTime dateOfCreated,
+        Double trendingScore
 ) {
+    public ArticleDTO withTrendingScore(Double trendingScore) {
+        return new ArticleDTO(
+                id,
+                uuid,
+                title,
+                content,
+                category,
+                views,
+                images,
+                user,
+                dateOfCreated,
+                trendingScore
+        );
+    }
 }

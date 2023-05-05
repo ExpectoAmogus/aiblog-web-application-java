@@ -15,9 +15,12 @@ public class ArticleDTOMapper implements Function<Article, ArticleDTO> {
                 article.getUuid(),
                 article.getTitle(),
                 article.getContent(),
+                article.getCategory(),
+                article.getViews(),
                 article.getImages(),
                 article.getUserDTO(),
-                article.getDateOfCreated()
+                article.getDateOfCreated(),
+                0.0
         );
     }
 }

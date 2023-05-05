@@ -26,6 +26,16 @@ public class ArticleController {
         List<ArticleDTO> articles = articleService.findAllOrderByDateDesc();
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
+    @GetMapping("/popular")
+    public ResponseEntity<List<ArticleDTO>> popularArticles(){
+        List<ArticleDTO> articles = articleService.findAllOrderByViewsDesc();
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+    @GetMapping("/trending")
+    public ResponseEntity<List<ArticleDTO>> trendingArticles(){
+        List<ArticleDTO> articles = articleService.findTrending();
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
 
     @GetMapping("/find/{id}")
     public ResponseEntity<ArticleDTO> getArticle(@PathVariable("id") Long id) {
@@ -42,8 +52,9 @@ public class ArticleController {
             Principal principal,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
+            @RequestParam("category") String category,
             @RequestParam("images") List<MultipartFile> images) {
-        Article newArticle = articleService.saveArticle(principal, title, content, images);
+        Article newArticle = articleService.saveArticle(principal, title, content, category, images);
         ArticleDTO articleDTO = articleService.findById(newArticle.getId());
         return new ResponseEntity<>(articleDTO, HttpStatus.CREATED);
     }
@@ -73,6 +84,11 @@ public class ArticleController {
             images.forEach(s3Service::deleteFile);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/views")
+    public void incrementArticleViews(@PathVariable Long id) {
+        articleService.incrementArticleViews(id);
     }
 
 }

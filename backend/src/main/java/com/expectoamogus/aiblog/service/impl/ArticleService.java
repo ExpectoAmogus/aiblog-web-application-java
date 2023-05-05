@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,16 +47,52 @@ public class ArticleService {
     }
 
     public List<ArticleDTO> findAllOrderByDateDesc() {
-        return articleFormRepository.findByOrderByDateOfCreatedDesc()
+        return articleFormRepository.findAll()
                 .stream()
                 .map(articleDTOMapper)
+                .sorted(Comparator.comparing(ArticleDTO::dateOfCreated).reversed())
+                .limit(100)
+                .collect(Collectors.toList());
+    }
+    public List<ArticleDTO> findTrending() {
+        List<ArticleDTO> articleDTOs = articleFormRepository.findAll()
+                .stream()
+                .map(articleDTOMapper)
+                .sorted(Comparator.comparing(ArticleDTO::views).reversed())
+                .limit(100)
+                .toList();
+
+        double timeConstant = 2592000000.0;
+        double exponentBase = Math.E;
+        double now = System.currentTimeMillis();
+        List<ArticleDTO> articleDTOsWithTrendingScore = new ArrayList<>();
+        for (ArticleDTO articleDTO : articleDTOs) {
+            double elapsedTime = now - articleDTO.dateOfCreated().toEpochSecond(ZoneOffset.UTC) * 1000;
+            double trendingScore = (articleDTO.views() - 1) / Math.pow(exponentBase, elapsedTime / timeConstant);
+            ArticleDTO articleDTOWithTrendingScore = articleDTO.withTrendingScore(trendingScore);
+            articleDTOsWithTrendingScore.add(articleDTOWithTrendingScore);
+        }
+
+        return articleDTOsWithTrendingScore.stream()
+                .sorted(Comparator.comparing(ArticleDTO::trendingScore).reversed())
+                .limit(100)
+                .toList();
+    }
+    public List<ArticleDTO> findAllOrderByViewsDesc() {
+        return articleFormRepository.findAll()
+                .stream()
+                .map(articleDTOMapper)
+                .sorted(Comparator.comparing(ArticleDTO::views).reversed())
+                .limit(100)
                 .collect(Collectors.toList());
     }
 
-    public Article saveArticle(Principal principal, String title, String content, List<MultipartFile> files) {
+    public Article saveArticle(Principal principal, String title, String content, String category, List<MultipartFile> files) {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
+        article.setCategory(category);
+        article.setViews(0L);
         article.setUuid(String.valueOf(UUID.randomUUID()));
         getImages(principal, files, article);
         log.info("Saving new Article. Title: {}; Author: {}", article.getTitle(), article.getUser().getEmail());
@@ -91,4 +129,12 @@ public class ArticleService {
     public void deleteById(Long id) {
         articleFormRepository.deleteById(id);
     }
+
+    public void incrementArticleViews(Long id) {
+        Article article = articleFormRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Article not found with id: " + id));
+        article.setViews(article.getViews() + 1);
+        articleFormRepository.save(article);
+    }
+
 }

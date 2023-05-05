@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface ArticleFormRepository extends JpaRepository<Article, Long> {
     @NotNull
     Optional<Article> findById(@NotNull Long id);
-    List<Article> findByOrderByDateOfCreatedDesc();
 }
