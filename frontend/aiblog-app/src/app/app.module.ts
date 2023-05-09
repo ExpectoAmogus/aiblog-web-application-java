@@ -20,6 +20,7 @@ import {ExceptionComponent} from './components/exception/exception.component';
 import {ContactComponent} from './components/contact/contact.component';
 import {DatePipe} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
+import { FilterByCategoryPipe } from './filter-by-category.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {MatSelectModule} from "@angular/material/select";
     ArticleEditComponent,
     ExceptionComponent,
     ContactComponent,
+    FilterByCategoryPipe,
   ],
   imports: [
     CKEditorModule,
