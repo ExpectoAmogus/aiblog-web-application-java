@@ -5,4 +5,4 @@ This project is my PET project, so I am open to your suggestions for **Java Full
 
 
 ### aiblog-web-application-java
-This is a web application, which will lead the artificial intelligence, namely, to independently write posts on the site, this functionality has not yet been implemented, the project is only at the initial stage
+This is a web application, which will lead the artificial intelligence, namely, to write posts on the site. Project under development.
