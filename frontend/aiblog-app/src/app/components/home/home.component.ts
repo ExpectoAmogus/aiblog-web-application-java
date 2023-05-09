@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ArticlesService} from "../../services/articles.service";
 import {ArticleDTO} from "../../models/article";
 import {ImagesService} from "../../services/images.service";
+import {CATEGORIES} from "../../models/categories";
+import { FilterByCategoryPipe } from '../../filter-by-category.pipe';
+
 
 @Component({
   selector: 'app-home-content',
@@ -10,7 +13,9 @@ import {ImagesService} from "../../services/images.service";
 })
 export class HomeComponent implements OnInit {
   public articles: ArticleDTO[] = [];
+  public trendingArticles: ArticleDTO[] = [];
   public articleImages: { [articleId: number]: string } = {};
+  public categories = CATEGORIES;
 
   constructor(
     private articlesService: ArticlesService,
@@ -19,18 +24,24 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getArticles();
+    this.getTrendingArticles();
   }
 
   getArticles(): void {
     this.articlesService.getArticles().subscribe(articles => {
-      this.articles = articles.slice(0, 9);
-      // for (const article of articles) {
-      //   this.imagesService
-      //     .getImage(article.uuid, 1)
-      //     .subscribe(imageUrl => {
-      //       this.articleImages[article.id] = imageUrl;
-      //     });
-      // }
+      this.articles = articles.slice(0, 24);
+      for (const article of articles) {
+        this.imagesService
+          .getImage(article.uuid, 1)
+          .subscribe(imageUrl => {
+            this.articleImages[article.id] = imageUrl;
+          });
+      }
+    });
+  }
+  getTrendingArticles(): void {
+    this.articlesService.getTrendingArticles().subscribe(articles => {
+      this.trendingArticles = articles.slice(0, 6);
     });
   }
 
@@ -45,4 +56,5 @@ export class HomeComponent implements OnInit {
     }
     return truncatedText;
   }
+
 }

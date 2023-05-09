@@ -1,59 +1,184 @@
-<section class="py-5">
-  <div class="container">
-    <h1 class="mb-5">Welcome to AI Blog</h1>
-    <h2 class="mb-5">Recent articles</h2>
-    <div id="article-carousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <ng-container *ngFor="let article of articles; let i=index">
-          <ng-container *ngIf="i % 3 === 0">
-            <div class="carousel-item" [class.active]="i === 0">
-              <div class="row">
-                <div class="col-4">
-                  <a [routerLink]="['/articles/article', articles[i].id]" class="box-link">
-                    <div class="box">
-<!--                      <img [style.background-image]="'url(' + getArticleImage(articles[i].id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
-                      <h2 [class.newest]="i === 0">{{ articles[i].title }}</h2>
-                      <p [innerHTML]="truncateHTML(articles[i].content, 300)"></p>
-                      <div class="date">{{articles[i].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
-                      <p>Author: {{articles[i].user.firstName}}</p>
+<section id="hero-slider" class="hero-slider">
+  <div class="container-md" data-aos="fade-in">
+    <div class="row">
+      <div class="col-12">
+        <div class="swiper sliderFeaturedPosts">
+          <div class="swiper-wrapper">
+            <ng-container *ngFor="let article of articles.slice(0,3)">
+              <div *ngIf="article" class="swiper-slide">
+                <a [routerLink]="['/articles/article', article.id]" class="img-bg d-flex align-items-end"
+                   [style.background-image]="'url(' + getArticleImage(article.id) + ')'">
+                  <div class="img-bg-inner">
+                    <h2>{{article.title}}</h2>
+                    <p [innerHTML]="truncateHTML(article.content, 300)"></p>
+                  </div>
+                </a>
+              </div>
+            </ng-container>
+          </div>
+          <div class="custom-swiper-button-next">
+            <span class="bi-chevron-right"></span>
+          </div>
+          <div class="custom-swiper-button-prev">
+            <span class="bi-chevron-left"></span>
+          </div>
+
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- End Hero Slider Section -->
+
+<!-- ======= Post Grid Section ======= -->
+<section id="posts" class="posts">
+  <div class="container" data-aos="fade-up">
+    <div class="row g-5">
+      <div class="col-lg-4" *ngFor="let article of articles | slice: 0:1">
+        <div class="post-entry-1 lg">
+          <a [routerLink]="['/articles/article', article.id]">
+            <img [src]="getArticleImage(article.id)" alt="" class="img-fluid">
+          </a>
+          <div class="post-meta">
+            <span class="date">{{article.category}}</span>
+            <span class="mx-1">&bullet;</span>
+            <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span>
+          </div>
+          <h2>
+            <a [routerLink]="['/articles/article', article.id]">{{article.title}}</a>
+          </h2>
+          <p class="mb-4 d-block" [innerHTML]="truncateHTML(article.content, 300)"></p>
+          <div class="d-flex align-items-center author">
+<!--            <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid"></div>-->
+            <div class="name">
+              <h3 class="m-0 p-0">{{article.user.firstName}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="row g-5">
+          <ng-container *ngFor="let article of articles; let i = index;">
+            <ng-container *ngIf="i % 3 === 0">
+              <div class="col-lg-4 border-start custom-border">
+                <ng-container *ngFor="let j of [1, 2, 3]">
+                  <div *ngIf="articles[i + j] && j < 4" class="post-entry-1">
+                    <a [routerLink]="['/articles/article', articles[i + j].id]">
+                      <img [src]="getArticleImage(articles[i + j].id)" alt="" class="img-fluid">
+                    </a>
+                    <div class="post-meta">
+                      <span class="date">{{articles[i + j].category}}</span>
+                      <span class="mx-1">&bullet;</span>
+                      <span>{{articles[i + j].dateOfCreated | date:'d MMMM y HH:mm'}}</span>
                     </div>
+                    <h2>
+                      <a [routerLink]="['/articles/article', articles[i + j].id]">{{articles[i + j].title}}</a>
+                    </h2>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </ng-container>
+          <!-- Trending Section -->
+          <div class="col-lg-4">
+            <div class="trending">
+              <h3>Trending</h3>
+              <ul class="trending-post">
+                <li *ngFor="let trendArticle of trendingArticles; let i=index">
+                  <a [routerLink]="['/articles/article', trendArticle.id]">
+                    <span class="number">{{i + 1}}</span>
+                    <h3>{{trendArticle.title}}</h3>
+                    <span class="author">{{trendArticle.user.firstName}}</span>
                   </a>
-                </div>
-                <div class="col-4" *ngIf="articles[i + 1]">
-                  <a [routerLink]="['/articles/article', articles[i + 1].id]" class="box-link">
-                    <div class="box">
-<!--                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 1].id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
-                      <h2>{{ articles[i + 1].title }}</h2>
-                      <p [innerHTML]="truncateHTML(articles[i + 1].content, 300)"></p>
-                      <div class="date">{{articles[i + 1].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
-                      <p>Author: {{articles[i + 1].user.firstName}}</p>
-                    </div>
-                  </a>
-                </div>
-                <div class="col-4" *ngIf="articles[i + 2]">
-                  <a [routerLink]="['/articles/article', articles[i + 2].id]" class="box-link">
-                    <div class="box">
-<!--                      <img [style.background-image]="'url(' + getArticleImage(articles[i + 2].id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
-                      <h2>{{ articles[i + 2].title }}</h2>
-                      <p [innerHTML]="truncateHTML(articles[i + 2].content, 300)"></p>
-                      <div class="date">{{articles[i + 2].dateOfCreated | date:'d MMMM y HH:mm'}}</div>
-                      <p>Author: {{articles[i + 2].user.firstName}}</p>
-                    </div>
-                  </a>
+                </li>
+              </ul>
+            </div>
+          </div> <!-- End Trending Section -->
+        </div>
+      </div>
+
+    </div> <!-- End .row -->
+  </div>
+</section> <!-- End Post Grid Section -->
+
+<!-- ======= Category Section ======= -->
+<ng-container *ngFor="let category of categories">
+  <ng-container *ngIf="articles | filterByCategory: category.value as filteredArticles">
+    <section *ngIf="filteredArticles.length > 0" class="category-section">
+
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header d-flex justify-content-between align-items-center mb-5">
+          <h2>{{category.viewValue}}</h2>
+          <div><a [routerLink]="['/articles']" [queryParams]="{category: category.value}" class="more">See
+            All {{category.viewValue}}</a></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-9">
+
+            <div class="d-lg-flex post-entry-2"
+                 *ngFor="let article of filteredArticles | slice:0:1">
+              <a [routerLink]="['/articles/article', article.id]"
+                 class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
+                <img [src]="getArticleImage(article.id)" alt="{{article.title}}"
+                     class="img-fluid">
+              </a>
+              <div>
+                <div class="post-meta"><span class="date">{{article.category}}</span> <span
+                  class="mx-1">&bullet;</span>
+                  <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+                <h3><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a>
+                </h3>
+                <p [innerHTML]="truncateHTML(article.content, 300)"></p>
+                <div class="d-flex align-items-center author">
+                  <!--              <div class="photo"><img [src]="articles[category.value][0].author.avatar" alt="{{articles[category.value][0].author.name}}" class="img-fluid"></div>-->
+                  <div class="name">
+                    <h3 class="m-0 p-0">{{article.user.firstName}}</h3>
+                  </div>
                 </div>
               </div>
             </div>
-          </ng-container>
-        </ng-container>
+
+            <div class="row">
+              <div class="col-lg-4" *ngFor="let article of filteredArticles | slice:1:3">
+                <div class="post-entry-1 border-bottom">
+                  <a [routerLink]="['/articles/article', article.id]"><img [src]="getArticleImage(article.id)"
+                                                                  alt="{{article.title}}" class="img-fluid"></a>
+                  <div class="post-meta"><span class="date">{{article.category}}</span> <span
+                    class="mx-1">&bullet;</span>
+                    <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+                  <h2 class="mb-2"><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h2>
+                  <span class="author mb-3 d-block">{{article.user.firstName}}</span>
+                  <p class="mb-4 d-block" [innerHTML]="truncateHTML(article.content, 300)"></p>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="post-entry-1" *ngFor="let article of filteredArticles | slice:3:5">
+                  <a [routerLink]="['/articles/article', article.id]"><img [src]="getArticleImage(article.id)"
+                                                                  alt="{{article.title}}" class="img-fluid"></a>
+                  <div class="post-meta"><span class="date">{{article.category}}</span> <span
+                    class="mx-1">&bullet;</span>
+                    <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+                  <h2 class="mb-2"><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h2>
+                  <span class="author mb-3 d-block">{{article.user.firstName}}</span>
+                  <p class="mb-4 d-block" [innerHTML]="truncateHTML(article.content, 300)"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="post-entry-1 border-bottom" *ngFor="let article of filteredArticles | slice:5:11">
+              <div class="post-meta"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span>
+                <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+              <h2 class="mb-2"><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h2>
+              <span class="author mb-3 d-block">{{article.user.firstName}}</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#article-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#article-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
-</section>
+
+    </section><!-- End Category Section -->
+  </ng-container>
+</ng-container>
