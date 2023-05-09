@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
 import {ImagesService} from '../../services/images.service';
-import * as DOMPurify from 'dompurify';
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-article',
@@ -15,29 +15,35 @@ export class ArticleComponent implements OnInit {
   public articlesLatest: ArticleDTO[] = [];
   public articlesPopular: ArticleDTO[] = [];
   public articlesTrending: ArticleDTO[] = [];
-
   constructor(
     private route: ActivatedRoute,
     private articlesService: ArticlesService,
     private imagesService: ImagesService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    this.updateContent();
+  }
+
+  updateContent(): void {
     this.getArticle();
     this.getLatestArticles();
     this.getPopularArticles();
     this.getTrendingArticles();
   }
+
   public getArticle(): void {
-    const articleId = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
-    this.articlesService.getArticle(articleId).subscribe({
-      next: (response: ArticleDTO) => {
-        this.article = response;
-        this.article.content = DOMPurify.sanitize(this.article.content);
-        this.getImages(this.article.images);
-      }
+    this.route.params.subscribe(params => {
+      const articleId = parseInt(params['id'], 10);
+      this.articlesService.getArticle(articleId).subscribe({
+        next: (response: ArticleDTO) => {
+          this.article = response;
+          this.getImages(this.article.images);
+        }
+      });
+      this.articlesService.incrementArticleViews(articleId).subscribe();
     });
-    this.articlesService.incrementArticleViews(articleId).subscribe();
   }
 
   public getLatestArticles(): void {
@@ -47,6 +53,7 @@ export class ArticleComponent implements OnInit {
       }
     });
   }
+
   public getPopularArticles(): void {
     this.articlesService.getPopularArticles().subscribe({
       next: (response) => {
@@ -54,6 +61,7 @@ export class ArticleComponent implements OnInit {
       }
     });
   }
+
   public getTrendingArticles(): void {
     this.articlesService.getTrendingArticles().subscribe({
       next: (response) => {
@@ -61,14 +69,17 @@ export class ArticleComponent implements OnInit {
       }
     });
   }
+
   public getImages(imagesId: string[]): void {
+    const requests = [];
     for (let i = 1; i <= imagesId.length; i++) {
-      this.imagesService.getImage(this.article.uuid, i).subscribe({
-        next: (response) => {
-          this.images.push(response);
-        }
-      });
+      requests.push(this.imagesService.getImage(this.article.uuid, i));
     }
+    forkJoin(requests).subscribe({
+      next: (responses) => {
+        this.images = responses;
+      }
+    });
   }
 
   public getImage(imageId: number): string {
