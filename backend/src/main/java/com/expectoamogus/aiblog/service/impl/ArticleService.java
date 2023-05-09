@@ -87,7 +87,7 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public Article saveArticle(Principal principal, String title, String content, String category, List<MultipartFile> files) {
+    public ArticleDTO saveArticle(Principal principal, String title, String content, String category, List<MultipartFile> files) {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
@@ -96,7 +96,8 @@ public class ArticleService {
         article.setUuid(String.valueOf(UUID.randomUUID()));
         getImages(principal, files, article);
         log.info("Saving new Article. Title: {}; Author: {}", article.getTitle(), article.getUser().getEmail());
-        return articleFormRepository.save(article);
+        Article newArticle = articleFormRepository.save(article);
+        return findById(newArticle.getId());
     }
 
     public User getUserByPrincipal(Principal principal) {
@@ -104,13 +105,14 @@ public class ArticleService {
                 new UsernameNotFoundException("User does not exists"));
     }
 
-    public Article update(Principal principal, Long id, String title, String content, List<MultipartFile> files) {
+    public ArticleDTO update(Principal principal, Long id, String title, String content, List<MultipartFile> files) {
         Article articleToUpdate = findArticleById(id);
         articleToUpdate.setTitle(title);
         articleToUpdate.setContent(content);
         getImages(principal, files, articleToUpdate);
         log.info("Update Article. Title: {}; Author: {}", articleToUpdate.getTitle(), articleToUpdate.getUser().getEmail());
-        return articleFormRepository.save(articleToUpdate);
+        Article newArticle = articleFormRepository.save(articleToUpdate);
+        return findById(newArticle.getId());
     }
 
     private void getImages(Principal principal, List<MultipartFile> files, Article articleToUpdate) {
@@ -127,7 +129,12 @@ public class ArticleService {
     }
 
     public void deleteById(Long id) {
+        Article article = findArticleById(id);
+        List<String> images = article.getImages();
         articleFormRepository.deleteById(id);
+        if (images != null && !images.isEmpty()) {
+            images.forEach(s3Service::deleteFile);
+        }
     }
 
     public void incrementArticleViews(Long id) {

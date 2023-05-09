@@ -3,7 +3,6 @@ package com.expectoamogus.aiblog.models;
 import com.expectoamogus.aiblog.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -32,8 +31,6 @@ public class Article {
     private String category;
     @Column(name = "views")
     private Long views;
-//    @Column(name = "score")
-//    private double trendingScore;
     @ElementCollection(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @CollectionTable(name = "article_images")

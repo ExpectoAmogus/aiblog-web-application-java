@@ -3,7 +3,6 @@ package com.expectoamogus.aiblog.controllers;
 import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.service.impl.ArticleService;
-import com.expectoamogus.aiblog.service.impl.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,31 +18,23 @@ import java.util.List;
 @RequestMapping("/api/v1/articles")
 public class ArticleController {
     private final ArticleService articleService;
-    private final S3Service s3Service;
 
     @GetMapping("/all")
     public ResponseEntity<List<ArticleDTO>> articles(){
-        List<ArticleDTO> articles = articleService.findAllOrderByDateDesc();
-        return new ResponseEntity<>(articles, HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(), HttpStatus.OK);
     }
     @GetMapping("/popular")
     public ResponseEntity<List<ArticleDTO>> popularArticles(){
-        List<ArticleDTO> articles = articleService.findAllOrderByViewsDesc();
-        return new ResponseEntity<>(articles, HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findAllOrderByViewsDesc(), HttpStatus.OK);
     }
     @GetMapping("/trending")
     public ResponseEntity<List<ArticleDTO>> trendingArticles(){
-        List<ArticleDTO> articles = articleService.findTrending();
-        return new ResponseEntity<>(articles, HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findTrending(), HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
     public ResponseEntity<ArticleDTO> getArticle(@PathVariable("id") Long id) {
-        ArticleDTO article = articleService.findById(id);
-        if (article == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(article, HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findById(id), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('devs:write')")
@@ -54,9 +45,10 @@ public class ArticleController {
             @RequestParam("content") String content,
             @RequestParam("category") String category,
             @RequestParam("images") List<MultipartFile> images) {
-        Article newArticle = articleService.saveArticle(principal, title, content, category, images);
-        ArticleDTO articleDTO = articleService.findById(newArticle.getId());
-        return new ResponseEntity<>(articleDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                articleService.saveArticle(principal, title, content, category, images),
+                HttpStatus.CREATED
+        );
     }
 
     @PreAuthorize("hasAuthority('devs:write')")
@@ -67,9 +59,10 @@ public class ArticleController {
             @RequestParam(value = "title" ,required = false) String title,
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "images", required = false) List<MultipartFile> images) {
-        Article newArticle = articleService.update(principal, id, title, content, images);
-        ArticleDTO articleDTO = articleService.findById(newArticle.getId());
-        return new ResponseEntity<>(articleDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                articleService.update(principal, id, title, content, images),
+                HttpStatus.OK
+        );
     }
 
 
@@ -77,12 +70,7 @@ public class ArticleController {
     @PreAuthorize("hasAuthority('devs:write')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Article> deleteArticle(@PathVariable("id") Long id) {
-        Article article = articleService.findArticleById(id);
-        List<String> images = article.getImages();
         articleService.deleteById(id);
-        if (images != null && !images.isEmpty()) {
-            images.forEach(s3Service::deleteFile);
-        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

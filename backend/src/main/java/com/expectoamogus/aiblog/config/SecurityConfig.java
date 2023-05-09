@@ -32,21 +32,24 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                    .authorizeHttpRequests()
-                    .requestMatchers("/api/v1/images/**", "/api/v1/auth/**", "/api/v1/articles/all").permitAll()
-                    .anyRequest().authenticated()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/v1/images/**",
+                        "/api/v1/auth/**",
+                        "/api/v1/articles/all", "/api/v1/articles/popular", "/api/v1/articles/trending")
+                .permitAll()
+                .anyRequest().authenticated()
                 .and()
-                    .logout()
-                        .logoutUrl("/api/v1/auth/logout")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
+                .logout()
+                .logoutUrl("/api/v1/auth/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
                 .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
