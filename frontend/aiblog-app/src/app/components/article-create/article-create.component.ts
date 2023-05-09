@@ -5,6 +5,8 @@ import {ArticlesService} from 'src/app/services/articles.service';
 import {GptService} from 'src/app/services/gpt.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {FormControl} from "@angular/forms";
+import { CATEGORIES } from '../../models/categories';
+
 
 @Component({
   selector: 'app-article-create',
@@ -20,12 +22,7 @@ export class ArticleCreateComponent implements OnInit {
   content: string = '';
   images!: FileList;
   prompt: string = '';
-  categories = [
-    { value: 'sport', viewValue: 'Sport' },
-    { value: 'business', viewValue: 'Business' },
-    { value: 'culture', viewValue: 'Culture' },
-    { value: 'entertainment', viewValue: 'Entertainment' }
-  ];
+  categories = CATEGORIES;
   categoryControl = new FormControl('', []);
   selectedCategory: string = '';
 
