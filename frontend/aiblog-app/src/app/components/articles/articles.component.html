@@ -1,6 +1,10 @@
 <section class="py-5">
   <div class="container">
     <h1>All Articles</h1>
+    <div>
+      <a (click)="filterArticles()">All </a>
+      <a *ngFor="let category of categories" (click)="filterArticles(category.value)">{{ category.viewValue }} </a>
+    </div>
     <div class="row">
       <div *ngFor="let article of articles" class="col-lg-4 col-md-6 col-sm-12">
         <a [routerLink]="['/articles/article', article.id]" class="box-link">

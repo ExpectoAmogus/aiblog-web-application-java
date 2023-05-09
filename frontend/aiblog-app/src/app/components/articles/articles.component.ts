@@ -1,11 +1,11 @@
-import {DatePipe} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
 import {AuthService} from 'src/app/services/auth.service';
 import {SearchService} from "../../services/search.service";
 import {ImagesService} from "../../services/images.service";
+import {CATEGORIES} from "../../models/categories";
 
 @Component({
   selector: 'app-articles',
@@ -17,18 +17,29 @@ export class ArticlesComponent implements OnInit {
   private originalArticles: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
   public articleImages: { [articleId: number]: string } = {};
+  public categories = CATEGORIES;
 
   constructor(
     private articlesService: ArticlesService,
     private authService: AuthService,
     private router: Router,
     private searchService: SearchService,
-    private imagesService: ImagesService
-    ) { }
+    private imagesService: ImagesService,
+    private route: ActivatedRoute
+  ) {
+  }
 
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
-    this.getArticles();
+
+    this.route.queryParamMap.subscribe((params) => {
+      const category = params.get('category');
+      if (category) {
+        this.filterArticles(category);
+      } else {
+        this.getArticles()
+      }
+    });
 
     this.searchService.getSearchQuery().subscribe((query) => {
       if (query) {
@@ -39,21 +50,28 @@ export class ArticlesComponent implements OnInit {
     })
   }
 
-  public getArticles(): void {
-    this.articlesService.getArticles().subscribe({
-      next: (response) => {
-        this.articles = response;
-        this.originalArticles = response;
-        // for (const article of response) {
-        //   this.imagesService
-        //     .getImage(article.uuid, 1)
-        //     .subscribe(imageUrl => {
-        //       this.articleImages[article.id] = imageUrl;
-        //     });
-        // }
-      }
-    });
+  public getArticles(category?: string): void {
+      this.articlesService.getArticles().subscribe({
+        next: (response) => {
+          this.originalArticles = response;
+          this.articles = category ? response.filter(article => article.category === category) : response;
+
+          // for (const article of response) {
+          //   this.imagesService
+          //     .getImage(article.uuid, 1)
+          //     .subscribe(imageUrl => {
+          //       this.articleImages[article.id] = imageUrl;
+          //     });
+          // }
+        }
+      });
   }
+
+  public filterArticles(category?: string): void {
+    this.getArticles(category);
+    this.router.navigate(['/articles'], {queryParams: {category: category}});
+  }
+
 
   getArticleImage(articleId: number): string {
     return this.articleImages[articleId];
