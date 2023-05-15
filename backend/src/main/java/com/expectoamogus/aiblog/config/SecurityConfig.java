@@ -35,7 +35,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/images/**",
                         "/api/v1/auth/**",
-                        "/api/v1/articles/all", "/api/v1/articles/popular", "/api/v1/articles/trending")
+                        "/api/v1/articles/all", "/api/v1/articles/popular", "/api/v1/articles/trending",
+                        "/api/v1/comments/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

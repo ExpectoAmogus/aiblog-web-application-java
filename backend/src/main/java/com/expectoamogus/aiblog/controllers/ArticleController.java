@@ -4,6 +4,7 @@ import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.service.impl.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,16 +21,22 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<ArticleDTO>> articles(){
-        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(), HttpStatus.OK);
+    public ResponseEntity<List<ArticleDTO>> articles(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "24") int size){
+        var pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(pageable), HttpStatus.OK);
     }
     @GetMapping("/popular")
-    public ResponseEntity<List<ArticleDTO>> popularArticles(){
-        return new ResponseEntity<>(articleService.findAllOrderByViewsDesc(), HttpStatus.OK);
+    public ResponseEntity<List<ArticleDTO>> popularArticles(@RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "6") int size){
+        var pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(articleService.findAllOrderByViewsDesc(pageable), HttpStatus.OK);
     }
     @GetMapping("/trending")
-    public ResponseEntity<List<ArticleDTO>> trendingArticles(){
-        return new ResponseEntity<>(articleService.findTrending(), HttpStatus.OK);
+    public ResponseEntity<List<ArticleDTO>> trendingArticles(@RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "6") int size){
+        var pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(articleService.findTrending(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")

@@ -1,6 +1,6 @@
 package com.expectoamogus.aiblog.models;
 
-import com.expectoamogus.aiblog.dto.UserDTO;
+import com.expectoamogus.aiblog.dto.user.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +15,7 @@ import java.util.List;
 @Table(name = "article")
 @Getter
 @Setter
-public class Article {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Article extends BaseEntity {
     @Column(name = "uuid", unique = true)
     private String uuid;
     @Column(name = "title")
@@ -40,12 +35,6 @@ public class Article {
     @JoinColumn
     @JsonManagedReference
     private User user;
-    private LocalDateTime dateOfCreated;
-
-    @PrePersist
-    private void init() {
-        dateOfCreated = LocalDateTime.now();
-    }
 
     public UserDTO getUserDTO() {
         return new UserDTO(

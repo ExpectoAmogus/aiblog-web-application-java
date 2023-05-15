@@ -1,6 +1,6 @@
 package com.expectoamogus.aiblog.dto.article;
 
-import com.expectoamogus.aiblog.dto.UserDTO;
+import com.expectoamogus.aiblog.dto.user.UserDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;

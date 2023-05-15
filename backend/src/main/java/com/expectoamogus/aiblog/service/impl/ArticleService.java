@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,20 +47,18 @@ public class ArticleService {
                 ));
     }
 
-    public List<ArticleDTO> findAllOrderByDateDesc() {
-        return articleFormRepository.findAll()
+    public List<ArticleDTO> findAllOrderByDateDesc(PageRequest pageable) {
+        return articleFormRepository.findAll(pageable)
                 .stream()
                 .map(articleDTOMapper)
                 .sorted(Comparator.comparing(ArticleDTO::dateOfCreated).reversed())
-                .limit(100)
                 .collect(Collectors.toList());
     }
-    public List<ArticleDTO> findTrending() {
-        List<ArticleDTO> articleDTOs = articleFormRepository.findAll()
+    public List<ArticleDTO> findTrending(PageRequest pageable) {
+        List<ArticleDTO> articleDTOs = articleFormRepository.findAll(pageable)
                 .stream()
                 .map(articleDTOMapper)
                 .sorted(Comparator.comparing(ArticleDTO::views).reversed())
-                .limit(100)
                 .toList();
 
         double timeConstant = 2592000000.0;
@@ -75,15 +74,13 @@ public class ArticleService {
 
         return articleDTOsWithTrendingScore.stream()
                 .sorted(Comparator.comparing(ArticleDTO::trendingScore).reversed())
-                .limit(100)
                 .toList();
     }
-    public List<ArticleDTO> findAllOrderByViewsDesc() {
-        return articleFormRepository.findAll()
+    public List<ArticleDTO> findAllOrderByViewsDesc(PageRequest pageable) {
+        return articleFormRepository.findAll(pageable)
                 .stream()
                 .map(articleDTOMapper)
                 .sorted(Comparator.comparing(ArticleDTO::views).reversed())
-                .limit(100)
                 .collect(Collectors.toList());
     }
 

@@ -21,10 +21,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity implements UserDetails {
     @Column(name = "email", unique = true)
     private String email;
     @Column(name = "first_name")
@@ -39,11 +36,6 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     @JsonBackReference
     private List<Article> articles = new ArrayList<>();
-    private LocalDateTime dateOfCreated;
-    @PrePersist
-    private void init(){
-        dateOfCreated = LocalDateTime.now();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
