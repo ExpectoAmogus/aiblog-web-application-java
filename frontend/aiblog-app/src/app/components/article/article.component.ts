@@ -4,26 +4,38 @@ import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
 import {ImagesService} from '../../services/images.service';
 import {forkJoin} from "rxjs";
+import {CommentsService} from "../../services/comments.service";
+import {NgForm} from "@angular/forms";
+import {CommentsDTO} from "../../models/comments";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
 })
 export class ArticleComponent implements OnInit {
+  public currentUserId!: number;
+  public comments: CommentsDTO[] = [];
   public article!: ArticleDTO;
   public images: string[] = [];
   public articlesLatest: ArticleDTO[] = [];
   public articlesPopular: ArticleDTO[] = [];
   public articlesTrending: ArticleDTO[] = [];
+  public isAdmin: boolean | undefined;
+
   constructor(
     private route: ActivatedRoute,
+    private authService: AuthService,
     private articlesService: ArticlesService,
     private imagesService: ImagesService
   ) {
   }
 
   ngOnInit() {
+    this.currentUserId = this.authService.getCurrentUserId();
+    this.isAdmin = this.authService.isAdmin();
     this.updateContent();
+
   }
 
   updateContent(): void {
@@ -47,25 +59,25 @@ export class ArticleComponent implements OnInit {
   }
 
   public getLatestArticles(): void {
-    this.articlesService.getArticles().subscribe({
+    this.articlesService.getArticles(0, 6).subscribe({
       next: (response) => {
-        this.articlesLatest = response.slice(0, 6);
+        this.articlesLatest = response;
       }
     });
   }
 
   public getPopularArticles(): void {
-    this.articlesService.getPopularArticles().subscribe({
+    this.articlesService.getPopularArticles(0, 6).subscribe({
       next: (response) => {
-        this.articlesPopular = response.slice(0, 6);
+        this.articlesPopular = response;
       }
     });
   }
 
   public getTrendingArticles(): void {
-    this.articlesService.getTrendingArticles().subscribe({
+    this.articlesService.getTrendingArticles(0, 6).subscribe({
       next: (response) => {
-        this.articlesTrending = response.slice(0, 6);
+        this.articlesTrending = response;
       }
     });
   }

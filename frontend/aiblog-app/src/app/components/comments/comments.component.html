@@ -1,0 +1,20 @@
+<!-- ======= Comments ======= -->
+<div class="comments">
+  <h5 class="comment-title py-4">{{comments.length}} Comments</h5>
+  <app-comment-form
+    submitLabel="Write"
+    (handleSubmit)="addComment({text: $event, parentId: null})"
+  ></app-comment-form>
+  <app-comment
+    *ngFor="let comment of mainComments"
+    class="comment d-flex mb-4"
+    [comment]="comment"
+    [currentUserId]="currentUserId"
+    [replies]="getReplies(comment.id)"
+    [activeComment]="activeComment"
+    (setActiveComment)="setActiveComment($event)"
+    (addComment)="addComment($event)"
+    (updateComment)="updateComment($event)"
+    (deleteComment)="deleteComment($event)"
+  ></app-comment>
+</div><!-- End Comments -->

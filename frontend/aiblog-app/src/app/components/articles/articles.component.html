@@ -11,7 +11,7 @@
           <div class="box">
 <!--            <img [style.background-image]="'url(' + getArticleImage(article.id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
             <h3>{{article.title}}</h3>
-            <p [innerHTML]="truncateHTML(article.content, 300)"></p>
+            <p [innerHTML]="article.content | truncateHTML:300"></p>
             <p>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</p>
             <p>Author: {{article.user.firstName}}</p>
             <p>Views: {{article.views}}</p>
@@ -25,7 +25,27 @@
         </button>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 0">
+              <a class="page-link"  (click)="prevPage()">Previous</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+              <a class="page-link"  (click)="nextPage()">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <p>Page {{currentPage + 1}} of {{totalPages}}</p>
+      </div>
+    </div>
   </div>
+
   <!-- Notification for no articles -->
   <div *ngIf="articles?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
     <div class="alert alert-info" role="alert">

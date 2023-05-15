@@ -28,8 +28,8 @@ export class HomeComponent implements OnInit {
   }
 
   getArticles(): void {
-    this.articlesService.getArticles().subscribe(articles => {
-      this.articles = articles.slice(0, 24);
+    this.articlesService.getArticles(0,24).subscribe(articles => {
+      this.articles = articles;
       for (const article of articles) {
         this.imagesService
           .getImage(article.uuid, 1)
@@ -40,21 +40,13 @@ export class HomeComponent implements OnInit {
     });
   }
   getTrendingArticles(): void {
-    this.articlesService.getTrendingArticles().subscribe(articles => {
-      this.trendingArticles = articles.slice(0, 6);
+    this.articlesService.getTrendingArticles(0,6).subscribe(articles => {
+      this.trendingArticles = articles;
     });
   }
 
   getArticleImage(articleId: number): string {
     return this.articleImages[articleId];
-  }
-
-  truncateHTML(html: string, maxLength: number): string {
-    let truncatedText = html.slice(0, maxLength);
-    if (html.length > maxLength) {
-      truncatedText += '...';
-    }
-    return truncatedText;
   }
 
 }

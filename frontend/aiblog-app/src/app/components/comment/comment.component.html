@@ -1,0 +1,49 @@
+<div class="flex-grow-1 ms-2 ms-sm-3">
+  <div class="comment-meta d-flex align-items-baseline">
+    <h6 class="me-2">{{comment.username}}</h6>
+    <span class="text-muted">{{comment.dateOfCreated | date: "d MMMM y HH:mm"}}</span>
+  </div>
+  <div *ngIf="!isEditing()" class="comment-body">
+    {{comment.text}}
+  </div>
+  <app-comment-form
+    *ngIf="isEditing()"
+    submitLabel="Update"
+    [hasCancelButton]="true"
+    [initialText]="comment.text"
+    (handleSubmit)="updateComment.emit({text: $event, commentId: comment.id})"
+    (handleCancel)="setActiveComment.emit(null)"
+  ></app-comment-form>
+  <div>
+    <button *ngIf="canReply" (click)="setActiveComment.emit({id: comment.id, type: activeCommentType.replying})"
+            class="btn btn-secondary" data-placement="top"
+            data-original-title="Reply" style="margin-left: 10px;">Reply
+    </button>
+    <button *ngIf="canEdit" (click)="setActiveComment.emit({id: comment.id, type: activeCommentType.editing})"
+            class="btn btn-primary" data-placement="top"
+            data-original-title="Edit" style="margin-left: 10px;">Edit
+    </button>
+    <button *ngIf="canDelete" (click)="deleteComment.emit(comment.id)" class="btn btn-danger" data-placement="top"
+            data-original-title="Delete" style="margin-left: 10px;">Delete
+    </button>
+  </div>
+  <app-comment-form
+    *ngIf="isReplying()"
+    submitLabel="Reply"
+    (handleSubmit)="addComment.emit({text: $event, parentId: replyId})"
+  ></app-comment-form>
+  <div *ngIf="replies.length > 0" class="comment-replies bg-light p-3 mt-3 rounded">
+    <app-comment
+      *ngFor="let reply of replies"
+      [comment]="reply"
+      (setActiveComment)="setActiveComment.emit($event)"
+      [activeComment]="activeComment"
+      (addComment)="addComment.emit($event)"
+      (updateComment)="updateComment.emit($event)"
+      [parentId]="comment.id"
+      [replies]="[]"
+      [currentUserId]="currentUserId"
+      (deleteComment)="deleteComment.emit($event)"
+    ></app-comment>
+  </div>
+</div>

@@ -26,9 +26,9 @@ export class FooterComponent implements OnInit {
   }
 
   getArticles() {
-    this.articlesService.getArticles().subscribe({
+    this.articlesService.getArticles(0,4).subscribe({
       next: (articles) => {
-          this.articles = articles.slice(0, 4);
+          this.articles = articles;
       }
     })
   }

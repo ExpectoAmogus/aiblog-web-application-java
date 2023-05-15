@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, map, Observable} from 'rxjs';
 import {environment} from 'src/environments/environments';
 import {ArticleDTO} from '../models/article';
@@ -17,8 +17,11 @@ export class ArticlesService {
   ) {
   }
 
-  getArticles(): Observable<ArticleDTO[]> {
-    return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/all`)
+  getArticles(page: number, size: number): Observable<ArticleDTO[]> {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
+    return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/all`, {params})
       .pipe(
         map(articles => {
           return articles.map(article => {
@@ -36,8 +39,12 @@ export class ArticlesService {
         })
       );
   }
-  getPopularArticles(): Observable<ArticleDTO[]> {
-    return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/popular`)
+
+  getPopularArticles(page: number, size: number): Observable<ArticleDTO[]> {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
+    return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/popular`, {params})
       .pipe(
         map(articles => {
           return articles.map(article => {
@@ -55,8 +62,12 @@ export class ArticlesService {
         })
       );
   }
-  getTrendingArticles(): Observable<ArticleDTO[]> {
-    return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/trending`)
+
+  getTrendingArticles(page: number, size: number): Observable<ArticleDTO[]> {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    params = params.append('size', size.toString());
+    return this.http.get<ArticleDTO[]>(`${this.apiUrl}/api/v1/articles/trending`, {params})
       .pipe(
         map(articles => {
           return articles.map(article => {

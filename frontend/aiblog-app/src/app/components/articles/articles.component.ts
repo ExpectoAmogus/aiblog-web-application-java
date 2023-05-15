@@ -18,6 +18,10 @@ export class ArticlesComponent implements OnInit {
   public isAdmin: boolean | undefined;
   public articleImages: { [articleId: number]: string } = {};
   public categories = CATEGORIES;
+  public currentPage = 0;
+  public pageSize = 24;
+
+  public totalPages = 1;
 
   constructor(
     private articlesService: ArticlesService,
@@ -51,10 +55,16 @@ export class ArticlesComponent implements OnInit {
   }
 
   public getArticles(category?: string): void {
-      this.articlesService.getArticles().subscribe({
+      this.articlesService.getArticles(this.currentPage, this.pageSize).subscribe({
         next: (response) => {
           this.originalArticles = response;
           this.articles = category ? response.filter(article => article.category === category) : response;
+
+          const totalArticles = this.articles.length;
+          this.totalPages = Math.ceil(totalArticles / this.pageSize);
+          if (this.totalPages < 1){
+            this.totalPages = 1;
+          }
 
           // for (const article of response) {
           //   this.imagesService
@@ -104,12 +114,15 @@ export class ArticlesComponent implements OnInit {
     this.articles = this.originalArticles;
   }
 
-  truncateHTML(html: string, maxLength: number): string {
-    let truncatedText = html.slice(0, maxLength);
-    if (html.length > maxLength) {
-      truncatedText += '...';
-    }
-    return truncatedText;
+  nextPage(): void {
+    this.currentPage++;
+    this.getArticles();
   }
 
+  prevPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.getArticles();
+    }
+  }
 }

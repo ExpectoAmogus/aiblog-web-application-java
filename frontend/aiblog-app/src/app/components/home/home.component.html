@@ -10,7 +10,7 @@
                    [style.background-image]="'url(' + getArticleImage(article.id) + ')'">
                   <div class="img-bg-inner">
                     <h2>{{article.title}}</h2>
-                    <p [innerHTML]="truncateHTML(article.content, 300)"></p>
+                    <p [innerHTML]="article.content | truncateHTML:300"></p>
                   </div>
                 </a>
               </div>
@@ -47,7 +47,7 @@
           <h2>
             <a [routerLink]="['/articles/article', article.id]">{{article.title}}</a>
           </h2>
-          <p class="mb-4 d-block" [innerHTML]="truncateHTML(article.content, 300)"></p>
+          <p class="mb-4 d-block" [innerHTML]="article.content | truncateHTML:300"></p>
           <div class="d-flex align-items-center author">
 <!--            <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid"></div>-->
             <div class="name">
@@ -130,7 +130,7 @@
                   <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
                 <h3><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a>
                 </h3>
-                <p [innerHTML]="truncateHTML(article.content, 300)"></p>
+                <p [innerHTML]="article.content | truncateHTML:300"></p>
                 <div class="d-flex align-items-center author">
                   <!--              <div class="photo"><img [src]="articles[category.value][0].author.avatar" alt="{{articles[category.value][0].author.name}}" class="img-fluid"></div>-->
                   <div class="name">
@@ -150,7 +150,7 @@
                     <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
                   <h2 class="mb-2"><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h2>
                   <span class="author mb-3 d-block">{{article.user.firstName}}</span>
-                  <p class="mb-4 d-block" [innerHTML]="truncateHTML(article.content, 300)"></p>
+                  <p class="mb-4 d-block" [innerHTML]="article.content | truncateHTML:300"></p>
                 </div>
               </div>
               <div class="col-lg-8">
@@ -162,7 +162,7 @@
                     <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
                   <h2 class="mb-2"><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h2>
                   <span class="author mb-3 d-block">{{article.user.firstName}}</span>
-                  <p class="mb-4 d-block" [innerHTML]="truncateHTML(article.content, 300)"></p>
+                  <p class="mb-4 d-block" [innerHTML]="article.content | truncateHTML:300"></p>
                 </div>
               </div>
             </div>

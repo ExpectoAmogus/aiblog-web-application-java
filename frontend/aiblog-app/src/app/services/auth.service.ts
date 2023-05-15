@@ -24,11 +24,18 @@ export class AuthService {
     }
     return authorities.some((a: { authority: string; }) => a.authority === 'devs:write');
   }
+
+  getCurrentUserId(): number {
+      // @ts-ignore
+    return parseInt(sessionStorage.getItem('currentUserId'), 10);
+  }
+
   login(model: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/api/v1/auth/login`, { username: model.email, password: model.password })
       .pipe(
         tap(response => {
           if (response && response.token) {
+            sessionStorage.setItem('currentUserId', response.id);
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('authorities', JSON.stringify(response.authorities))
           }
@@ -37,6 +44,7 @@ export class AuthService {
   }
 
   logout(): void {
+    sessionStorage.removeItem('currentUserId');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('authorities');
     this.http.post<any>(`${this.apiUrl}/api/v1/auth/logout`, {});

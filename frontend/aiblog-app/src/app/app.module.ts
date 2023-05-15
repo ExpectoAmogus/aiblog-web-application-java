@@ -21,6 +21,11 @@ import {ContactComponent} from './components/contact/contact.component';
 import {DatePipe} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
 import { FilterByCategoryPipe } from './filter-by-category.pipe';
+import { TruncateHTMLPipe } from './truncate-html.pipe';
+import { FilterCommentsByParentIdPipe } from './filter-comments-by-parent-id.pipe';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { CommentFormComponent } from './components/comment-form/comment-form.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,11 @@ import { FilterByCategoryPipe } from './filter-by-category.pipe';
     ExceptionComponent,
     ContactComponent,
     FilterByCategoryPipe,
+    TruncateHTMLPipe,
+    FilterCommentsByParentIdPipe,
+    CommentComponent,
+    CommentsComponent,
+    CommentFormComponent,
   ],
   imports: [
     CKEditorModule,
