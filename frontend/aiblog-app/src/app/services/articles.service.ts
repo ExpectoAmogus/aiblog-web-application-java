@@ -25,11 +25,11 @@ export class ArticlesService {
       .pipe(
         map(articles => {
           return articles.map(article => {
-            const dateArray = article.dateOfCreated;
-            // @ts-ignore
-            const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
-            article.user.dateOfCreated = date.toISOString();
-            article.dateOfCreated = date.toISOString();
+            // const dateArray = article.dateOfCreated;
+            // // @ts-ignore
+            // const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
+            // article.user.dateOfCreated = date.toISOString();
+            // article.dateOfCreated = date.toISOString();
             return article;
           });
         }),
@@ -48,11 +48,11 @@ export class ArticlesService {
       .pipe(
         map(articles => {
           return articles.map(article => {
-            const dateArray = article.dateOfCreated;
-            // @ts-ignore
-            const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
-            article.user.dateOfCreated = date.toISOString();
-            article.dateOfCreated = date.toISOString();
+            // const dateArray = article.dateOfCreated;
+            // // @ts-ignore
+            // const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
+            // article.user.dateOfCreated = date.toISOString();
+            // article.dateOfCreated = date.toISOString();
             return article;
           });
         }),
@@ -71,11 +71,11 @@ export class ArticlesService {
       .pipe(
         map(articles => {
           return articles.map(article => {
-            const dateArray = article.dateOfCreated;
-            // @ts-ignore
-            const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
-            article.user.dateOfCreated = date.toISOString();
-            article.dateOfCreated = date.toISOString();
+            // const dateArray = article.dateOfCreated;
+            // // @ts-ignore
+            // const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
+            // article.user.dateOfCreated = date.toISOString();
+            // article.dateOfCreated = date.toISOString();
             return article;
           });
         }),
@@ -90,11 +90,11 @@ export class ArticlesService {
     return this.http.get<ArticleDTO>(`${this.apiUrl}/api/v1/articles/find/${articleId}`)
       .pipe(
         map(article => {
-          const dateArray = article.dateOfCreated;
-          // @ts-ignore
-          const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
-          article.user.dateOfCreated = date.toISOString();
-          article.dateOfCreated = date.toISOString();
+          // const dateArray = article.dateOfCreated;
+          // // @ts-ignore
+          // const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
+          // article.user.dateOfCreated = date.toISOString();
+          // article.dateOfCreated = date.toISOString();
           return article;
         }),
         catchError(error => {

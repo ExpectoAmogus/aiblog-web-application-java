@@ -23,10 +23,10 @@ export class CommentsService {
       .pipe(
         map(comments => {
           return comments.map(comment => {
-            const dateArray = comment.dateOfCreated;
-            // @ts-ignore
-            const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
-            comment.dateOfCreated = date.toISOString();
+            // const dateArray = comment.dateOfCreated;
+            // // @ts-ignore
+            // const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
+            // comment.dateOfCreated = date.toISOString();
             return comment;
           });
         }),

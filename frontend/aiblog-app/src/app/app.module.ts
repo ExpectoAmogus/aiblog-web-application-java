@@ -26,6 +26,7 @@ import { FilterCommentsByParentIdPipe } from './filter-comments-by-parent-id.pip
 import { CommentComponent } from './components/comment/comment.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { CommentFormComponent } from './components/comment-form/comment-form.com
     CommentComponent,
     CommentsComponent,
     CommentFormComponent,
+    SidebarComponent,
   ],
   imports: [
     CKEditorModule,

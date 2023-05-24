@@ -4,8 +4,6 @@ import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
 import {ImagesService} from '../../services/images.service';
 import {forkJoin} from "rxjs";
-import {CommentsService} from "../../services/comments.service";
-import {NgForm} from "@angular/forms";
 import {CommentsDTO} from "../../models/comments";
 import {AuthService} from "../../services/auth.service";
 
@@ -15,12 +13,8 @@ import {AuthService} from "../../services/auth.service";
 })
 export class ArticleComponent implements OnInit {
   public currentUserId!: number;
-  public comments: CommentsDTO[] = [];
   public article!: ArticleDTO;
   public images: string[] = [];
-  public articlesLatest: ArticleDTO[] = [];
-  public articlesPopular: ArticleDTO[] = [];
-  public articlesTrending: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
 
   constructor(
@@ -40,9 +34,6 @@ export class ArticleComponent implements OnInit {
 
   updateContent(): void {
     this.getArticle();
-    this.getLatestArticles();
-    this.getPopularArticles();
-    this.getTrendingArticles();
   }
 
   public getArticle(): void {
@@ -55,30 +46,6 @@ export class ArticleComponent implements OnInit {
         }
       });
       this.articlesService.incrementArticleViews(articleId).subscribe();
-    });
-  }
-
-  public getLatestArticles(): void {
-    this.articlesService.getArticles(0, 6).subscribe({
-      next: (response) => {
-        this.articlesLatest = response;
-      }
-    });
-  }
-
-  public getPopularArticles(): void {
-    this.articlesService.getPopularArticles(0, 6).subscribe({
-      next: (response) => {
-        this.articlesPopular = response;
-      }
-    });
-  }
-
-  public getTrendingArticles(): void {
-    this.articlesService.getTrendingArticles(0, 6).subscribe({
-      next: (response) => {
-        this.articlesTrending = response;
-      }
     });
   }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
@@ -20,7 +20,6 @@ export class ArticlesComponent implements OnInit {
   public categories = CATEGORIES;
   public currentPage = 0;
   public pageSize = 24;
-
   public totalPages = 1;
 
   constructor(
@@ -54,6 +53,11 @@ export class ArticlesComponent implements OnInit {
     })
   }
 
+  public filterArticles(category?: string): void {
+    this.getArticles(category);
+    this.router.navigate(['/articles'], {queryParams: {category: category}});
+  }
+
   public getArticles(category?: string): void {
       this.articlesService.getArticles(this.currentPage, this.pageSize).subscribe({
         next: (response) => {
@@ -66,20 +70,15 @@ export class ArticlesComponent implements OnInit {
             this.totalPages = 1;
           }
 
-          // for (const article of response) {
-          //   this.imagesService
-          //     .getImage(article.uuid, 1)
-          //     .subscribe(imageUrl => {
-          //       this.articleImages[article.id] = imageUrl;
-          //     });
-          // }
+          for (const article of response) {
+            this.imagesService
+              .getImage(article.uuid, 1)
+              .subscribe(imageUrl => {
+                this.articleImages[article.id] = imageUrl;
+              });
+          }
         }
       });
-  }
-
-  public filterArticles(category?: string): void {
-    this.getArticles(category);
-    this.router.navigate(['/articles'], {queryParams: {category: category}});
   }
 
 

@@ -1,56 +1,57 @@
 <section class="py-5">
   <div class="container">
-    <h1>All Articles</h1>
-    <div>
-      <a (click)="filterArticles()">All </a>
-      <a *ngFor="let category of categories" (click)="filterArticles(category.value)">{{ category.viewValue }} </a>
-    </div>
     <div class="row">
-      <div *ngFor="let article of articles" class="col-lg-4 col-md-6 col-sm-12">
-        <a [routerLink]="['/articles/article', article.id]" class="box-link">
-          <div class="box">
-<!--            <img [style.background-image]="'url(' + getArticleImage(article.id) + ')'" class="d-block w-100 mb-3 article-image"/>-->
-            <h3>{{article.title}}</h3>
-            <p [innerHTML]="article.content | truncateHTML:300"></p>
-            <p>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</p>
-            <p>Author: {{article.user.firstName}}</p>
-            <p>Views: {{article.views}}</p>
-          </div>
-        </a>
-        <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
-                data-original-title="Edit" style="margin-left: 10px;">Edit
-        </button>
-        <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
-                data-original-title="Delete" style="margin-left: 10px;">Delete
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <nav aria-label="...">
-          <ul class="pagination">
-            <li class="page-item" [class.disabled]="currentPage === 0">
-              <a class="page-link"  (click)="prevPage()">Previous</a>
-            </li>
-            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
-              <a class="page-link"  (click)="nextPage()">Next</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    <div class="row mt-2">
-      <div class="col-md-12">
-        <p>Page {{currentPage + 1}} of {{totalPages}}</p>
-      </div>
-    </div>
-  </div>
+      <div *ngIf="articles.length > 0" class="col-md-9" data-aos="fade-up">
+        <h3 class="category-title">Category: </h3>
+        <ng-container *ngFor="let article of articles">
+          <div class="d-md-flex post-entry-2 half">
+            <a [routerLink]="['/articles/article', article.id]" class="me-4 thumbnail">
+              <img [src]="getArticleImage(article.id)" class="img-fluid"/>
+            </a>
+            <div>
+              <div class="post-meta"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span>
+                <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+              <h3><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h3>
+              <p [innerHTML]="article.content | truncateHTML:200"></p>
+              <div class="d-flex align-items-center author">
+                <div class="name">
+                  <h3 class="m-0 p-0">{{article.user.firstName}}</h3>
+                  <h3 class="m-0 p-0">Views: {{article.views}}</h3>
+                </div>
 
-  <!-- Notification for no articles -->
-  <div *ngIf="articles?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
-    <div class="alert alert-info" role="alert">
-      <h4 class="alert-heading">NO ARTICLES!</h4>
-      <p>No Articles were found.</p>
+              </div>
+            </div>
+          </div>
+          <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
+                  data-original-title="Edit" style="margin-left: 10px;">Edit
+          </button>
+          <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
+                  data-original-title="Delete" style="margin-left: 10px;">Delete
+          </button>
+        </ng-container>
+        <div class="text-start py-4">
+          <div class="custom-pagination">
+            <a class="prev" [class.disabled]="currentPage === 0" (click)="prevPage()">Previous</a>
+            <a class="active">1</a>
+            <a class="next" [class.disabled]="currentPage === totalPages - 1" (click)="nextPage()">Next</a>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <p>Page {{currentPage + 1}} of {{totalPages}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- Notification for no articles -->
+      <div *ngIf="articles?.length == 0" class="col-md-9" data-aos="fade-up">
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">NO ARTICLES!</h4>
+          <p>No Articles were found.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <app-sidebar [categories]="categories" (filterArticles)="filterArticles($event)"></app-sidebar>
+      </div>
     </div>
   </div>
 </section>
