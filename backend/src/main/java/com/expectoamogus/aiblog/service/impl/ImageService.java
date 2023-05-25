@@ -2,6 +2,7 @@ package com.expectoamogus.aiblog.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ import java.util.List;
 public class ImageService {
     private final S3Service s3Service;
 
-    public ResponseEntity<String> getImageUrl(String articleId, Long imageId) {
+
+    public ResponseEntity<UrlResource> getImage(String articleId, Long imageId) {
         List<String> images = s3Service.getImagesByArticleId(articleId);
         if (images.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -25,8 +27,7 @@ public class ImageService {
         try {
             var image = new UrlResource(imageUrl);
             if (image.exists()) {
-                log.info("Image {}", imageUrl);
-                return new ResponseEntity<>(imageUrl, HttpStatus.OK);
+                return new ResponseEntity<>(image, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
