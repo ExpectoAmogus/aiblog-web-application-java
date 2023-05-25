@@ -4,8 +4,9 @@ import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
 import {ImagesService} from '../../services/images.service';
 import {forkJoin} from "rxjs";
-import {CommentsDTO} from "../../models/comments";
 import {AuthService} from "../../services/auth.service";
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-article',
@@ -14,13 +15,14 @@ import {AuthService} from "../../services/auth.service";
 export class ArticleComponent implements OnInit {
   public currentUserId!: number;
   public article!: ArticleDTO;
-  public images: string[] = [];
+  public images: SafeUrl[] = [];
   public isAdmin: boolean | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private articlesService: ArticlesService,
+    private sanitizer: DomSanitizer,
     private imagesService: ImagesService
   ) {
   }
@@ -56,12 +58,15 @@ export class ArticleComponent implements OnInit {
     }
     forkJoin(requests).subscribe({
       next: (responses) => {
-        this.images = responses;
+        this.images = responses.map((data: Blob) => {
+          const url = URL.createObjectURL(data);
+          return this.sanitizer.bypassSecurityTrustUrl(url);
+        });
       }
     });
   }
 
-  public getImage(imageId: number): string {
+  public getImage(imageId: number): SafeUrl {
     return this.images[imageId];
   }
 }

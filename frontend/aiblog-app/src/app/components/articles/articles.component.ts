@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ArticlesService} from 'src/app/services/articles.service';
 import {ArticleDTO} from '../../models/article';
@@ -6,6 +6,7 @@ import {AuthService} from 'src/app/services/auth.service';
 import {SearchService} from "../../services/search.service";
 import {ImagesService} from "../../services/images.service";
 import {CATEGORIES} from "../../models/categories";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-articles',
@@ -16,7 +17,7 @@ export class ArticlesComponent implements OnInit {
   public articles: ArticleDTO[] = [];
   private originalArticles: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
-  public articleImages: { [articleId: number]: string } = {};
+  public articleImages: { [articleId: number]: SafeUrl } = {};
   public categories = CATEGORIES;
   public currentPage = 0;
   public pageSize = 24;
@@ -28,6 +29,7 @@ export class ArticlesComponent implements OnInit {
     private router: Router,
     private searchService: SearchService,
     private imagesService: ImagesService,
+    private sanitizer: DomSanitizer,
     private route: ActivatedRoute
   ) {
   }
@@ -73,8 +75,9 @@ export class ArticlesComponent implements OnInit {
           for (const article of response) {
             this.imagesService
               .getImage(article.uuid, 1)
-              .subscribe(imageUrl => {
-                this.articleImages[article.id] = imageUrl;
+              .subscribe((data: Blob) => {
+                const url = URL.createObjectURL(data);
+                this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(url);
               });
           }
         }
@@ -82,7 +85,7 @@ export class ArticlesComponent implements OnInit {
   }
 
 
-  getArticleImage(articleId: number): string {
+  getArticleImage(articleId: number): SafeUrl {
     return this.articleImages[articleId];
   }
 

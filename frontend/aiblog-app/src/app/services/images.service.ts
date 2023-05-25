@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {catchError, Observable} from 'rxjs';
 import {environment} from 'src/environments/environments';
@@ -16,8 +16,9 @@ export class ImagesService {
     private errorHandlingService: ExceptionService
     ) {}
 
-  getImage(articleId: string, imageId: number): Observable<string> {
-    return this.http.get(`${this.apiUrl}/api/v1/images/${articleId}/${imageId}`, { responseType: 'text' })
+  getImage(articleId: string, imageId: number): Observable<Blob> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get(`${this.apiUrl}/api/v1/images/${articleId}/${imageId}`, { responseType: 'blob', headers: headers })
     .pipe(
       catchError(error => {
         this.errorHandlingService.handleHttpError(error);

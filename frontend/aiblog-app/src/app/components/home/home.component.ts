@@ -3,7 +3,7 @@ import {ArticlesService} from "../../services/articles.service";
 import {ArticleDTO} from "../../models/article";
 import {ImagesService} from "../../services/images.service";
 import {CATEGORIES} from "../../models/categories";
-import { FilterByCategoryPipe } from '../../filter-by-category.pipe';
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 
 @Component({
@@ -14,11 +14,12 @@ import { FilterByCategoryPipe } from '../../filter-by-category.pipe';
 export class HomeComponent implements OnInit {
   public articles: ArticleDTO[] = [];
   public trendingArticles: ArticleDTO[] = [];
-  public articleImages: { [articleId: number]: string } = {};
+  public articleImages: { [articleId: number]: SafeUrl } = {};
   public categories = CATEGORIES;
 
   constructor(
     private articlesService: ArticlesService,
+    private sanitizer: DomSanitizer,
     private imagesService: ImagesService
   ) {}
 
@@ -33,8 +34,9 @@ export class HomeComponent implements OnInit {
       for (const article of articles) {
         this.imagesService
           .getImage(article.uuid, 1)
-          .subscribe(imageUrl => {
-            this.articleImages[article.id] = imageUrl;
+          .subscribe((data: Blob) => {
+            const url = URL.createObjectURL(data);
+            this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(url);
           });
       }
     });
@@ -45,7 +47,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getArticleImage(articleId: number): string {
+  getArticleImage(articleId: number): SafeUrl {
     return this.articleImages[articleId];
   }
 
