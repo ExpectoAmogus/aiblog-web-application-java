@@ -1,7 +1,6 @@
 package com.expectoamogus.aiblog.models;
 
 import com.expectoamogus.aiblog.dto.article.ArticleDTO;
-import com.expectoamogus.aiblog.dto.user.UserDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;

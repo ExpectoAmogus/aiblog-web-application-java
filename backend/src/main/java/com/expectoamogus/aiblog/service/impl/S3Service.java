@@ -2,7 +2,6 @@ package com.expectoamogus.aiblog.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,11 +17,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class S3Service {
+    private final S3Client s3Client;
     @Value("${aws.bucket.name}")
     private String bucketName;
     @Value("${aws.endpoint.url.s3}")
     private String endpointUrl;
-    private final S3Client s3Client;
 
     public S3Service(S3Client s3Client) {
         this.s3Client = s3Client;
@@ -70,7 +69,8 @@ public class S3Service {
                     .continuationToken(listObjectsResponse.nextContinuationToken())
                     .build();
         } while (listObjectsResponse.isTruncated());
-        log.info("Image {}", keys.stream().map(key -> endpointUrl + "/" + key).collect(Collectors.toList()));
-        return keys.stream().map(key -> endpointUrl + "/" + key).collect(Collectors.toList());
+        var images = keys.stream().map(key -> endpointUrl + "/" + key).collect(Collectors.toList());
+        log.info("Image urls loaded from S3: {}", images);
+        return images;
     }
 }
