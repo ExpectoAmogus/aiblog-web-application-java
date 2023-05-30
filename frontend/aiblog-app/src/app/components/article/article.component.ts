@@ -58,9 +58,8 @@ export class ArticleComponent implements OnInit {
     }
     forkJoin(requests).subscribe({
       next: (responses) => {
-        this.images = responses.map((data: Blob) => {
-          const url = URL.createObjectURL(data);
-          return this.sanitizer.bypassSecurityTrustUrl(url);
+        this.images = responses.map((data) => {
+          return this.sanitizer.bypassSecurityTrustUrl(data);
         });
       }
     });

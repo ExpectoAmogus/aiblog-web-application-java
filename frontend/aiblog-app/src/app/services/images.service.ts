@@ -16,9 +16,9 @@ export class ImagesService {
     private errorHandlingService: ExceptionService
     ) {}
 
-  getImage(articleId: string, imageId: number): Observable<Blob> {
+  getImage(articleId: string, imageId: number): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.get(`${this.apiUrl}/api/v1/images/${articleId}/${imageId}`, { responseType: 'blob', headers: headers })
+    return this.http.get(`${this.apiUrl}/api/v1/images/${articleId}/${imageId}`, { responseType: 'text', headers: headers })
     .pipe(
       catchError(error => {
         this.errorHandlingService.handleHttpError(error);

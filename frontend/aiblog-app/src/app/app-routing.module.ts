@@ -11,42 +11,52 @@ import {LoginComponent} from './components/login/login.component';
 import {RegisterComponent} from './components/register/register.component';
 import {ExceptionComponent} from './components/exception/exception.component';
 import {ContactComponent} from "./components/contact/contact.component";
+import {AppLayoutComponent} from "./components/app-layout/app-layout.component";
 
 const routes: Routes = [
-  { path: 'error/:errorCode', component: ExceptionComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'contact', component: ContactComponent },
+
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'error/:errorCode', component: ExceptionComponent},
   {
-    path: 'articles',
-    component: ArticlesComponent,
-    canActivate: [AuthenticationGuard],
-    data: { authorities: [{ authority: 'users:read' }] }
+    path: '',
+    component: AppLayoutComponent,
+    children: [
+      {path: '', component: HomeComponent},
+      {path: 'about', component: AboutComponent},
+      {path: 'contact', component: ContactComponent},
+      {
+        path: 'articles',
+        component: ArticlesComponent,
+        canActivate: [AuthenticationGuard],
+        data: {authorities: [{authority: 'users:read'}]}
+      },
+      {
+        path: 'articles/create',
+        component: ArticleCreateComponent,
+        canActivate: [AuthenticationGuard],
+        data: {authorities: [{authority: 'devs:read'}, {authority: 'devs:write'}]}
+      },
+      {
+        path: 'articles/article/:id',
+        component: ArticleComponent,
+        canActivate: [AuthenticationGuard],
+        data: {authorities: [{authority: 'users:read'}]}
+      },
+      {
+        path: 'articles/article-edit/:id',
+        component: ArticleEditComponent,
+        canActivate: [AuthenticationGuard],
+        data: {authorities: [{authority: 'devs:read'}, {authority: 'devs:write'}]}
+      }
+    ]
   },
-  {
-    path: 'articles/create',
-    component: ArticleCreateComponent,
-    canActivate: [AuthenticationGuard],
-    data: { authorities: [{ authority: 'devs:read' }, { authority: 'devs:write' }] }
-  },
-  {
-    path: 'articles/article/:id',
-    component: ArticleComponent,
-    canActivate: [AuthenticationGuard],
-    data: { authorities: [{ authority: 'users:read' }] }
-  },
-  {
-    path: 'articles/article-edit/:id',
-    component: ArticleEditComponent,
-    canActivate: [AuthenticationGuard],
-    data: { authorities: [{ authority: 'devs:read' }, { authority: 'devs:write' }] }
-  }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

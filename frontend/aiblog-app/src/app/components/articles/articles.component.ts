@@ -75,9 +75,8 @@ export class ArticlesComponent implements OnInit {
           for (const article of response) {
             this.imagesService
               .getImage(article.uuid, 1)
-              .subscribe((data: Blob) => {
-                const url = URL.createObjectURL(data);
-                this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(url);
+              .subscribe((data) => {
+                this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(data);
               });
           }
         }

@@ -27,6 +27,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     CommentsComponent,
     CommentFormComponent,
     SidebarComponent,
+    AppLayoutComponent,
   ],
   imports: [
     CKEditorModule,

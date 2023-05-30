@@ -2,6 +2,8 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Event, NavigationEnd, Router} from "@angular/router";
 import {ArticlesService} from "../../services/articles.service";
 import {ArticleDTO} from "../../models/article";
+import {ImagesService} from "../../services/images.service";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-footer',
@@ -9,9 +11,12 @@ import {ArticleDTO} from "../../models/article";
 })
 export class FooterComponent implements OnInit {
   articles: ArticleDTO[] = [];
+  articleImages: { [articleId: number]: SafeUrl } = {};
   constructor(
     private router: Router,
-    private articlesService: ArticlesService
+    private articlesService: ArticlesService,
+    private imagesService: ImagesService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -29,7 +34,19 @@ export class FooterComponent implements OnInit {
     this.articlesService.getArticles(0,4).subscribe({
       next: (articles) => {
           this.articles = articles;
+
+        for (const article of articles) {
+          this.imagesService
+            .getImage(article.uuid, 1)
+            .subscribe((data) => {
+              this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(data);
+            });
+        }
       }
     })
+  }
+
+  getArticleImage(articleId: number): SafeUrl {
+    return this.articleImages[articleId];
   }
 }

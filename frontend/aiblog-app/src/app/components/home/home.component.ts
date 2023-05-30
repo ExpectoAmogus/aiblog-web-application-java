@@ -14,7 +14,7 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 export class HomeComponent implements OnInit {
   public articles: ArticleDTO[] = [];
   public trendingArticles: ArticleDTO[] = [];
-  public articleImages: { [articleId: number]: SafeUrl } = {};
+  public articleImages: { [articleId: number]: string } = {};
   public categories = CATEGORIES;
 
   constructor(
@@ -34,9 +34,8 @@ export class HomeComponent implements OnInit {
       for (const article of articles) {
         this.imagesService
           .getImage(article.uuid, 1)
-          .subscribe((data: Blob) => {
-            const url = URL.createObjectURL(data);
-            this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(url);
+          .subscribe((data) => {
+            this.articleImages[article.id] = data;
           });
       }
     });
@@ -47,7 +46,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getArticleImage(articleId: number): SafeUrl {
+  getArticleImage(articleId: number): string {
     return this.articleImages[articleId];
   }
 

@@ -1,24 +1,49 @@
-<section class="container" id="section-container">
-    <div class="col-md-6 offset-md-3">
-    <form #regForm="ngForm" (ngSubmit)="register(regForm)">
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" id="firstName"
-                required />
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" name="email" [(ngModel)]="model.email" id="email" required />
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" name="password" [(ngModel)]="model.password" id="password"
-                required />
-        </div>
-        <div>
-            <button [disabled]="regForm.invalid" type="submit" class="btn btn-primary">Sign Up</button>
-            <a routerLink="/login">Sign In</a>
-        </div>
-    </form>
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+        <form #regForm="ngForm" (ngSubmit)="register(regForm)">
+          <!-- First name input -->
+          <div class="form-outline mb-4">
+            <input [(ngModel)]="model.firstName" name="firstName" type="text" id="form1Example13"
+                   class="form-control form-control-lg" required/>
+            <label class="form-label" for="form1Example13">First Name</label>
+          </div>
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input [(ngModel)]="model.email" name="email" type="email" id="form1Example23"
+                   class="form-control form-control-lg" required/>
+            <label class="form-label" for="form1Example23">Email address</label>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <input [(ngModel)]="model.password" name="password" type="password" id="form1Example33"
+                   class="form-control form-control-lg"/>
+            <label class="form-label" for="form1Example33">Password</label>
+          </div>
+
+          <div class="d-flex justify-content-around align-items-center mb-4">
+            <!-- Submit button -->
+            <button [disabled]="regForm.invalid" type="submit" class="btn btn-primary btn-lg btn-block w-100">Sign Up
+            </button>
+          </div>
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0 text-muted">Have an account?</p>
+          </div>
+          <div class="d-flex justify-content-around align-items-center mb-4">
+            <a class="btn btn-primary btn-lg btn-block w-100" style="background-color: #3b5998" routerLink="/login"
+               role="button">
+              <i class="fab fa-facebook-f me-2"></i>Sign In
+            </a>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-8 col-lg-7 col-xl-6">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+             class="img-fluid" alt="Phone image">
+      </div>
     </div>
+  </div>
 </section>

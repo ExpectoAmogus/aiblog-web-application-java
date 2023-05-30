@@ -39,7 +39,7 @@
           <ul class="footer-links footer-blog-entry list-unstyled">
             <li *ngFor="let article of articles">
               <a [routerLink]="['/articles/article', article.id]" class="d-flex align-items-center">
-<!--                <img [src]="" alt="" class="img-fluid me-3">-->
+                <img [src]="getArticleImage(article.id)" alt="{{article.title}}" class="img-fluid me-3">
                 <div>
                   <div class="post-meta d-block"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span> <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
                   <span>{{article.title}}</span>
