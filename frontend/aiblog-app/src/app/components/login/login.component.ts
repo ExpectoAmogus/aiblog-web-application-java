@@ -25,10 +25,7 @@ export class LoginComponent implements OnInit{
     this.authService.login(loginForm.value).subscribe({
       next: (response) => {
         this.token = response.token;
-        sessionStorage.setItem(
-          'token',
-          this.token
-        );
+        sessionStorage.setItem('token', this.token);
         this.router.navigate(['']);
         loginForm.reset()
       },

@@ -25,6 +25,16 @@ export class AuthService {
     return authorities.some((a: { authority: string; }) => a.authority === 'devs:write');
   }
 
+  isAuthenticated(): boolean {
+    // @ts-ignore
+    let token = sessionStorage.getItem('token');
+    return token !== null;
+  }
+
+  getAuthorities() {
+    // @ts-ignore
+    return JSON.parse(sessionStorage.getItem('authorities'));
+  }
   getCurrentUserId(): number {
       // @ts-ignore
     return parseInt(sessionStorage.getItem('currentUserId'), 10);

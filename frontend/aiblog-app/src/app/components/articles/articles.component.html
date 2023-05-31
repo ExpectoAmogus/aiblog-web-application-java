@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div *ngIf="articles.length > 0" class="col-md-9" data-aos="fade-up">
-        <h3 class="category-title">Category: </h3>
+        <h3 class="category-title">Category: {{activeCategory}}</h3>
         <ng-container *ngFor="let article of articles">
           <div class="d-md-flex post-entry-2 half">
             <a [routerLink]="['/articles/article', article.id]" class="me-4 thumbnail">

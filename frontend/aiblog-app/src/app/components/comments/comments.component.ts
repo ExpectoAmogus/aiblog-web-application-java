@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CommentsService} from "../../services/comments.service";
 import {CommentsDTO} from "../../models/comments";
 import {ActiveComment} from "../../models/activeComment";
@@ -8,7 +8,7 @@ import {ActiveComment} from "../../models/activeComment";
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css']
 })
-export class CommentsComponent implements OnInit {
+export class CommentsComponent implements OnInit, OnChanges {
   @Input() currentUserId!: number;
   @Input() currentArticleId!: number;
 
@@ -20,15 +20,31 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.commentsService.getComments(this.currentArticleId).subscribe((comments) => {
+    this.getComments(this.currentArticleId);
+  }
+
+  getComments(articleId?: number): void {
+    this.commentsService.getComments(articleId).subscribe((comments) => {
       this.comments = comments;
-      this.mainComments = comments.filter(comment => comment.parentId === null)
+      this.refreshMainComments();
     })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentArticleId'] && !changes['currentArticleId'].firstChange) {
+      const newArticleId = changes['currentArticleId'].currentValue;
+      this.getComments(newArticleId);
+    }
+  }
+
+  refreshMainComments(): void {
+    this.mainComments = this.comments.filter(comment => comment.parentId === null);
   }
 
   addComment({text, parentId}: { text: string; parentId: null | number; }): void {
     this.commentsService.addComment(this.currentArticleId, text, parentId).subscribe(createdComment => {
       this.comments = [...this.comments, createdComment];
+      this.refreshMainComments();
       this.activeComment = null;
     })
   }
@@ -41,6 +57,7 @@ export class CommentsComponent implements OnInit {
         }
         return comment;
       });
+      this.refreshMainComments();
       this.activeComment = null;
     })
   }
@@ -48,6 +65,7 @@ export class CommentsComponent implements OnInit {
   public deleteComment(commentId: number): void {
     this.commentsService.deleteComment(commentId).subscribe(() => {
       this.comments = this.comments.filter(comment => comment.id !== commentId);
+      this.refreshMainComments();
     })
   }
 

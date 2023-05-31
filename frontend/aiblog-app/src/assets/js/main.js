@@ -1,11 +1,12 @@
 /**
-* Template Name: ZenBlog
-* Updated: Mar 10 2023 with Bootstrap v5.2.3
-* Template URL: https://bootstrapmade.com/zenblog-bootstrap-blog-template/
-* Author: BootstrapMade.com
-* License: https:///bootstrapmade.com/license/
-*/
-document.addEventListener('DOMContentLoaded', () => {
+ * Template Name: ZenBlog
+ * Updated: Mar 10 2023 with Bootstrap v5.2.3
+ * Template URL: https://bootstrapmade.com/zenblog-bootstrap-blog-template/
+ * Author: BootstrapMade.com
+ * License: https:///bootstrapmade.com/license/
+ */
+
+async function initializeZenBlog() {
   "use strict";
 
   /**
@@ -21,17 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Mobile nav toggle
    */
-
   const mobileNavToogleButton = document.querySelector('.mobile-nav-toggle');
 
   if (mobileNavToogleButton) {
-    mobileNavToogleButton.addEventListener('click', function(event) {
+    mobileNavToogleButton.addEventListener('click', async function(event) {
       event.preventDefault();
-      mobileNavToogle();
+      await mobileNavToogle();
     });
   }
 
-  function mobileNavToogle() {
+  async function mobileNavToogle() {
     document.querySelector('body').classList.toggle('mobile-nav-active');
     mobileNavToogleButton.classList.toggle('bi-list');
     mobileNavToogleButton.classList.toggle('bi-x');
@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
    * Hide mobile nav on same-page/hash links
    */
   document.querySelectorAll('#navbar a').forEach(navbarlink => {
-
     if (!navbarlink.hash) return;
 
     let section = document.querySelector(navbarlink.hash);
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navDropdowns = document.querySelectorAll('.navbar .dropdown > a');
 
   navDropdowns.forEach(el => {
-    el.addEventListener('click', function(event) {
+    el.addEventListener('click', async function(event) {
       if (document.querySelector('.mobile-nav-active')) {
         event.preventDefault();
         this.classList.toggle('active');
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropDownIndicator.classList.toggle('bi-chevron-up');
         dropDownIndicator.classList.toggle('bi-chevron-down');
       }
-    })
+    });
   });
 
   /**
@@ -78,21 +77,23 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const scrollTop = document.querySelector('.scroll-top');
   if (scrollTop) {
-    const togglescrollTop = function() {
+    const togglescrollTop = async function() {
       window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
+    };
     window.addEventListener('load', togglescrollTop);
     document.addEventListener('scroll', togglescrollTop);
-    scrollTop.addEventListener('click', window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    }));
+    scrollTop.addEventListener('click', async () => {
+      await window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
   }
 
   /**
    * Hero Slider
    */
-  var swiper = new Swiper(".sliderFeaturedPosts", {
+  var swiper = new Swiper('.sliderFeaturedPosts', {
     spaceBetween: 0,
     speed: 500,
     centeredSlides: true,
@@ -103,12 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
       disableOnInteraction: false,
     },
     pagination: {
-      el: ".swiper-pagination",
+      el: '.swiper-pagination',
       clickable: true,
     },
     navigation: {
-      nextEl: ".custom-swiper-button-next",
-      prevEl: ".custom-swiper-button-prev",
+      nextEl: '.custom-swiper-button-next',
+      prevEl: '.custom-swiper-button-prev',
     },
   });
 
@@ -117,38 +118,43 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const searchOpen = document.querySelector('.js-search-open');
   const searchClose = document.querySelector('.js-search-close');
-  const searchWrap = document.querySelector(".js-search-form-wrap");
+  const searchWrap = document.querySelector('.js-search-form-wrap');
 
-  searchOpen.addEventListener("click", (e) => {
-    e.preventDefault();
-    searchWrap.classList.add("active");
-  });
-
-  searchClose.addEventListener("click", (e) => {
-    e.preventDefault();
-    searchWrap.classList.remove("active");
-  });
+  if (searchOpen) {
+    searchOpen.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await searchWrap.classList.add('active');
+    });
+  }
+  if (searchClose) {
+    searchClose.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await searchWrap.classList.remove('active');
+    });
+  }
 
   /**
    * Initiate glightbox
    */
   const glightbox = GLightbox({
-    selector: '.glightbox'
+    selector: '.glightbox',
   });
 
   /**
    * Animation on scroll function and init
    */
-  function aos_init() {
-    AOS.init({
+  async function aos_init() {
+    await AOS.init({
       duration: 1000,
       easing: 'ease-in-out',
       once: true,
-      mirror: false
+      mirror: false,
     });
   }
-  window.addEventListener('load', () => {
-    aos_init();
-  });
 
+  await aos_init();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await initializeZenBlog();
 });

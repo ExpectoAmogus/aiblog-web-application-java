@@ -21,17 +21,15 @@ export class AuthenticationGuard implements CanActivate {
     }
 
     const authoritiesData = route.data['authorities'];
-    let token = sessionStorage.getItem('token');
-    // @ts-ignore
-    let authorities = JSON.parse(sessionStorage.getItem('authorities'));
+    let token = this.authService.isAuthenticated();
+    let authorities = this.authService.getAuthorities();
 
     if (!token) {
       return this.router.parseUrl('/login');
     }
-    if (!authorities.some((a: { authority: string; }) => authoritiesData.some((d: { authority: string; }) => d.authority === a.authority))) {
-      return this.router.parseUrl('');
+    if (!authorities.some((a: { authority: string; }) => authoritiesData.some((d: { authority: string; }) => d.authority === a.authority)) && token) {
+      return this.router.navigate(['/error/403']);
     }
     return true;
   }
-
 }

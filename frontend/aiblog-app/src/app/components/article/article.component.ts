@@ -5,7 +5,7 @@ import {ArticleDTO} from '../../models/article';
 import {ImagesService} from '../../services/images.service';
 import {forkJoin} from "rxjs";
 import {AuthService} from "../../services/auth.service";
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {DomSanitizer, SafeUrl, Title} from '@angular/platform-browser';
 
 
 @Component({
@@ -23,7 +23,8 @@ export class ArticleComponent implements OnInit {
     private authService: AuthService,
     private articlesService: ArticlesService,
     private sanitizer: DomSanitizer,
-    private imagesService: ImagesService
+    private imagesService: ImagesService,
+    private titleService: Title
   ) {
   }
 
@@ -45,6 +46,7 @@ export class ArticleComponent implements OnInit {
         next: (response: ArticleDTO) => {
           this.article = response;
           this.getImages(this.article.images);
+          this.titleService.setTitle(`${this.article.title} - AI Blog`);
         }
       });
       this.articlesService.incrementArticleViews(articleId).subscribe();

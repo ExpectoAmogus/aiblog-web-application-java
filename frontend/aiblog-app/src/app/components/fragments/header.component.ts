@@ -30,19 +30,14 @@ export class HeaderComponent implements OnInit {
     });
   }
   updateNavbar() {
-    this.token = sessionStorage.getItem('token');
     this.isAdmin = this.authService.isAdmin();
+    this.token = sessionStorage.getItem('token');
     this.clearSearchQuery();
   }
 
   clearSearchQuery(): void {
     this.searchService.clearSearchQuery();
     this.searchInput.nativeElement.value = '';
-  }
-
-  public logout(): void {
-    this.authService.logout()
-    this.router.navigate(['/login']);
   }
 
   public searchArticles(query: string){

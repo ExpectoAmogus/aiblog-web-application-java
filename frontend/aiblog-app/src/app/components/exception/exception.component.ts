@@ -7,11 +7,15 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./exception.component.css']
 })
 export class ExceptionComponent implements OnInit {
-  errorCode: number | undefined;
+  errorCode!: number;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.errorCode = +!this.route.snapshot.paramMap.get('errorCode');
+    this.route.params.subscribe(params =>
+    {
+      this.errorCode = params['errorCode']
+    })
+    console.log(this.errorCode)
   }
 }

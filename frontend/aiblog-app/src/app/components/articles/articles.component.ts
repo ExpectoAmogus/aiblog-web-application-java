@@ -22,6 +22,7 @@ export class ArticlesComponent implements OnInit {
   public currentPage = 0;
   public pageSize = 24;
   public totalPages = 1;
+  public activeCategory?: string;
 
   constructor(
     private articlesService: ArticlesService,
@@ -65,7 +66,7 @@ export class ArticlesComponent implements OnInit {
         next: (response) => {
           this.originalArticles = response;
           this.articles = category ? response.filter(article => article.category === category) : response;
-
+          this.activeCategory = category ? category : 'All';
           const totalArticles = this.articles.length;
           this.totalPages = Math.ceil(totalArticles / this.pageSize);
           if (this.totalPages < 1){

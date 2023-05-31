@@ -1,1 +1,58 @@
-<p>exception works!</p>
+<ng-container *ngIf="errorCode >= 500 && errorCode < 600">
+  <h1>Server error, code: {{errorCode}}</h1>
+</ng-container>
+<ng-container *ngIf="errorCode != 401 && errorCode != 404 && errorCode != 403 && errorCode >= 400 && errorCode < 500">
+  <h1>Client error, code: {{errorCode}}</h1>
+</ng-container>
+<ng-container *ngIf="errorCode >= 600">
+  <h1>??? error, code: {{errorCode}}</h1>
+</ng-container>
+<ng-container *ngIf="errorCode == 404">
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="text-center">
+          <h1 class="display-1 fw-bold">404</h1>
+          <p class="fs-3"><span class="text-danger">Opps!</span> Page not found.</p>
+          <p class="lead">
+            The page you’re looking for doesn’t exist.
+          </p>
+          <a routerLink="/" class="btn btn-primary">Go Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+<ng-container *ngIf="errorCode == 403">
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="text-center">
+          <h1 class="display-1 fw-bold">403</h1>
+          <p class="fs-3"><span class="text-danger">Opps!</span> Access denied</p>
+          <p class="lead">
+            Access to the page you want to go to is forbidden.
+          </p>
+          <a routerLink="/" class="btn btn-primary">Go Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+<ng-container *ngIf="errorCode == 401">
+  <section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="text-center">
+          <h1 class="display-1 fw-bold">401</h1>
+          <p class="fs-3"><span class="text-danger">Opps!</span> Access denied</p>
+          <p class="lead">
+            You are not Authorized or your token has expired!
+          </p>
+          <a routerLink="/login" class="btn btn-primary">Go to login page</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>
+
