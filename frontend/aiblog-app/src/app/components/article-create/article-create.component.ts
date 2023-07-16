@@ -22,6 +22,7 @@ export class ArticleCreateComponent implements OnInit {
   content: string = '';
   images!: FileList;
   prompt: string = '';
+  statement: string = 'article';
   categories = CATEGORIES;
   categoryControl = new FormControl('', []);
   selectedCategory: string = '';
@@ -74,7 +75,7 @@ export class ArticleCreateComponent implements OnInit {
   }
 
   generateContent() {
-    this.gptService.getContent(this.prompt).subscribe({
+    this.gptService.getContent(this.prompt, this.statement).subscribe({
       next: (response: any) => {
         this.content = response;
       }

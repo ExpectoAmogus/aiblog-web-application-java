@@ -6,7 +6,9 @@
       <div class="row g-5">
         <div class="col-lg-4">
           <h3 class="footer-heading">About AI Blog</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam ab, perspiciatis beatae autem deleniti voluptate nulla a dolores, exercitationem eveniet libero laudantium recusandae officiis qui aliquid blanditiis omnis quae. Explicabo?</p>
+          <p>Our blog is a digital haven for curious minds seeking to delve into diverse topics, ranging from science
+            and technology to art, literature, and everything in between. We believe that knowledge knows no bounds, and
+            our goal is to inspire, educate, and entertain through our thought-provoking articles.</p>
           <p><a routerLink="/about" class="footer-link-more">Learn More</a></p>
         </div>
         <div class="col-6 col-lg-2">
@@ -20,16 +22,10 @@
         </div>
         <div class="col-6 col-lg-2">
           <h3 class="footer-heading">Categories</h3>
-          <ul class="footer-links list-unstyled">
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Business</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Culture</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Sport</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Food</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Politics</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Celebrity</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Startups</a></li>
-            <li><a href="category.html"><i class="bi bi-chevron-right"></i> Travel</a></li>
-
+          <ul *ngIf="categories" class="footer-links list-unstyled">
+            <li *ngFor="let category of categories"><a [routerLink]="['/articles']"
+                   [queryParams]="{category: category.value}"><i
+              class="bi bi-chevron-right"></i>{{ category.viewValue }} </a></li>
           </ul>
         </div>
 
@@ -41,7 +37,8 @@
               <a [routerLink]="['/articles/article', article.id]" class="d-flex align-items-center">
                 <img [src]="getArticleImage(article.id)" alt="{{article.title}}" class="img-fluid me-3">
                 <div>
-                  <div class="post-meta d-block"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span> <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+                  <div class="post-meta d-block"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span>
+                    <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
                   <span>{{article.title}}</span>
                 </div>
               </a>

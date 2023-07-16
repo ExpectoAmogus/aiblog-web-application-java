@@ -4,6 +4,7 @@ import {ArticlesService} from "../../services/articles.service";
 import {ArticleDTO} from "../../models/article";
 import {ImagesService} from "../../services/images.service";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {CATEGORIES} from "../../models/categories";
 
 @Component({
   selector: 'app-footer',
@@ -12,6 +13,7 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 export class FooterComponent implements OnInit {
   articles: ArticleDTO[] = [];
   articleImages: { [articleId: number]: SafeUrl } = {};
+  public categories = CATEGORIES;
   constructor(
     private router: Router,
     private articlesService: ArticlesService,

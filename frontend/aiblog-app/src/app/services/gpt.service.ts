@@ -14,15 +14,16 @@ export class GptService {
   constructor(
     private http: HttpClient,
     private errorHandlingService: ExceptionService
-    ) {}
+  ) {
+  }
 
-  getContent(prompt: any): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/v1/gpt/generate-content?content=${prompt}`, { responseType: 'text'})
-    .pipe(
-      catchError(error => {
-        this.errorHandlingService.handleHttpError(error);
-        throw error;
-      })
-    );
+  getContent(prompt: any, statement: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/v1/gpt/generate-content?content=${prompt}&statement=${statement}`, {responseType: 'text'})
+      .pipe(
+        catchError(error => {
+          this.errorHandlingService.handleHttpError(error);
+          throw error;
+        })
+      );
   }
 }

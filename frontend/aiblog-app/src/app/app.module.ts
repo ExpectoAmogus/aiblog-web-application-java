@@ -29,6 +29,7 @@ import { CommentFormComponent } from './components/comment-form/comment-form.com
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { LogoutComponent } from './components/logout/logout.component';
     SidebarComponent,
     AppLayoutComponent,
     LogoutComponent,
+    AdminPanelComponent,
   ],
   imports: [
     CKEditorModule,

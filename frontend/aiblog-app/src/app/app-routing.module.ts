@@ -13,6 +13,7 @@ import {ExceptionComponent} from './components/exception/exception.component';
 import {ContactComponent} from "./components/contact/contact.component";
 import {AppLayoutComponent} from "./components/app-layout/app-layout.component";
 import {LogoutComponent} from "./components/logout/logout.component";
+import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 
 const routes: Routes = [
 
@@ -46,6 +47,14 @@ const routes: Routes = [
         path: '',
         component: HomeComponent,
         data: {title: 'Home'}
+      },
+      {
+        path: 'admin/panel',
+        component: AdminPanelComponent,
+        data: {
+          authorities: [{authority: 'devs:read'}, {authority: 'devs:write'}],
+          title: 'Admin Panel'
+        }
       },
       {
         path: 'about',
