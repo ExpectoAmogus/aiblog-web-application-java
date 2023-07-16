@@ -4,6 +4,7 @@ import com.expectoamogus.aiblog.dto.user.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name = "article")
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class Article extends BaseEntity {
     @Column(name = "uuid", unique = true)
     private String uuid;

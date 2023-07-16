@@ -17,7 +17,9 @@ public class GptController {
 
     @PreAuthorize("hasAuthority('devs:write')")
     @GetMapping("/generate-content")
-    public String generateResponse(@RequestParam String content, HttpServletRequest request) {
-        return gptService.getContentFromGPT(content, request);
+    public String generateResponse(@RequestParam String content,
+                                   @RequestParam("statement") String statement,
+                                   HttpServletRequest request) {
+        return gptService.getContentFromGPT(statement, content, request);
     }
 }

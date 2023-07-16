@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class GptService {
     private final ApiUtils apiUtils;
 
-    public String getContentFromGPT(String content, HttpServletRequest request) {
+    public String getContentFromGPT(String statement, String content, HttpServletRequest request) {
         var service = apiUtils.getOpenAiService();
         ChatCompletionResult response = new ChatCompletionResult();
         try {
-            response = apiUtils.messageToGPT(apiUtils.getMessages(content, request), service);
+            response = apiUtils.messageToGPT(apiUtils.getMessages(statement, content, request), service);
         } catch (Exception e) {
             e.printStackTrace();
         }
