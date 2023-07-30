@@ -1,5 +1,6 @@
 package com.expectoamogus.aiblog.service.impl;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@Setter
 public class S3Service {
     private final S3Client s3Client;
     @Value("${aws.bucket.name}")

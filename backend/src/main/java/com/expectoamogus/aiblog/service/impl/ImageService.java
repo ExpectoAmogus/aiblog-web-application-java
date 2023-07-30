@@ -17,7 +17,7 @@ public class ImageService {
 
     public ResponseEntity<String> getImage(String articleId, Long imageId) {
         List<String> images = s3Service.getImagesByArticleId(articleId);
-        if (images.isEmpty()) {
+        if (images.isEmpty() || imageId <= 0 || imageId > images.size()) {
             return ResponseEntity.notFound().build();
         }
         String image = images.get(Math.toIntExact(imageId) - 1);
