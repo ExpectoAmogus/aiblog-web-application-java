@@ -5,7 +5,6 @@ import com.expectoamogus.aiblog.dto.mappers.ArticleDTOMapper;
 import com.expectoamogus.aiblog.dto.user.UserDTO;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.models.User;
-import com.expectoamogus.aiblog.models.enums.Role;
 import com.expectoamogus.aiblog.service.ArticleFormRepository;
 import com.expectoamogus.aiblog.service.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -29,10 +27,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 

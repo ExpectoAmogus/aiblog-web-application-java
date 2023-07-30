@@ -1,9 +1,7 @@
 package com.expectoamogus.aiblog.service.impl;
 
 import com.expectoamogus.aiblog.dto.comment.CommentDTO;
-import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.models.Comment;
-import com.expectoamogus.aiblog.models.User;
 import com.expectoamogus.aiblog.service.ArticleFormRepository;
 import com.expectoamogus.aiblog.service.CommentRepository;
 import com.expectoamogus.aiblog.service.UserRepository;
@@ -16,14 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
