@@ -2,13 +2,17 @@ package com.expectoamogus.aiblog.utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @Component
 public class GPTConfig {
-    private final String MODEL_ID = "gpt-3.5-turbo";
-    private final int MAX_TOKENS = 3000;
-    private final double TEMPERATURE = 0.5;
+    @Value("${gpt.config.model}")
+    private String MODEL_ID;
+    @Value("${gpt.config.tokens}")
+    private int MAX_TOKENS;
+    @Value("${gpt.config.temperature}")
+    private double TEMPERATURE;
 }

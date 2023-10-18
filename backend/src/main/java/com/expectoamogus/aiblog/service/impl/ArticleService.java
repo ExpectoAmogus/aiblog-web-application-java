@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -66,7 +67,7 @@ public class ArticleService {
         double now = System.currentTimeMillis();
         List<ArticleDTO> articleDTOsWithTrendingScore = new ArrayList<>();
         for (ArticleDTO articleDTO : articleDTOs) {
-            double elapsedTime = now - articleDTO.dateOfCreated().toEpochSecond(ZoneOffset.UTC) * 1000;
+            double elapsedTime = now - LocalDateTime.parse(articleDTO.dateOfCreated()).toEpochSecond(ZoneOffset.UTC) * 1000;
             double trendingScore = (articleDTO.views() - 1) / Math.pow(exponentBase, elapsedTime / timeConstant);
             ArticleDTO articleDTOWithTrendingScore = articleDTO.withTrendingScore(trendingScore);
             articleDTOsWithTrendingScore.add(articleDTOWithTrendingScore);

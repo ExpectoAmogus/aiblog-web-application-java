@@ -1,5 +1,8 @@
 package com.expectoamogus.aiblog.models.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Permission {
     USERS_READ("users:read"),
     USERS_WRITE("users:write"),
@@ -14,7 +17,4 @@ public enum Permission {
         this.permission = permission;
     }
 
-    public String getPermission() {
-        return permission;
-    }
 }

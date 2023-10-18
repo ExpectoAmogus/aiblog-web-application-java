@@ -52,7 +52,7 @@ const routes: Routes = [
         path: 'admin/panel',
         component: AdminPanelComponent,
         data: {
-          authorities: [{authority: 'devs:read'}, {authority: 'devs:write'}],
+          authorities: ['devs:read', 'devs:write'],
           title: 'Admin Panel'
         }
       },
@@ -71,7 +71,7 @@ const routes: Routes = [
         component: ArticlesComponent,
         canActivate: [AuthenticationGuard],
         data: {
-          authorities: [{authority: 'users:read'}],
+          authorities: ['users:read'],
           title: 'Articles'
         }
       },
@@ -80,7 +80,7 @@ const routes: Routes = [
         component: ArticleCreateComponent,
         canActivate: [AuthenticationGuard],
         data: {
-          authorities: [{authority: 'devs:read'}, {authority: 'devs:write'}],
+          authorities: ['devs:read','devs:write'],
           title: 'Create Article'
         }
       },
@@ -89,7 +89,7 @@ const routes: Routes = [
         component: ArticleComponent,
         canActivate: [AuthenticationGuard],
         data: {
-          authorities: [{authority: 'users:read'}],
+          authorities: ['users:read'],
           title: 'Article'
         }
       },
@@ -98,7 +98,7 @@ const routes: Routes = [
         component: ArticleEditComponent,
         canActivate: [AuthenticationGuard],
         data: {
-          authorities: [{authority: 'devs:read'}, {authority: 'devs:write'}],
+          authorities: ['devs:read', 'devs:write'],
           title: 'Edit Article'
         }
       }
@@ -108,7 +108,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

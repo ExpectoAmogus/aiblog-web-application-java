@@ -13,7 +13,7 @@ public record ArticleDTO(
         Long views,
         List<String> images,
         UserDTO user,
-        LocalDateTime dateOfCreated,
+        String dateOfCreated,
         Double trendingScore
 ) {
     public ArticleDTO withTrendingScore(Double trendingScore) {

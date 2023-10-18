@@ -1,10 +1,12 @@
 package com.expectoamogus.aiblog.models.enums;
 
+import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter
 public enum Role{
     ROLE_USER(Set.of(Permission.USERS_READ)),
     ROLE_ADMIN(Set.of(Permission.DEVS_READ, Permission.DEVS_WRITE, Permission.USERS_READ)),
@@ -14,10 +16,6 @@ public enum Role{
 
     Role(Set<Permission> permissions) {
         this.permissions = permissions;
-    }
-
-    public Set<Permission> getPermissions() {
-        return permissions;
     }
 
     public Set<SimpleGrantedAuthority> getAuthorities() {

@@ -4,5 +4,5 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public record ResponseDTO(String username, Long id, String token, Collection<? extends GrantedAuthority> authorities) {
+public record ResponseDTO(Long id, String token) {
 }

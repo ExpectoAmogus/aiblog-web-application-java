@@ -4,10 +4,13 @@ import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @Entity
 @Table(name = "comments")
@@ -26,18 +29,4 @@ public class Comment extends BaseEntity {
     private Long userId;
     @Column(name = "parentId")
     private Long parentId;
-
-    public ArticleDTO getArticleDTO() {
-        return new ArticleDTO(
-                article.getId(),
-                article.getUuid(),
-                article.getTitle(),
-                article.getContent(),
-                article.getCategory(),
-                article.getViews(),
-                article.getImages(),
-                article.getUserDTO(),
-                article.getDateOfCreated(),
-                null);
-    }
 }

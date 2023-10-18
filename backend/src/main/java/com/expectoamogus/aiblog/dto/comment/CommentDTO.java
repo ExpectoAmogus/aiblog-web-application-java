@@ -10,10 +10,10 @@ public record CommentDTO(
         String username,
         String email,
         String text,
-        ArticleDTO article,
+        Long articleId,
         Long userId,
         Long parentId,
-        LocalDateTime dateOfCreated
+        String dateOfCreated
 ) {
     public static CommentDTO fromEntity(Comment comment) {
         return new CommentDTO(
@@ -21,10 +21,10 @@ public record CommentDTO(
                 comment.getUsername(),
                 comment.getEmail(),
                 comment.getText(),
-                comment.getArticleDTO(),
+                comment.getArticle().getId(),
                 comment.getUserId(),
                 comment.getParentId(),
-                comment.getDateOfCreated()
+                String.valueOf(comment.getDateOfCreated())
         );
     }
 }

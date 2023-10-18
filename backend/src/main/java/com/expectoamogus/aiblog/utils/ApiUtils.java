@@ -57,6 +57,15 @@ public class ApiUtils {
     @NotNull
     public List<ChatMessage> getMessages(String statement, String content, HttpServletRequest request) {
         List<ChatMessage> messages = new ArrayList<>();
+        String systemStringMessage = getStringMessage(statement, request);
+        ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), systemStringMessage);
+        messages.add(systemMessage);
+        ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), sanitizeContent(content));
+        messages.add(userMessage);
+        return messages;
+    }
+
+    private static String getStringMessage(String statement, HttpServletRequest request) {
         YamlMessageSource messageSource = new YamlMessageSource();
         String systemStringMessage = "";
         if (Objects.equals(statement, "article")){
@@ -67,11 +76,7 @@ public class ApiUtils {
             systemStringMessage = messageSource.getMessage("system.message.trends",
                     request.getLocale().getLanguage());
         }
-        ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), systemStringMessage);
-        messages.add(systemMessage);
-        ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), sanitizeContent(content));
-        messages.add(userMessage);
-        return messages;
+        return systemStringMessage;
     }
 
     // Implement a method to sanitize titles by removing unsupported characters

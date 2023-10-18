@@ -19,7 +19,7 @@ public class ArticleDTOMapper implements Function<Article, ArticleDTO> {
                 article.getViews(),
                 article.getImages(),
                 article.getUserDTO(),
-                article.getDateOfCreated(),
+                String.valueOf(article.getDateOfCreated()),
                 0.0
         );
     }

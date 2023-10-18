@@ -23,11 +23,16 @@ export class AuthenticationGuard implements CanActivate {
     const authoritiesData = route.data['authorities'];
     let token = this.authService.isAuthenticated();
     let authorities = this.authService.getAuthorities();
+    // console.log(authorities)
 
     if (!token) {
       return this.router.parseUrl('/login');
     }
-    if (!authorities.some((a: { authority: string; }) => authoritiesData.some((d: { authority: string; }) => d.authority === a.authority)) && token) {
+    if (
+      !authorities.some((authority: any) =>
+        authoritiesData.includes(authority)
+      )
+    ) {
       return this.router.navigate(['/error/403']);
     }
     return true;

@@ -46,6 +46,6 @@ public class Article extends BaseEntity {
                 user.getRole().getAuthorities(),
                 user.getUsername(),
                 null,
-                user.getDateOfCreated());
+                String.valueOf(user.getDateOfCreated()));
     }
 }
