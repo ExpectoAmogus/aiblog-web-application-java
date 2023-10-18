@@ -3,7 +3,7 @@ import {ArticlesService} from "../../services/articles.service";
 import {ArticleDTO} from "../../models/article";
 import {ImagesService} from "../../services/images.service";
 import {CATEGORIES} from "../../models/categories";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 @Component({

@@ -20,16 +20,16 @@ import {ExceptionComponent} from './components/exception/exception.component';
 import {ContactComponent} from './components/contact/contact.component';
 import {DatePipe} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
-import { FilterByCategoryPipe } from './filter-by-category.pipe';
-import { TruncateHTMLPipe } from './truncate-html.pipe';
-import { FilterCommentsByParentIdPipe } from './filter-comments-by-parent-id.pipe';
-import { CommentComponent } from './components/comment/comment.component';
-import { CommentsComponent } from './components/comments/comments.component';
-import { CommentFormComponent } from './components/comment-form/comment-form.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { AppLayoutComponent } from './components/app-layout/app-layout.component';
-import { LogoutComponent } from './components/logout/logout.component';
-import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import {FilterByCategoryPipe} from './filter-by-category.pipe';
+import {TruncateHTMLPipe} from './truncate-html.pipe';
+import {FilterCommentsByParentIdPipe} from './filter-comments-by-parent-id.pipe';
+import {CommentComponent} from './components/comment/comment.component';
+import {CommentsComponent} from './components/comments/comments.component';
+import {CommentFormComponent} from './components/comment-form/comment-form.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {AppLayoutComponent} from './components/app-layout/app-layout.component';
+import {LogoutComponent} from './components/logout/logout.component';
+import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [

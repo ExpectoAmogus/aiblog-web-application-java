@@ -1,9 +1,7 @@
 package com.expectoamogus.aiblog.models;
 
-import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

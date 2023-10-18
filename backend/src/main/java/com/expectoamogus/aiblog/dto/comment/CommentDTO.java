@@ -1,9 +1,6 @@
 package com.expectoamogus.aiblog.dto.comment;
 
-import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.expectoamogus.aiblog.models.Comment;
-
-import java.time.LocalDateTime;
 
 public record CommentDTO(
         Long id,

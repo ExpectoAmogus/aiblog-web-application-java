@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import {Observable, tap} from 'rxjs';
 import {environment} from 'src/environments/environments';
 import {ExceptionService} from './exception.service';
-import {getAuthorities} from "../models/user";
 import jwtDecode from "jwt-decode";
 
 @Injectable({

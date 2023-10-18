@@ -5,7 +5,7 @@ import {ArticlesService} from 'src/app/services/articles.service';
 import {GptService} from 'src/app/services/gpt.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {FormControl} from "@angular/forms";
-import { CATEGORIES } from '../../models/categories';
+import {CATEGORIES} from '../../models/categories';
 
 
 @Component({

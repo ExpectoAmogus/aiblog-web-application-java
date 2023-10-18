@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Event, NavigationEnd, Router} from "@angular/router";
 import {ArticlesService} from "../../services/articles.service";
 import {ArticleDTO} from "../../models/article";
