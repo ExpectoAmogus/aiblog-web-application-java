@@ -33,11 +33,11 @@ export class FooterComponent implements OnInit {
   }
 
   getArticles() {
-    this.articlesService.getArticles(0,4).subscribe({
+    this.articlesService.getArticles('',0,4).subscribe({
       next: (articles) => {
-          this.articles = articles;
+          this.articles = articles.content;
 
-        for (const article of articles) {
+        for (const article of articles.content) {
           this.imagesService
             .getImage(article.uuid, 1)
             .subscribe((data) => {

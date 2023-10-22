@@ -1,54 +1,68 @@
 <section class="py-5">
   <div class="container">
     <div class="row">
-      <div *ngIf="articles.length > 0" class="col-md-9" data-aos="fade-up">
-        <h3 class="category-title">Category: {{activeCategory}}</h3>
-        <ng-container *ngFor="let article of articles">
-          <div class="d-md-flex post-entry-2 half">
-            <a [routerLink]="['/articles/article', article.id]" class="me-4 thumbnail">
-              <img [src]="getArticleImage(article.id)" class="img-fluid"/>
-            </a>
-            <div>
-              <div class="post-meta"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span>
-                <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
-              <h3><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h3>
-              <p [innerHTML]="article.content | truncateHTML:200"></p>
-              <div class="d-flex align-items-center author">
-                <div class="name">
-                  <h3 class="m-0 p-0">{{article.user.firstName}}</h3>
-                  <h3 class="m-0 p-0">Views: {{article.views}}</h3>
-                </div>
+      <ng-container *ngIf="(articlesState$ | async) as state">
+        <div class="col-md-9" data-aos="fade-up">
+          <h3 class="category-title">Category: {{activeCategory}}</h3>
+<!--          TODO: fix category filter-->
+          <ng-container *ngFor="let article of state.content">
+            <div class="d-md-flex post-entry-2 half">
+              <a [routerLink]="['/articles/article', article.id]" class="me-4 thumbnail">
+                <img [src]="getArticleImage(article.id)" class="img-fluid"/>
+              </a>
+              <div>
+                <div class="post-meta"><span class="date">{{article.category}}</span> <span class="mx-1">&bullet;</span>
+                  <span>{{article.dateOfCreated | date:'d MMMM y HH:mm'}}</span></div>
+                <h3><a [routerLink]="['/articles/article', article.id]">{{article.title}}</a></h3>
+                <p [innerHTML]="article.content | truncateHTML:200"></p>
+                <div class="d-flex align-items-center author">
+                  <div class="name">
+                    <h3 class="m-0 p-0">{{article.user.firstName}}</h3>
+                    <h3 class="m-0 p-0">Views: {{article.views}}</h3>
+                  </div>
 
+                </div>
               </div>
             </div>
-          </div>
-          <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
-                  data-original-title="Edit" style="margin-left: 10px;">Edit
-          </button>
-          <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
-                  data-original-title="Delete" style="margin-left: 10px;">Delete
-          </button>
-        </ng-container>
-        <div class="text-start py-4">
-          <div class="custom-pagination">
-            <a class="prev" [class.disabled]="currentPage === 0" (click)="prevPage()">Previous</a>
-            <a class="active">1</a>
-            <a class="next" [class.disabled]="currentPage === totalPages - 1" (click)="nextPage()">Next</a>
+            <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
+                    data-original-title="Edit" style="margin-left: 10px;">Edit
+            </button>
+            <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
+                    data-original-title="Delete" style="margin-left: 10px;">Delete
+            </button>
+          </ng-container>
+          <div *ngIf="state.content.length > 0">
+            <ul class="pagination justify-content-center">
+              <!-- Previous Page -->
+              <li class="page-item pointer" [ngClass]="0 == (currentPage$ | async) ? ' disabled' : ''">
+                <a (click)="goToNextOrPreviousPage('backward', query)" class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">&laquo; Previous</span>
+                </a>
+              </li>
+              <!-- Page Numbers -->
+              <li *ngFor="let pageNumber of [].constructor(state.totalPages); let i = index;"
+                  class="page-item pointer" [ngClass]="i == (currentPage$ | async) ? ' active' : ''">
+                <a (click)="gotToPage(query, i)" class="page-link">
+                  {{ i + 1 }}
+                </a>
+              </li>
+              <!-- Next Page -->
+              <li class="page-item pointer" [ngClass]="(state.totalPages - 1) == (currentPage$ | async) ? ' disabled' : ''">
+                <a (click)="goToNextOrPreviousPage('forward', query)" class="page-link" aria-label="Next">
+                  <span aria-hidden="true">Next &raquo;</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="row mt-2">
-          <div class="col-md-12">
-            <p>Page {{currentPage + 1}} of {{totalPages}}</p>
+        <!-- Notification for no articles -->
+        <div *ngIf="state.content.length < 1" class="col-md-9" data-aos="fade-up">
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">NO ARTICLES!</h4>
+            <p>No Articles were found.</p>
           </div>
         </div>
-      </div>
-      <!-- Notification for no articles -->
-      <div *ngIf="articles?.length == 0" class="col-md-9" data-aos="fade-up">
-        <div class="alert alert-info" role="alert">
-          <h4 class="alert-heading">NO ARTICLES!</h4>
-          <p>No Articles were found.</p>
-        </div>
-      </div>
+      </ng-container>
       <div class="col-md-3">
         <app-sidebar [categories]="categories" (filterArticles)="filterArticles($event)"></app-sidebar>
       </div>

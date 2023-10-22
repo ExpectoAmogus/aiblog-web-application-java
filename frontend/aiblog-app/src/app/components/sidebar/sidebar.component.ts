@@ -38,25 +38,25 @@ export class SidebarComponent implements OnInit{
   }
 
   public getLatestArticles(): void {
-    this.articlesService.getArticles(0, 6).subscribe({
+    this.articlesService.getArticles('', 0,6).subscribe({
       next: (response) => {
-        this.articlesLatest = response;
+        this.articlesLatest = response.content;
       }
     });
   }
 
   public getPopularArticles(): void {
-    this.articlesService.getPopularArticles(0, 6).subscribe({
+    this.articlesService.getPopularArticles('', 0,6).subscribe({
       next: (response) => {
-        this.articlesPopular = response;
+        this.articlesPopular = response.content;
       }
     });
   }
 
   public getTrendingArticles(): void {
-    this.articlesService.getTrendingArticles(0, 6).subscribe({
+    this.articlesService.getTrendingArticles('', 0,6).subscribe({
       next: (response) => {
-        this.articlesTrending = response;
+        this.articlesTrending = response.content;
       }
     });
   }

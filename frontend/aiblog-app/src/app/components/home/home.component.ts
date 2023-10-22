@@ -21,7 +21,8 @@ export class HomeComponent implements OnInit {
     private articlesService: ArticlesService,
     private sanitizer: DomSanitizer,
     private imagesService: ImagesService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.getArticles();
@@ -29,9 +30,9 @@ export class HomeComponent implements OnInit {
   }
 
   getArticles(): void {
-    this.articlesService.getArticles(0,24).subscribe(articles => {
-      this.articles = articles;
-      for (const article of articles) {
+    this.articlesService.getArticles('', 0, 24).subscribe(articles => {
+      this.articles = articles.content;
+      for (const article of articles.content) {
         this.imagesService
           .getImage(article.uuid, 1)
           .subscribe((data) => {
@@ -40,9 +41,10 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
   getTrendingArticles(): void {
-    this.articlesService.getTrendingArticles(0,6).subscribe(articles => {
-      this.trendingArticles = articles;
+    this.articlesService.getTrendingArticles('', 0, 6).subscribe(articles => {
+      this.trendingArticles = articles.content;
     });
   }
 

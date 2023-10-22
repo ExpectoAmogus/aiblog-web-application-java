@@ -7,6 +7,8 @@ import {SearchService} from "../../services/search.service";
 import {ImagesService} from "../../services/images.service";
 import {CATEGORIES} from "../../models/categories";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {BehaviorSubject, map, Observable} from "rxjs";
+import {Page} from "../../models/page";
 
 @Component({
   selector: 'app-articles',
@@ -14,15 +16,17 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
   styleUrls: ['./articles.component.css']
 })
 export class ArticlesComponent implements OnInit {
-  public articles: ArticleDTO[] = [];
-  private originalArticles: ArticleDTO[] = [];
   public isAdmin: boolean | undefined;
   public articleImages: { [articleId: number]: SafeUrl } = {};
   public categories = CATEGORIES;
-  public currentPage = 0;
-  public pageSize = 24;
-  public totalPages = 1;
   public activeCategory?: string;
+  public query?: string;
+
+  articlesState$: Observable<Page> | undefined;
+  // @ts-ignore
+  responseSubject = new BehaviorSubject<Page>(null);
+  private currentPageSubject = new BehaviorSubject<number>(0);
+  currentPage$ = this.currentPageSubject.asObservable();
 
   constructor(
     private articlesService: ArticlesService,
@@ -43,15 +47,16 @@ export class ArticlesComponent implements OnInit {
       if (category) {
         this.filterArticles(category);
       } else {
-        this.getArticles()
+        this.getArticles();
       }
     });
 
     this.searchService.getSearchQuery().subscribe((query) => {
       if (query) {
-        this.searchArticles(query)
+        this.gotToPage(query)
+        this.query = query;
       } else {
-        this.restoreArticles()
+        this.getArticles()
       }
     })
   }
@@ -62,26 +67,46 @@ export class ArticlesComponent implements OnInit {
   }
 
   public getArticles(category?: string): void {
-      this.articlesService.getArticles(this.currentPage, this.pageSize).subscribe({
-        next: (response) => {
-          this.originalArticles = response;
-          this.articles = category ? response.filter(article => article.category === category) : response;
-          this.activeCategory = category ? category : 'All';
-          const totalArticles = this.articles.length;
-          this.totalPages = Math.ceil(totalArticles / this.pageSize);
-          if (this.totalPages < 1){
-            this.totalPages = 1;
-          }
+    this.articlesState$ = this.articlesService.getArticles().pipe(
+      map((response) => {
+        this.activeCategory = category ? category : 'All';
+        console.log("Active category: ", this.activeCategory)
+        this.responseSubject.next(response);
+        this.currentPageSubject.next(response.number);
 
-          for (const article of response) {
-            this.imagesService
-              .getImage(article.uuid, 1)
-              .subscribe((data) => {
-                this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(data);
-              });
-          }
+        for (const article of response.content) {
+          this.imagesService
+            .getImage(article.uuid, 1)
+            .subscribe((data) => {
+              this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(data);
+            });
         }
-      });
+        return response;
+      })
+    );
+  }
+
+  gotToPage(title?: string, pageNumber: number = 0): void {
+    this.articlesState$ = this.articlesService.getArticles(title, pageNumber).pipe(
+      map((response: Page) => {
+        this.responseSubject.next(response);
+        this.currentPageSubject.next(pageNumber);
+        console.log(response);
+
+        for (const article of response.content) {
+          this.imagesService
+            .getImage(article.uuid, 1)
+            .subscribe((data) => {
+              this.articleImages[article.id] = this.sanitizer.bypassSecurityTrustUrl(data);
+            });
+        }
+        return response;
+      })
+    )
+  }
+
+  goToNextOrPreviousPage(direction?: string, title?: string): void {
+    this.gotToPage(title, direction === 'forward' ? this.currentPageSubject.value + 1 : this.currentPageSubject.value - 1);
   }
 
 
@@ -101,30 +126,4 @@ export class ArticlesComponent implements OnInit {
     });
   }
 
-  public searchArticles(key: string): void {
-    const results: ArticleDTO[] = [];
-    for (const article of this.originalArticles) {
-      if (article.title.toLowerCase().indexOf(key.toLowerCase()) !== -1
-        || article.user.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
-        results.push(article);
-      }
-    }
-    this.articles = results;
-  }
-
-  public restoreArticles(): void {
-    this.articles = this.originalArticles;
-  }
-
-  nextPage(): void {
-    this.currentPage++;
-    this.getArticles();
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.getArticles();
-    }
-  }
 }
