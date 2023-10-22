@@ -1,11 +1,11 @@
 package com.expectoamogus.aiblog.models;
 
 import com.expectoamogus.aiblog.dto.user.UserDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,7 +16,10 @@ import java.util.List;
 @Table(name = "article")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Article extends BaseEntity {
     @Column(name = "uuid", unique = true)
     private String uuid;

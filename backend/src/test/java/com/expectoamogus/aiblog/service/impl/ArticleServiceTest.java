@@ -61,8 +61,8 @@ class ArticleServiceTest {
         Article article = new Article();
         ArticleDTO expectedArticleDTO = new ArticleDTO(
                 1L, "test", "test", "test", "test", 2L, List.of(),
-                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, LocalDateTime.now()),
-                LocalDateTime.now(),
+                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, String.valueOf(LocalDateTime.now())),
+                String.valueOf(LocalDateTime.now()),
                 0.00
         );
         when(articleFormRepository.findById(id)).thenReturn(Optional.of(article));
@@ -93,21 +93,21 @@ class ArticleServiceTest {
         List<Article> articles = Arrays.asList(new Article(), new Article());
         List<ArticleDTO> expectedArticleDTOs = Arrays.asList(new ArticleDTO(
                 1L, "test1", "test1", "test1", "test1", 2L, List.of(),
-                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, LocalDateTime.now()),
-                LocalDateTime.now(),
+                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, String.valueOf(LocalDateTime.now())),
+                String.valueOf(LocalDateTime.now()),
                 0.00
         ), new ArticleDTO(
                 2L, "test2", "test2", "test2", "test2", 2L, List.of(),
-                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, LocalDateTime.now()),
-                LocalDateTime.now(),
+                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, String.valueOf(LocalDateTime.now())),
+                String.valueOf(LocalDateTime.now()),
                 0.00
         ));
         PageRequest pageable = PageRequest.of(0, 10);
-        when(articleFormRepository.findAll(pageable)).thenReturn(new PageImpl<>(articles));
+        when(articleFormRepository.findByTitleContaining("", pageable)).thenReturn(new PageImpl<>(articles));
         when(articleDTOMapper.apply(any(Article.class))).thenReturn(expectedArticleDTOs.get(0), expectedArticleDTOs.get(1));
 
         // Act
-        List<ArticleDTO> result = articleService.findAllOrderByDateDesc(pageable);
+        List<ArticleDTO> result = articleService.findAllOrderByDateDesc("", pageable).toList();
 
         // Assert
         assertThat(result).isEqualTo(expectedArticleDTOs);
@@ -171,21 +171,21 @@ class ArticleServiceTest {
         List<Article> articles = Arrays.asList(new Article(), new Article());
         List<ArticleDTO> expectedArticleDTOs = Arrays.asList(new ArticleDTO(
                 1L, "test1", "test1", "test1", "test1", 10L, List.of(),
-                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, LocalDateTime.now()),
-                LocalDateTime.now(),
+                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, String.valueOf(LocalDateTime.now())),
+                String.valueOf(LocalDateTime.now()),
                 0.00
         ), new ArticleDTO(
                 2L, "test2", "test2", "test2", "test2", 2L, List.of(),
-                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, LocalDateTime.now()),
-                LocalDateTime.now(),
+                new UserDTO(1L, "test", "test@gmail.com", Set.of(new SimpleGrantedAuthority("ROLE_USER")), "test", null, String.valueOf(LocalDateTime.now())),
+                String.valueOf(LocalDateTime.now()),
                 0.00
         ));
         PageRequest pageable = PageRequest.of(0, 10);
-        when(articleFormRepository.findAll(pageable)).thenReturn(new PageImpl<>(articles));
+        when(articleFormRepository.findByTitleContaining("", pageable)).thenReturn(new PageImpl<>(articles));
         when(articleDTOMapper.apply(any(Article.class))).thenReturn(expectedArticleDTOs.get(0), expectedArticleDTOs.get(1));
 
         // Act
-        List<ArticleDTO> result = articleService.findAllOrderByViewsDesc(pageable);
+        List<ArticleDTO> result = articleService.findAllOrderByViewsDesc("", pageable).toList();
 
         // Assert
         assertThat(result).isEqualTo(expectedArticleDTOs);

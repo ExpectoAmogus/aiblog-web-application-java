@@ -10,6 +10,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,6 +42,7 @@ public class ArticleService {
                         "article with id [%s] not found".formatted(id)
                 ));
     }
+
     public Article findArticleById(Long id) {
         return articleFormRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -48,19 +50,18 @@ public class ArticleService {
                 ));
     }
 
-    public List<ArticleDTO> findAllOrderByDateDesc(PageRequest pageable) {
-        return articleFormRepository.findAll(pageable)
-                .stream()
-                .map(articleDTOMapper)
-                .sorted(Comparator.comparing(ArticleDTO::dateOfCreated).reversed())
-                .collect(Collectors.toList());
+    public Page<ArticleDTO> findAllOrderByDateDesc(String title, PageRequest pageable) {
+        return articleFormRepository.findByTitleContainingOrderByDateOfCreatedDesc(title, pageable)
+                .map(articleDTOMapper);
     }
-    public List<ArticleDTO> findTrending(PageRequest pageable) {
-        List<ArticleDTO> articleDTOs = articleFormRepository.findAll(pageable)
-                .stream()
-                .map(articleDTOMapper)
-                .sorted(Comparator.comparing(ArticleDTO::views).reversed())
-                .toList();
+
+    public Page<ArticleDTO> findTrending(String title, PageRequest pageable) {
+        Page<ArticleDTO> articleDTOs = articleFormRepository.findByTitleContainingOrderByViewsDesc(title, pageable)
+                .map(articleDTOMapper);
+
+        long totalElements = articleDTOs.getTotalElements();
+        int pageSize = pageable.getPageSize();
+        int totalPages = (int) Math.ceil((double) totalElements / pageSize);
 
         double timeConstant = 2592000000.0;
         double exponentBase = Math.E;
@@ -73,16 +74,16 @@ public class ArticleService {
             articleDTOsWithTrendingScore.add(articleDTOWithTrendingScore);
         }
 
-        return articleDTOsWithTrendingScore.stream()
+        articleDTOsWithTrendingScore = articleDTOsWithTrendingScore.stream()
                 .sorted(Comparator.comparing(ArticleDTO::trendingScore).reversed())
                 .toList();
+
+        return new PageImpl<>(articleDTOsWithTrendingScore, pageable, totalPages);
     }
-    public List<ArticleDTO> findAllOrderByViewsDesc(PageRequest pageable) {
-        return articleFormRepository.findAll(pageable)
-                .stream()
-                .map(articleDTOMapper)
-                .sorted(Comparator.comparing(ArticleDTO::views).reversed())
-                .collect(Collectors.toList());
+
+    public Page<ArticleDTO> findAllOrderByViewsDesc(String title, PageRequest pageable) {
+        return articleFormRepository.findByTitleContainingOrderByViewsDesc(title, pageable)
+                .map(articleDTOMapper);
     }
 
     public ArticleDTO saveArticle(Principal principal, String title, String content, String category, List<MultipartFile> files) {

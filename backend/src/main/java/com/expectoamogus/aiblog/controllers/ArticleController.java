@@ -4,6 +4,7 @@ import com.expectoamogus.aiblog.dto.article.ArticleDTO;
 import com.expectoamogus.aiblog.models.Article;
 import com.expectoamogus.aiblog.service.impl.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,22 +23,27 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<ArticleDTO>> articles(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "24") int size){
+    public ResponseEntity<Page<ArticleDTO>> articles(@RequestParam Optional<String> title,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "24") int size) {
         var pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(title.orElse(""), pageable), HttpStatus.OK);
     }
+
     @GetMapping("/popular")
-    public ResponseEntity<List<ArticleDTO>> popularArticles(@RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "6") int size){
+    public ResponseEntity<Page<ArticleDTO>> popularArticles(@RequestParam Optional<String> title,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "6") int size) {
         var pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(articleService.findAllOrderByViewsDesc(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findAllOrderByViewsDesc(title.orElse(""), pageable), HttpStatus.OK);
     }
+
     @GetMapping("/trending")
-    public ResponseEntity<List<ArticleDTO>> trendingArticles(@RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "6") int size){
+    public ResponseEntity<Page<ArticleDTO>> trendingArticles(@RequestParam Optional<String> title,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "6") int size) {
         var pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(articleService.findTrending(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findTrending(title.orElse(""), pageable), HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
@@ -63,7 +70,7 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> updateArticle(
             Principal principal,
             @PathVariable("id") Long id,
-            @RequestParam(value = "title" ,required = false) String title,
+            @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "images", required = false) List<MultipartFile> images) {
         return new ResponseEntity<>(
@@ -71,7 +78,6 @@ public class ArticleController {
                 HttpStatus.OK
         );
     }
-
 
 
     @PreAuthorize("hasAuthority('devs:write')")
