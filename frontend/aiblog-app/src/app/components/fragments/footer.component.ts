@@ -33,7 +33,7 @@ export class FooterComponent implements OnInit {
   }
 
   getArticles() {
-    this.articlesService.getArticles('',0,4).subscribe({
+    this.articlesService.getArticles('', '', 0,4).subscribe({
       next: (articles) => {
           this.articles = articles.content;
 

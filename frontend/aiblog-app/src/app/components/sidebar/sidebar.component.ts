@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit{
   }
 
   public getLatestArticles(): void {
-    this.articlesService.getArticles('', 0,6).subscribe({
+    this.articlesService.getArticles('', '',0,6).subscribe({
       next: (response) => {
         this.articlesLatest = response.content;
       }

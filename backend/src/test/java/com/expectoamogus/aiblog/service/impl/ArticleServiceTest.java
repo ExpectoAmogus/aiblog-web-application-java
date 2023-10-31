@@ -107,7 +107,7 @@ class ArticleServiceTest {
         when(articleDTOMapper.apply(any(Article.class))).thenReturn(expectedArticleDTOs.get(0), expectedArticleDTOs.get(1));
 
         // Act
-        List<ArticleDTO> result = articleService.findAllOrderByDateDesc("", pageable).toList();
+        List<ArticleDTO> result = articleService.findAllOrderByDateDesc(null, null, pageable).toList();
 
         // Assert
         assertThat(result).isEqualTo(expectedArticleDTOs);

@@ -24,10 +24,11 @@ public class ArticleController {
 
     @GetMapping("/all")
     public ResponseEntity<Page<ArticleDTO>> articles(@RequestParam Optional<String> title,
+                                                     @RequestParam Optional<String> category,
                                                      @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "24") int size) {
         var pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(title.orElse(""), pageable), HttpStatus.OK);
+        return new ResponseEntity<>(articleService.findAllOrderByDateDesc(title.orElse(""), category.orElse(""), pageable), HttpStatus.OK);
     }
 
     @GetMapping("/popular")

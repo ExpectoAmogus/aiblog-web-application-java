@@ -63,11 +63,11 @@ export class ArticlesComponent implements OnInit {
 
   public filterArticles(category?: string): void {
     this.getArticles(category);
-    this.router.navigate(['/articles'], {queryParams: {category: category}});
+    // this.router.navigate(['/articles'], {queryParams: {category: category}});
   }
 
   public getArticles(category?: string): void {
-    this.articlesState$ = this.articlesService.getArticles().pipe(
+    this.articlesState$ = this.articlesService.getArticles('',category).pipe(
       map((response) => {
         this.activeCategory = category ? category : 'All';
         console.log("Active category: ", this.activeCategory)
@@ -86,8 +86,8 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
-  gotToPage(title?: string, pageNumber: number = 0): void {
-    this.articlesState$ = this.articlesService.getArticles(title, pageNumber).pipe(
+  gotToPage(title?: string, category?: string ,pageNumber: number = 0): void {
+    this.articlesState$ = this.articlesService.getArticles(title, category, pageNumber).pipe(
       map((response: Page) => {
         this.responseSubject.next(response);
         this.currentPageSubject.next(pageNumber);
@@ -105,8 +105,8 @@ export class ArticlesComponent implements OnInit {
     )
   }
 
-  goToNextOrPreviousPage(direction?: string, title?: string): void {
-    this.gotToPage(title, direction === 'forward' ? this.currentPageSubject.value + 1 : this.currentPageSubject.value - 1);
+  goToNextOrPreviousPage(direction?: string, title?: string, category?: string): void {
+    this.gotToPage(title, category,direction === 'forward' ? this.currentPageSubject.value + 1 : this.currentPageSubject.value - 1);
   }
 
 

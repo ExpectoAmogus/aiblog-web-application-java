@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   }
 
   getArticles(): void {
-    this.articlesService.getArticles('', 0, 24).subscribe(articles => {
+    this.articlesService.getArticles('', '', 0, 24).subscribe(articles => {
       this.articles = articles.content;
       for (const article of articles.content) {
         this.imagesService

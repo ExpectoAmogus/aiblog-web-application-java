@@ -4,7 +4,6 @@
       <ng-container *ngIf="(articlesState$ | async) as state">
         <div class="col-md-9" data-aos="fade-up">
           <h3 class="category-title">Category: {{activeCategory}}</h3>
-<!--          TODO: fix category filter-->
           <ng-container *ngFor="let article of state.content">
             <div class="d-md-flex post-entry-2 half">
               <a [routerLink]="['/articles/article', article.id]" class="me-4 thumbnail">
@@ -42,7 +41,7 @@
               <!-- Page Numbers -->
               <li *ngFor="let pageNumber of [].constructor(state.totalPages); let i = index;"
                   class="page-item pointer" [ngClass]="i == (currentPage$ | async) ? ' active' : ''">
-                <a (click)="gotToPage(query, i)" class="page-link">
+                <a (click)="gotToPage(query, activeCategory, i)" class="page-link">
                   {{ i + 1 }}
                 </a>
               </li>

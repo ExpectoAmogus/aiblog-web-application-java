@@ -18,9 +18,10 @@ export class ArticlesService {
   ) {
   }
 
-  getArticles(title: string = '', page: number = 0, size: number = 6): Observable<Page> {
+  getArticles(title: string = '', category: string = '', page: number = 0, size: number = 6): Observable<Page> {
     let params = new HttpParams();
     params = params.append('title', title.toString());
+    params = params.append('category', category.toString());
     params = params.append('page', page.toString());
     params = params.append('size', size.toString());
     return this.http.get<Page>(`${this.apiUrl}/api/v1/articles/all`, {params})

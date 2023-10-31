@@ -17,5 +17,7 @@ public interface ArticleFormRepository extends JpaRepository<Article, Long> {
 
     Page<Article> findByTitleContaining(String title, Pageable pageable);
     Page<Article> findByTitleContainingOrderByDateOfCreatedDesc(String title, Pageable pageable);
+    Page<Article> findByCategoryOrderByDateOfCreatedDesc(String category, Pageable pageable);
+    Page<Article> findByTitleContainingAndCategoryOrderByDateOfCreatedDesc(String title, String category, Pageable pageable);
     Page<Article> findByTitleContainingOrderByViewsDesc(String title, Pageable pageable);
 }

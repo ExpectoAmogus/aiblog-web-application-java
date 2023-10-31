@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -50,9 +47,20 @@ public class ArticleService {
                 ));
     }
 
-    public Page<ArticleDTO> findAllOrderByDateDesc(String title, PageRequest pageable) {
-        return articleFormRepository.findByTitleContainingOrderByDateOfCreatedDesc(title, pageable)
-                .map(articleDTOMapper);
+    public Page<ArticleDTO> findAllOrderByDateDesc(String title, String category, PageRequest pageable) {
+        if (!Objects.equals(title, "") && !Objects.equals(category, "")) {
+            return articleFormRepository.findByTitleContainingAndCategoryOrderByDateOfCreatedDesc(title, category, pageable)
+                    .map(articleDTOMapper);
+        } else if (!Objects.equals(title, "")) {
+            return articleFormRepository.findByTitleContainingOrderByDateOfCreatedDesc(title, pageable)
+                    .map(articleDTOMapper);
+        } else if (!Objects.equals(category, "")) {
+            return articleFormRepository.findByCategoryOrderByDateOfCreatedDesc(category, pageable)
+                    .map(articleDTOMapper);
+        } else {
+            return articleFormRepository.findAll(pageable)
+                    .map(articleDTOMapper);
+        }
     }
 
     public Page<ArticleDTO> findTrending(String title, PageRequest pageable) {
