@@ -23,12 +23,6 @@
                 </div>
               </div>
             </div>
-            <button *ngIf="isAdmin" (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
-                    data-original-title="Edit" style="margin-left: 10px;">Edit
-            </button>
-            <button *ngIf="isAdmin" (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
-                    data-original-title="Delete" style="margin-left: 10px;">Delete
-            </button>
           </ng-container>
           <div *ngIf="state.content.length > 0">
             <ul class="pagination justify-content-center">
@@ -41,7 +35,7 @@
               <!-- Page Numbers -->
               <li *ngFor="let pageNumber of [].constructor(state.totalPages); let i = index;"
                   class="page-item pointer" [ngClass]="i == (currentPage$ | async) ? ' active' : ''">
-                <a (click)="gotToPage(query, activeCategory, i)" class="page-link">
+                <a (click)="gotToPage(query, i)" class="page-link">
                   {{ i + 1 }}
                 </a>
               </li>

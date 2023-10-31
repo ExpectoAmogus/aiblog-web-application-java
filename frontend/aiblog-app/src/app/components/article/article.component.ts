@@ -6,6 +6,7 @@ import {ImagesService} from '../../services/images.service';
 import {forkJoin} from "rxjs";
 import {AuthService} from "../../services/auth.service";
 import {DomSanitizer, SafeUrl, Title} from '@angular/platform-browser';
+import {AdminStatusService} from "../../services/admin-status.service";
 
 
 @Component({
@@ -16,7 +17,6 @@ export class ArticleComponent implements OnInit {
   public currentUserId!: number;
   public article!: ArticleDTO;
   public images: SafeUrl[] = [];
-  public isAdmin: boolean | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,15 +24,13 @@ export class ArticleComponent implements OnInit {
     private articlesService: ArticlesService,
     private sanitizer: DomSanitizer,
     private imagesService: ImagesService,
-    private titleService: Title
+    private titleService: Title,
   ) {
   }
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentUserId();
-    this.isAdmin = this.authService.isAdmin();
     this.updateContent();
-
   }
 
   updateContent(): void {
