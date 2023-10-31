@@ -1,0 +1,32 @@
+<div>
+  <select [(ngModel)]="selectedCategory" (change)="onCategorySelected()">
+    <option value="">All Categories</option>
+    <option *ngFor="let category of categories" [value]="category.value">{{ category.viewValue }}</option>
+  </select>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Category</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let article of articles">
+    <td>{{ article.title }}</td>
+    <td>{{ article.category }}</td>
+    <td>
+      <button (click)="updateArticle(article)" class="btn btn-primary" data-placement="top"
+              data-original-title="Edit" style="margin-left: 10px;">Edit
+      </button>
+    </td>
+    <td>
+      <button (click)="deleteArticle(article.id)" class="btn btn-danger" data-placement="top"
+              data-original-title="Delete" style="margin-left: 10px;">Delete
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
