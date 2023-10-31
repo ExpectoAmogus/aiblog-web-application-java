@@ -30,6 +30,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {AppLayoutComponent} from './components/app-layout/app-layout.component';
 import {LogoutComponent} from './components/logout/logout.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
+import { ArticleListComponent } from './components/article-list/article-list.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {AdminPanelComponent} from './components/admin-panel/admin-panel.componen
     AppLayoutComponent,
     LogoutComponent,
     AdminPanelComponent,
+    ArticleListComponent,
   ],
   imports: [
     CKEditorModule,

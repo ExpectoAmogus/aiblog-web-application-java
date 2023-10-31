@@ -76,7 +76,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'articles/create',
+        path: 'admin/article/create',
         component: ArticleCreateComponent,
         canActivate: [AuthenticationGuard],
         data: {
@@ -94,7 +94,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'articles/article-edit/:id',
+        path: 'admin/article/edit/:id',
         component: ArticleEditComponent,
         canActivate: [AuthenticationGuard],
         data: {
