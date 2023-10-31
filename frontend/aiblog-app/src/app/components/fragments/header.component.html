@@ -15,8 +15,8 @@
         <li><a routerLink="/contact">Contact</a></li>
         <li><a routerLink="/articles">Articles</a></li>
         <li *ngIf="!token"><a routerLink="/login">Log in</a></li>
-        <li *ngIf="token && isAdmin"><a routerLink="/articles/create">Create an article</a></li>
-        <li *ngIf="token && isAdmin"><a routerLink="/admin/panel">Admin Panel</a></li>
+        <li *ngIf="adminStatusService.isAdminLoaded && token && adminStatusService.isAdminStatus"><a routerLink="/admin/article/create">Create an article</a></li>
+        <li *ngIf="adminStatusService.isAdminLoaded && token && adminStatusService.isAdminStatus"><a routerLink="/admin/panel">Admin Panel</a></li>
         <li *ngIf="token"><a routerLink="/logout">Log out</a></li>
       </ul>
     </nav><!-- .navbar -->

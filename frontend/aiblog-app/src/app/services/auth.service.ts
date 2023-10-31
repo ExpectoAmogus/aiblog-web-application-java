@@ -17,7 +17,7 @@ export class AuthService {
     private errorHandlingService: ExceptionService
   ) { }
 
-  isAdmin(): boolean {
+   async isAdmin(): Promise<boolean> {
     let authorities = this.getAuthorities();
     if (authorities === null){
       return false;

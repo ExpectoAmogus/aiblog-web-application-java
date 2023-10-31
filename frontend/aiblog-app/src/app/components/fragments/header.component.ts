@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Event, NavigationEnd, Router} from '@angular/router';
 import {AuthService} from 'src/app/services/auth.service';
 import {SearchService} from "../../services/search.service";
+import {AdminStatusService} from "../../services/admin-status.service";
 
 
 @Component({
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    public adminStatusService: AdminStatusService,
     private searchService: SearchService
   ) { }
 
@@ -23,6 +24,9 @@ export class HeaderComponent implements OnInit {
   token = sessionStorage.getItem('token');
 
   ngOnInit() {
+    this.adminStatusService.initializeAdminStatus().then(() => {
+      this.updateNavbar();
+    });
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.updateNavbar();
@@ -30,7 +34,6 @@ export class HeaderComponent implements OnInit {
     });
   }
   updateNavbar() {
-    this.isAdmin = this.authService.isAdmin();
     this.token = sessionStorage.getItem('token');
     this.clearSearchQuery();
   }
