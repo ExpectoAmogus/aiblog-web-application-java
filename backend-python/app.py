@@ -1,23 +1,39 @@
 from flask import Flask, request, jsonify
+import matplotlib.pyplot as plt
+import io
+import base64
 
 from bleu import calculate_bleu
 from rouge import calculate_rouge
 
 app = Flask(__name__)
+root = '/api/v1/python'
+
+bleu_scores = []
+rouge_f1_scores = []
+iteration_numbers = []
 
 
-@app.route('/bleu', methods=["POST"])
+@app.route(root + '/bleu', methods=["POST"])
 def bleu():
     data = request.get_json()
 
-    if 'reference' in data and 'candidate' in data:
+    if 'reference' in data and 'candidate' in data and 'iterations' in data:
         reference_sentence = data['reference']
         candidate_sentence = data['candidate']
+        iterations = data.get('iterations', 10)
 
-        bleu_score = calculate_bleu(reference_sentence, candidate_sentence)
+        bleu_scores.clear()
+        iteration_numbers.clear()
+
+        for _ in range(iterations):
+            bleu_score = calculate_bleu(reference_sentence, candidate_sentence)
+
+            bleu_scores.append(bleu_score)
+            iteration_numbers.append(len(bleu_scores))
 
         response = {
-            'bleu_score': bleu_score
+            'bleu_scores': bleu_scores
         }
 
         return jsonify(response), 201
@@ -27,29 +43,76 @@ def bleu():
             {'error': 'Invalid request. Make sure to provide both "reference" and "candidate" sentences.'}), 400
 
 
-@app.route('/rouge', methods=["POST"])
+@app.route(root + '/rouge', methods=["POST"])
 def rouge():
     data = request.get_json()
 
-    if 'reference' in data and 'candidate' in data:
+    if 'reference' in data and 'candidate' in data and 'iterations' in data:
         reference_sentence = data['reference']
         candidate_sentence = data['candidate']
+        iterations = data.get('iterations', 10)
 
-        rouge_scores = calculate_rouge(reference_sentence, candidate_sentence)
+        for _ in range(iterations):
+            rouge_scores = calculate_rouge(reference_sentence, candidate_sentence)
 
-        response = {}
-        for key, value in rouge_scores.items():
-            response[key] = {
-                'precision': value.precision,
-                'recall': value.recall,
-                'fmeasure': value.fmeasure
-            }
+            rouge_f1_scores.append(rouge_scores)
+            iteration_numbers.append(len(rouge_f1_scores))
+
+        response = {
+            'rouge_scores': rouge_f1_scores
+        }
 
         return jsonify(response), 201
 
     else:
         return jsonify(
             {'error': 'Invalid request. Make sure to provide both "reference" and "candidate" sentences.'}), 400
+
+
+@app.route(root + '/plot-bleu', methods=["GET"])
+def plot_bleu():
+    plt.figure(figsize=(10, 6))
+    plt.plot(iteration_numbers, bleu_scores, label='BLEU')
+    plt.xlabel('Iteration')
+    plt.ylabel('Score')
+    plt.title('Quality Evaluation Over Iterations')
+    plt.legend()
+    plt.grid(True)
+
+    img_buffer = io.BytesIO()
+    plt.savefig(img_buffer, format='png')
+    img_buffer.seek(0)
+
+    img_base64 = base64.b64encode(img_buffer.read()).decode()
+
+    response = {
+        'img_base64': img_base64
+    }
+
+    return jsonify(response), 200
+
+
+@app.route(root + '/plot-rouge', methods=["GET"])
+def plot_rouge():
+    plt.figure(figsize=(10, 6))
+    plt.plot(iteration_numbers, rouge_f1_scores, label='ROUGE-L F1')
+    plt.xlabel('Iteration')
+    plt.ylabel('Score')
+    plt.title('Quality Evaluation Over Iterations')
+    plt.legend()
+    plt.grid(True)
+
+    img_buffer = io.BytesIO()
+    plt.savefig(img_buffer, format='png')
+    img_buffer.seek(0)
+
+    img_base64 = base64.b64encode(img_buffer.read()).decode()
+
+    response = {
+        'img_base64': img_base64
+    }
+
+    return jsonify(response), 200
 
 
 if __name__ == '__main__':
