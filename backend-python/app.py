@@ -11,7 +11,8 @@ root = '/api/v1/python'
 
 bleu_scores = []
 rouge_f1_scores = []
-iteration_numbers = []
+iteration_numbers_bleu = []
+iteration_numbers_rouge = []
 
 
 @app.route(root + '/bleu', methods=["POST"])
@@ -24,13 +25,13 @@ def bleu():
         iterations = data.get('iterations', 10)
 
         bleu_scores.clear()
-        iteration_numbers.clear()
+        iteration_numbers_bleu.clear()
 
         for _ in range(iterations):
             bleu_score = calculate_bleu(reference_sentence, candidate_sentence)
 
             bleu_scores.append(bleu_score)
-            iteration_numbers.append(len(bleu_scores))
+            iteration_numbers_bleu.append(len(bleu_scores))
 
         response = {
             'bleu_scores': bleu_scores
@@ -52,11 +53,14 @@ def rouge():
         candidate_sentence = data['candidate']
         iterations = data.get('iterations', 10)
 
+        rouge_f1_scores.clear()
+        iteration_numbers_rouge.clear()
+
         for _ in range(iterations):
             rouge_scores = calculate_rouge(reference_sentence, candidate_sentence)
 
             rouge_f1_scores.append(rouge_scores)
-            iteration_numbers.append(len(rouge_f1_scores))
+            iteration_numbers_rouge.append(len(rouge_f1_scores))
 
         response = {
             'rouge_scores': rouge_f1_scores
@@ -72,7 +76,7 @@ def rouge():
 @app.route(root + '/plot-bleu', methods=["GET"])
 def plot_bleu():
     plt.figure(figsize=(10, 6))
-    plt.plot(iteration_numbers, bleu_scores, label='BLEU')
+    plt.plot(iteration_numbers_bleu, bleu_scores, label='BLEU')
     plt.xlabel('Iteration')
     plt.ylabel('Score')
     plt.title('Quality Evaluation Over Iterations')
@@ -95,7 +99,7 @@ def plot_bleu():
 @app.route(root + '/plot-rouge', methods=["GET"])
 def plot_rouge():
     plt.figure(figsize=(10, 6))
-    plt.plot(iteration_numbers, rouge_f1_scores, label='ROUGE-L F1')
+    plt.plot(iteration_numbers_rouge, rouge_f1_scores, label='ROUGE-L F1')
     plt.xlabel('Iteration')
     plt.ylabel('Score')
     plt.title('Quality Evaluation Over Iterations')
