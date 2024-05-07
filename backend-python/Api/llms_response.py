@@ -2,12 +2,17 @@ import os
 import pandas as pd
 import anthropic
 import cohere
+import spacy
 from openai import OpenAI
 import json
+import matplotlib.pyplot as plt
+from scipy.stats import f_oneway
 
 from bleu import calculate_bleu
 from meteor import calculate_meteor
 from rouge import calculate_rouge
+
+nlp = spacy.load("en_core_web_sm")
 
 
 # Function for evaluating text quality and writing results to a JSON file
@@ -25,17 +30,47 @@ def evaluate_text_quality(reference, candidate):
     return results
 
 
+# Function for analyzing prompt complexity
+def analyze_prompt_complexity(prompts):
+    prompt_complexities = []
+    for prompt in prompts:
+        doc = nlp(prompt)
+
+        # Calculate various complexity factors, such as sentence length, presence of specialized terms, etc.
+        complexity_score = 0
+
+        # Example factors for assessing complexity:
+        sentence_length = len(list(doc.sents))  # Sentence length
+        num_entities = len(doc.ents)  # Number of named entities
+        num_complex_words = sum(1 for token in doc if token.is_alpha and len(token.text) > 6)  # Number of complex words
+
+        # Additional metrics can be added as needed
+
+        # Simple formula for calculating complexity based on metrics
+        complexity_score = sentence_length + num_entities + num_complex_words
+
+        prompt_complexities.append(complexity_score)
+
+    return prompt_complexities
+
+
 # Function for processing prompts and writing results to CSV files
 def process_prompts(prompt_data, model_name, request_func, reference_data, api_key):
     results = []
+    prompt_complexities = analyze_prompt_complexity(prompt_data['prompts'])
 
-    for prompt in prompt_data['prompts']:
+    for prompt, complexity in zip(prompt_data['prompts'], prompt_complexities):
         reference = reference_data.loc[prompt_data['prompts'].index(prompt), 'article_text']
         candidate = request_func(prompt, api_key)  # Getting candidate from the model
 
         evaluation_results = evaluate_text_quality(reference, candidate)
-        results.append({'prompt': prompt.strip(), 'reference': reference, 'candidate': candidate,
-                        'evaluation_results': evaluation_results})
+        results.append({'prompt': prompt.strip(), 'prompt_complexity': complexity,
+                        'reference': reference, 'candidate': candidate,
+                        'BLEU': evaluation_results['BLEU'],
+                        'METEOR': evaluation_results['METEOR'],
+                        'ROUGE1': evaluation_results['ROUGE']['rouge1'].precision,
+                        'ROUGE2': evaluation_results['ROUGE']['rouge2'].precision,
+                        'ROUGEL': evaluation_results['ROUGE']['rougeL'].precision})
 
     # Writing results to CSV file
     df = pd.DataFrame(results)
@@ -58,6 +93,7 @@ def request_gpt_3_5(prompt, api_key):
     return response.choices[0].message.content.replace('\n', '').replace('\r', '').replace('\t', '')
 
 
+# Function for requesting Claude model API
 def request_claude(prompt, api_key):
     client = anthropic.Anthropic(
         # api_key=os.environ.get("ANTHROPIC_API_KEY"),
@@ -82,6 +118,7 @@ def request_claude(prompt, api_key):
     return message.content[0].text.replace('\n', '').replace('\r', '').replace('\t', '')
 
 
+# Function for requesting Cohere model API
 def request_cohere(prompt, api_key):
     co = cohere.Client(
         # api_key=os.environ.get("COHERE_API_KEY"),
@@ -97,7 +134,8 @@ def request_cohere(prompt, api_key):
 
 
 # Loading prompts from each file
-prompt_files = ['prompts_1.txt', 'prompts_2.txt', 'prompts_3.txt']
+# prompt_files = ['prompts_1.txt', 'prompts_2.txt', 'prompts_3.txt']
+prompt_files = ['prompts_3.txt']
 prompts_data = []
 
 with open('api_keys.json', 'r') as file:
