@@ -135,7 +135,7 @@ def request_cohere(prompt, api_key):
 
 # Loading prompts from each file
 # prompt_files = ['prompts_1.txt', 'prompts_2.txt', 'prompts_3.txt']
-prompt_files = ['prompts_3.txt']
+prompt_files = ['prompts_4.txt']
 prompts_data = []
 
 with open('api_keys.json', 'r') as file:
