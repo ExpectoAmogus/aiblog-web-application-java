@@ -78,6 +78,8 @@ def process_prompts(prompt_data, model_name, request_func, reference_data, api_k
     df.to_csv(f'{model_name}/results_{prompt_data["file"]}.csv', index=False)
 
 
+
+
 # Function for requesting GPT-3.5 model API
 def request_gpt_3_5(prompt, api_key):
     client = OpenAI(
