@@ -34,3 +34,4 @@ build/
 
 ### python ###
 .venv/
+backend-python/Api/api_keys.json
